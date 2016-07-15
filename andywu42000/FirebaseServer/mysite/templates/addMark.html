@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}新增標記{% endblock %}
+
+{% block markDropdown %}
+	<li class="active dropdown">
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">標記管理<span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu" class="active">
+	    <li class="active"><a href="/mark/add">新增標記</a></li>
+	    <li><a href="/mark/all">所有標記</a></li>
+	    <li><a href="#">Something else here</a></li>
+	    <li class="divider"></li>
+	    <li><a href="#">Separated link</a></li>
+	    <li class="divider"></li>
+	    <li><a href="#">One more separated link</a></li>
+	  </ul>
+	</li>
+{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">新增標記</h3>
+		</div>
+		<div class="panel-body">
+			標記名稱：<input type="text" id="titleAddInput"></input>
+			標記內容：<input type="text" id="contextAddInput"></input>
+			緯度：<input type="text" id="latiAddInput" placeholder="Float Only"></input>
+			經度：<input type="text" id="longiAddInput" placeholder="Float Only"></input>	
+			<button type="button" onclick="addNewMark()" class="btn btn-default" id="addNewMarkBtn">新增</button>
+		</div>
+	</div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">末筆成功新增標記</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<thead>
+			        <tr>
+			          <th>標記名稱</th>
+			          <th>標記內容</th>
+			          <th>緯度</th>
+			          <th>經度</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			    	<td id="titleLast"></td>
+			    	<td id="contextLast"></td>
+			    	<td id="latiLast"></td>
+			    	<td id="longiLast"></td>
+			    </tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		var myFirebaseRef = new Firebase('https://amber-torch-4664.firebaseio.com/Mark');
+		function addNewMark() {
+			var title = $('#titleAddInput').val();
+			var context = $('#contextAddInput').val();
+			var lati = parseFloat($('#latiAddInput').val());
+			var longi = parseFloat($('#longiAddInput').val());
+			var newAddMark = myFirebaseRef.push({
+				title: title,
+				context: context,
+				latitude: lati,
+				longitude: longi
+			});
+			var newAddMarkId = newAddMark.key();
+			alert(title + " 新增成功!")
+			$('#titleAddInput').val("");
+			$('#contextAddInput').val("");
+			$('#latiAddInput').val("");
+			$('#longiAddInput').val("");	
+		};
+		myFirebaseRef.orderByPriority().limitToLast(1).on("child_added", function(snapshot, prevChildKey) {
+			var mark = snapshot.val();
+			displayMark(prevChildKey, mark.title, mark.context, mark.latitude, mark.longitude);
+		});
+		/**myFirebaseRef.orderByChild("longitude").equalTo(121.5).on("child_added", function(snapshot) {
+			var mark = snapshot.val();
+			displayMark(mark.title, mark.context, mark.latitude, mark.longitude);
+		});*/
+
+		function displayMark(prevKey, title, context, latitude, longitude) {
+			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
+			document.getElementById("titleLast").innerHTML = title;
+			document.getElementById("contextLast").innerHTML = context;
+			document.getElementById("latiLast").innerHTML = latitude;
+			document.getElementById("longiLast").innerHTML = longitude;
+		}
+	</script>
+{% endblock %}
