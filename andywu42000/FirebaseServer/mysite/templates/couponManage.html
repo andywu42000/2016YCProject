@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}優惠券管理{% endblock %}
+
+{% block couponButton %}
+	<li class="active"><a href="/coupon">優惠券管理</a></li>
+{% endblock %}
+{% block content %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">新增標記</h3>
+		</div>
+		<div class="panel-body">
+			優惠券名稱：<input type="text" id="nameAddInput"></input>
+			優惠券資訊：<input type="text" id="informationAddInput"></input>
+			相片(imgur後7碼，不含.jpg)：<input type="text" id="photoAddInput"></input>
+			價格：<input type="number" id="priceAddInput" placeholder="請輸入大於0的整數" min="0" step="1"></input><p></p>
+			總共數量：<input type="number" id="amountAddInput" placeholder="請輸入大於0的整數" min="0" step="1"></input>
+			<button type="button" onclick="beforeCheck()" class="btn btn-default" id="addNewCouponBtn">新增</button>
+		</div>
+	</div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">末筆成功新增優惠券</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<thead>
+			        <tr>
+			          <th>優惠券名稱</th>
+			          <th>優惠券資訊</th>
+			          <th>相片</th>
+			          <th>價格</th>
+			          <th>剩餘數量</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			    	<td id="nameLast"></td>
+			    	<td id="informationLast"></td>
+			    	<td id="photoLast"></td>
+			    	<td id="priceLast"></td>
+			    	<td id="amountLast"></td>
+			    </tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		var myFirebaseRef = new Firebase('https://coupon-da649.firebaseio.com/');
+		function beforeCheck() {
+			if (parseInt($('#priceAddInput').val()) <= 0 || parseInt($('#amountAddInput').val()) <= 0) {
+				alert("價格或數量不可小或等於零！");
+			}//else if(isNaN($('#priceAddInput').val()) || isNaN($('#amountAddInput').val()) == true){
+				//alert("價格或數量的格式錯誤！");
+			}else{
+				addNewCoupon();
+			}
+		}
+		function addNewCoupon() {
+			var name = $('#nameAddInput').val();
+			var information = $('#informationAddInput').val();
+			var photo = $('#photoAddInput').val();
+			var price = parseInt($('#priceAddInput').val());
+			if (price<10) {
+				var type = "平價";
+			}else if (price < 20) {
+				var type = "中等";
+			}else if (price >= 20) {
+				var type = "豪華";
+			}
+			var remainingAmount = parseInt($('#amountAddInput').val());
+			var newAddCoupon = myFirebaseRef.push({
+				"Name": name,
+				"Information": information,
+				"Photos": {
+					"Photo_ID": photo
+				},
+				"Type": type,
+				"Price": price,
+				"Remaining_Amount": remainingAmount
+			});
+			//var newAddMarkId = newAddMark.key();
+			alert(name + " 新增成功!");
+			$('#nameAddInput').val("");
+			$('#informationAddInput').val("");
+			$('#photoAddInput').val("");
+			$('#priceAddInput').val("");	
+			$('#amountAddInput').val("");
+		};
+		myFirebaseRef.orderByPriority().limitToLast(1).on("child_added", function(snapshot, prevChildKey) {
+			var coupon = snapshot.val();
+			displayCoupon(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount);
+		});
+		/**myFirebaseRef.orderByChild("longitude").equalTo(121.5).on("child_added", function(snapshot) {
+			var mark = snapshot.val();
+			displayMark(mark.title, mark.context, mark.latitude, mark.longitude);
+		});*/
+
+		function displayCoupon(name, information, photos, price, remainingAmount) {
+			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
+			document.getElementById("nameLast").innerHTML = name;
+			document.getElementById("informationLast").innerHTML = information;
+			var photoLink = "http://imgur.com/" + photos;
+			document.getElementById("photoLast").innerHTML = "<a href='" + photoLink + "'>圖片</a>";
+			document.getElementById("priceLast").innerHTML = price;
+			document.getElementById("amountLast").innerHTML = remainingAmount;
+		}
+	</script>
+{% endblock %}
