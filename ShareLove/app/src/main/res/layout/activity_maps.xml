@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.jiarou.map.fousActivity">
+
+
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragment"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/fragment"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"/>
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="129dp"
+            android:id="@+id/listView"
+            android:layout_alignParentStart="true"
+            android:choiceMode="none"
+            android:layout_alignParentBottom="true"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="67dp"
+            android:text="search"
+            android:id="@+id/search_button"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
