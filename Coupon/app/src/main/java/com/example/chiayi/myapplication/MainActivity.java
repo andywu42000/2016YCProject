@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CouponTypesFragment.OnCouponSelected {
 
 
 
@@ -22,9 +22,20 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+    }
 
 
+    @Override
+    public void onCouponSelected(String CouponName, String Price, String couponURL, String Info, String Amount) {
 
+        final CouponDetailsFragment detailsFragment =
+                CouponDetailsFragment.newInstance(CouponName,Price,couponURL,Info,Amount);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.root_layout, detailsFragment, "CouponDetails")
+                .addToBackStack(null)
+                .commit();
+    }
 
 
 
@@ -32,7 +43,3 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-}
