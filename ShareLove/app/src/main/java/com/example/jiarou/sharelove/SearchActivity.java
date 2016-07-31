@@ -44,11 +44,12 @@ public class SearchActivity extends AppCompatActivity {
             {"(100)中正區","(103)大同區","(104)中山區","(106)大安區","(108)萬華區","(110)信義區","(112)北投區","(114)內湖區","(116)文山區","(111)士林區","(105)松山區","(115)南港區"} };
 
      Spinner sp;//第一個下拉選單
-     Spinner sp2;//第二個下拉選單
-    private Context context;
-
-
-
+     Spinner zips;//第二個下拉選單
+     private Context context;
+     String zip_number;
+    private Button search;
+    String zip_area;
+    String zip_areas;
 
     ArrayAdapter<String> adapter2;
 
@@ -56,82 +57,62 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+
+
+
+
+       search = (Button) findViewById(R.id.search);
+       search.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent01 = getIntent();
+                Bundle bundle = new Bundle();
+                bundle.putString("name", zip_areas);
+                intent01.putExtras(bundle);
+                setResult(1, intent01);
+                SearchActivity.this.finish();
+
+
+
+         //requestCode需跟A.class的一樣
+
+
+            }
+
+        });
+        //跳頁
+
+
+        /** sent hi to mapActivity
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("message","HI");
+                intent.putExtras(bundle);
+                intent.setClass(SearchActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+        */
 
 
         vendor_type=(Spinner) findViewById(R.id.spinner2);
          /*spinner 連動*/
         context = this;
-
         //程式剛啟始時載入第一個下拉選單
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, type);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp = (Spinner) findViewById(R.id.spinner);
         sp.setAdapter(adapter);
         sp.setOnItemSelectedListener(selectListener);
-
         //因為下拉選單第一個為地址，所以先載入地址群組進第二個下拉選單
         adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, address);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp2 = (Spinner) findViewById(R.id.spinner3);
-        sp2.setAdapter(adapter2);
-
-       /*build a 下拉式選單 firebase
-        final List<String> areas = new ArrayList<String>();
-        Spinner areaSpinner = (Spinner) findViewById(R.id.spinner2);
-        ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(SearchActivity.this, android.R.layout.simple_spinner_item, areas);
-        areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        areaSpinner.setAdapter(areasAdapter);
-
-        /* try show whatt I select
-        areaSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView a, View view, int position, long id) {
-                Toast.makeText(SearchActivity.this, "your select" + a.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-
-        });
-*/
-
-/**firebase
-        ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                areas.add( (String) dataSnapshot.child("Location/ZIP").getValue());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-        */
-
-
+        zips = (Spinner) findViewById(R.id.spinner3);
+        zips.setAdapter(adapter2);
+        zips.setOnItemSelectedListener(zipListener);
     }
     private AdapterView.OnItemSelectedListener selectListener = new AdapterView.OnItemSelectedListener(){
         public void onItemSelected(AdapterView<?> parent, View v, int position,long id){
@@ -140,7 +121,7 @@ public class SearchActivity extends AppCompatActivity {
             //重新產生新的Adapter，用的是二維陣列type2[pos]
             adapter2 = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item, type2[pos]);
             //載入第二個下拉選單Spinner
-            sp2.setAdapter(adapter2);
+            zips.setAdapter(adapter2);
         }
 
         public void onNothingSelected(AdapterView<?> arg0){
@@ -149,13 +130,79 @@ public class SearchActivity extends AppCompatActivity {
 
     };
 
+    //選區域將攤販資料印在listview上面
+    private  AdapterView.OnItemSelectedListener zipListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            //存選取的資料
+            zip_area = zips.getSelectedItem().toString();
+            zip_areas = zip_area.substring(0,8);
+            //去掉中文字
+            zip_number= zip_area.substring(1,4);
 
+           //將firebase取到的資料印在上面
+            ListView areas = (ListView) findViewById(R.id.areaView2);
+            final ArrayAdapter<String> arealist =
+                    new ArrayAdapter<String>(SearchActivity.this,
+                            android.R.layout.simple_list_item_1,
+                            android.R.id.text1);
+
+            areas.setAdapter(arealist);
+
+            final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+            ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
+                        arealist.add((String) dataSnapshot.child("Information/Name").getValue());
+                        int store_number;
+                        store_number=((String) dataSnapshot.child("Information/Name").getValue()).length();
+                        if(store_number>0) {
+                            Toast.makeText(SearchActivity.this, "目前有"+ zip_areas+"筆", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(SearchActivity.this, "您沒有選擇任何項目"+store_number, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
 
     public void order(View v){
 
         String []  vendor_types=getResources().getStringArray(R.array.vendor_types);
     }
+
+
+
+
 
 
 

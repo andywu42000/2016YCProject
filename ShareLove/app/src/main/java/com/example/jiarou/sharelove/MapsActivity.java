@@ -1,6 +1,9 @@
 package com.example.jiarou.sharelove;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -23,8 +27,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -33,6 +39,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Button mButton;
+    private TextView textview2;
+    String zip_number;
+    String  zip_areas;
+
+
+
 
 
 
@@ -43,13 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Firebase.setAndroidContext(this);
-        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
-       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment);
-
-        mapFragment.getMapAsync(this);
-
-
+       final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
 
         mButton = (Button) findViewById(R.id.search_button);
         mButton.setOnClickListener(new Button.OnClickListener() {
@@ -58,11 +64,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Intent intent;
                 intent = new Intent(MapsActivity.this, SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
+
+
+
 
             }
 
         });
+
+//requestCode(識別碼) 型別為 int ,從B傳回來的物件將會有一樣的requestCode
+
+
+//requestCode(識別碼) 型別為 int ,從B傳回來的物件將會有一樣的requestCode
+
+
+       /** get "hi" from searchActivity
+        Bundle bundle =getIntent().getExtras();
+//透過Bundle 接收MainActiviy傳遞過來的資料
+        String msg = bundle.getString("message");
+        textview2=(TextView) this.findViewById(R.id.textView2);
+        textview2.setText(msg);
+        */
+//取出MainActivty的key
+
+       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment);
+
+        mapFragment.getMapAsync(this);
+
+
+
+
 
         ListView list = (ListView) findViewById(R.id.listView);
         final ArrayAdapter<String> adapter =
@@ -70,6 +103,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         android.R.layout.simple_list_item_1,
                         android.R.id.text1);
         list.setAdapter(adapter);
+
+
         ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -157,8 +192,106 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
+    Intent intent = getIntent();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {//resultCode是剛剛妳A切換到B時設的resultCode
+            case 1://當B傳回來的Intent的requestCode 等於當初A傳出去的話
+
+                zip_areas =  data.getExtras().getString("name");
+                textview2 = (TextView) this.findViewById(R.id.textView2);
+                textview2.setText(zip_areas);
+
+                zip_number =zip_areas.substring(1,4);
+                        Geocoder geoCoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+
+                List<Address> addressLocation = null;
+                try {
+                    addressLocation = geoCoder.getFromLocationName(zip_areas, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                double latitude = addressLocation.get(0).getLatitude();
+                double longitude = addressLocation.get(0).getLongitude();
+
+                LatLng area_type = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(area_type));
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
+                ListView list = (ListView) findViewById(R.id.listView);
+                final ArrayAdapter<String> adapter =
+                        new ArrayAdapter<String>(this,
+                                android.R.layout.simple_list_item_1,
+                                android.R.id.text1);
+                list.setAdapter(adapter);
+
+                final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+
+
+                ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
+
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
+                            adapter.add((String) dataSnapshot.child("Information/Name").getValue());
+                            int store_number;
+                            store_number = ((String) dataSnapshot.child("Information/Name").getValue()).length();
+                            if (store_number > 0) {
+                                Toast.makeText(MapsActivity.this, "目前有" + store_number + "筆", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MapsActivity.this, "您沒有選擇任何項目" + store_number, Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+
+
+
+
+                break;
 
         }
+    }
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
 
 
 /**
