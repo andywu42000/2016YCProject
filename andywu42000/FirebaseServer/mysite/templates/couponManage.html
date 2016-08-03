@@ -51,6 +51,8 @@
 		function beforeCheck() {
 			if (parseInt($('#priceAddInput').val()) <= 0 || parseInt($('#amountAddInput').val()) <= 0) {
 				alert("價格或數量不可小或等於零！");
+			}//else if(isNaN($('#priceAddInput').val()) || isNaN($('#amountAddInput').val()) == true){
+				//alert("價格或數量的格式錯誤！");
 			}else{
 				addNewCoupon();
 			}
