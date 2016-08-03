@@ -13,7 +13,7 @@
 			<h3 class="panel-title">末筆成功新增會員</h3>
 		</div>
 		<div class="panel-body">
-			<table class="table table-hover">
+			<table class="table table-hover" id="myTable">
 				<thead>
 			        <tr>
 			          <th>Facebook ID</th>
@@ -24,11 +24,6 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<td id="idLast"></td>
-			    	<td id="nicknameLast"></td>
-			    	<td id="pointsLast"></td>
-			    	<td id="photoLast"></td>
-			    	<td id="zoneLast"></td>
 			    </tbody>
 			</table>
 		</div>
@@ -70,11 +65,32 @@
 			});
 		}
 
-		myFirebaseRef.orderByPriority().limitToLast(1).on("child_added", function(snapshot, prevChildKey) {
+		myFirebaseRef.orderByChild("Facebook_ID").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
 			var member = snapshot.val();
-			displayCoupon(member.Facebook_ID, member.Nickname, member.Owned_Points, member.Photos.Photo_ID, member.Default_Zone);
+			add_new_data(member.Facebook_ID, member.Nickname, member.Owned_Points, member.Photos.Photo_ID, member.Default_Zone);
 		});
 
+		function add_new_data(fb_ID, name, points, photos, zone) {
+			//先取得目前的row數
+			var num = document.getElementById("myTable").rows.length;
+			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
+			var Tr = document.getElementById("myTable").insertRow(-1);
+			//建立新的td 而Tr.cells.length就是這個tr目前的td數
+			Td = Tr.insertCell(Tr.cells.length);
+			//而這個就是要填入td中的innerHTML	
+			Td.innerHTML=fb_ID;
+			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=name;
+			//這樣就好囉 記得td數目要一樣 不然會亂掉~
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=points;
+			Td = Tr.insertCell(Tr.cells.length);
+			var photoLink = "http://imgur.com/" + photos;
+			Td.innerHTML="<a href='" + photoLink + "'>圖片</a>";
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=zone;
+		}
 		function displayCoupon(fb_ID, name, points, photos, zone) {
 			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
 			document.getElementById("idLast").innerHTML = fb_ID;
