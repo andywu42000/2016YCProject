@@ -1,29 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}新增標記{% endblock %}
+{% block title %}新增攤販{% endblock %}
 
 {% block markDropdown %}
-	<li class="active dropdown">
-	  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">標記管理<span class="caret"></span></a>
-	  <ul class="dropdown-menu" role="menu" class="active">
-	    <li class="active"><a href="/mark/add">新增標記</a></li>
-	    <li><a href="/mark/all">所有標記</a></li>
-	    <li><a href="#">Something else here</a></li>
-	    <li class="divider"></li>
-	    <li><a href="#">Separated link</a></li>
-	    <li class="divider"></li>
-	    <li><a href="#">One more separated link</a></li>
-	  </ul>
-	</li>
+	<li class="active"><a href="/vendor">攤販管理</a></li>
 {% endblock %}
 {% block content %}
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">新增標記</h3>
+			<h3 class="panel-title">新增攤販</h3>
 		</div>
 		<div class="panel-body">
-			標記名稱：<input type="text" id="titleAddInput"></input>
-			標記內容：<input type="text" id="contextAddInput"></input>
+			攤販資訊：<p>
+			攤販名稱：<input type="text" id="nameAddInput"></input>
+			攤販電話：<input type="text" id="phoneAddInput"></input>
+			攤販介紹：<input type="text" id="introductionAddInput"></input><p>
+			攤販地點：<p>
 			緯度：<input type="text" id="latiAddInput" placeholder="Float Only"></input>
 			經度：<input type="text" id="longiAddInput" placeholder="Float Only"></input>	
 			<button type="button" onclick="addNewMark()" class="btn btn-default" id="addNewMarkBtn">新增</button>

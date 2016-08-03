@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 		<!-- BootStrap JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		{% block styleArea %}{% endblock %}
 	</head>
 	<body>
 		<nav class="navbar navbar-default" role="navigation">
@@ -36,22 +37,14 @@
 		        {% block memberButton %}
 		        	<li><a href="/member">會員管理</a></li>
 		        {% endblock %}
-	        	{% block markDropdown %}
-	        		<li>
-					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">標記管理<span class="caret"></span></a>
-					  <ul class="dropdown-menu" role="menu" class="active">
-					    <li><a href="/mark/add">新增標記</a></li>
-					    <li><a href="/mark/all">所有標記</a></li>
-					    <li><a href="#">Something else here</a></li>
-					    <li class="divider"></li>
-					    <li><a href="#">Separated link</a></li>
-					    <li class="divider"></li>
-					    <li><a href="#">One more separated link</a></li>
-					  </ul>
-					</li>
+	        	{% block vendorButton %}
+	        		<li><a href="/vendor">攤販管理</a></li>
 	        	{% endblock %}
 	        	{% block couponButton %}
 	        		<li ><a href="/coupon">優惠券管理</a></li>
+	        	{% endblock %}
+	        	{% block lotteryButton %}
+	        		<li ><a href="/lottery">樂透管理</a></li>
 	        	{% endblock %}
 	        	{% block userDropdown %}{% endblock %}
 		      </ul>

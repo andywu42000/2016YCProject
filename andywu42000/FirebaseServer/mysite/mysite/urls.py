@@ -21,7 +21,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index),
     url(r'^member/$', member),
-	url(r'^mark/add/$', add_mark),
+	url(r'^vendor/$', vendor),
 	url(r'^mark/all/$', all_mark),
     url(r'^coupon/$', coupon_manage),
+    url(r'^lottery/$', lottery),
 ]

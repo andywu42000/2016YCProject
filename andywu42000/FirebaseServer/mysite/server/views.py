@@ -10,8 +10,8 @@ def member(request):
     return render(request, "member.html", {
             })
             
-def add_mark(request):
-	return render(request, "addMark.html", {
+def vendor(request):
+	return render(request, "vendor.html", {
 			})
 			
 def all_mark(request):
@@ -20,5 +20,9 @@ def all_mark(request):
             
 def coupon_manage(request):
     return render(request, "couponManage.html", {
+            })
+            
+def lottery(request):
+    return render(request, "lottery.html", {
             })
             
