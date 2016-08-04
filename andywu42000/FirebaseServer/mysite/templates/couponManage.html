@@ -32,6 +32,7 @@
 			          <th>相片</th>
 			          <th>價格</th>
 			          <th>剩餘數量</th>
+			          <th>編輯</th>
 			        </tr>
 			    </thead>
 			    <tbody>
@@ -83,14 +84,14 @@
 		};
 		myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
 			var coupon = snapshot.val();
-			add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount);
+			add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
 		});
 		/**myFirebaseRef.orderByChild("longitude").equalTo(121.5).on("child_added", function(snapshot) {
 			var mark = snapshot.val();
 			displayMark(mark.title, mark.context, mark.latitude, mark.longitude);
 		});*/
 
-		function add_new_data(name, information, photos, price, remainingAmount) {
+		function add_new_data(name, information, photos, price, remainingAmount, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -105,11 +106,13 @@
 			//這樣就好囉 記得td數目要一樣 不然會亂掉~
 			Td = Tr.insertCell(Tr.cells.length);
 			var photoLink = "http://imgur.com/" + photos;
-			Td.innerHTML="<a href='" + photoLink + "'>圖片</a>";
+			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + photoLink + '">圖片</a></button>';
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=price;
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=remainingAmount;
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + key + '">編輯</a></button>';
 		}
 
 		function displayCoupon(name, information, photos, price, remainingAmount) {

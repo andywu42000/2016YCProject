@@ -66,6 +66,7 @@
 			          <th>緯度</th>
 			          <th>經度</th>
 			          <th>相片</th>
+			          <th>編輯</th>
 			        </tr>
 			    </thead>
 			    <tbody>
@@ -182,13 +183,13 @@
 		};
 		myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
 			var vendor = snapshot.val();
-			add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID);
+			add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, snapshot.key());
 		});
 		/**myFirebaseRef.orderByChild("longitude").equalTo(121.5).on("child_added", function(snapshot) {
 			var mark = snapshot.val();
 			displayMark(mark.title, mark.context, mark.latitude, mark.longitude);
 		});*/
-		function add_new_data(name, phone, type, zip, lati, longi, photos) {
+		function add_new_data(name, phone, type, zip, lati, longi, photos, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -211,7 +212,9 @@
 			Td.innerHTML=longi;
 			Td = Tr.insertCell(Tr.cells.length);
 			var photoLink = "http://imgur.com/" + photos;
-			Td.innerHTML="<a href='" + photoLink + "'>圖片</a>";
+			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + photoLink + '">圖片</a></button>';
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + key + '">編輯</a></button>';
 		}
 		function displayVendor(name, phone, type, zip, lati, longi, photos) {
 			document.getElementById("nameLast").innerHTML = name;

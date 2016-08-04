@@ -21,6 +21,7 @@
 			          <th>號碼一</th>
 			          <th>號碼二</th>
 			          <th>號碼三</th>
+			          <th>編輯</th>
 			        </tr>
 			    </thead>
 			    <tbody>
@@ -51,10 +52,10 @@
 		}
 		myFirebaseRef.orderByChild("Period").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
 			var lottery = snapshot.val();
-			add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third);
+			add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, snapshot.key());
 			//displayCoupon(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third);
 		});
-		function add_new_data(period, first, second, third) {
+		function add_new_data(period, first, second, third, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -71,6 +72,8 @@
 			Td.innerHTML=second;
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=third;
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + key + '">編輯</a></button>';
 		}
 		function displayCoupon(period, first, second, third) {
 			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
