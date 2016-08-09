@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Title"
-                    android:id="@+id/textView"
+                    android:id="@+id/titleTextView"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
                     android:textSize="30dp"
@@ -46,7 +46,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:id="@+id/imageView"
+                    android:id="@+id/vendorImageView"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/grandma"
                     android:layout_marginBottom="10dp" />
@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Address"
-                        android:id="@+id/textView5"
+                        android:id="@+id/addressTextView"
                         android:textSize="20dp" />
                 </LinearLayout>
 
@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Time"
-                        android:id="@+id/textView9"
+                        android:id="@+id/timeTextView"
                         android:textSize="20dp" />
                 </LinearLayout>
 
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tel"
-                        android:id="@+id/textView11"
+                        android:id="@+id/telTextView"
                         android:textSize="20dp" />
                 </LinearLayout>
 
@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Story"
-                    android:id="@+id/textView13"
+                    android:id="@+id/storyTextView"
                     android:textSize="20dp"
                     android:layout_marginBottom="20dp" />
 
@@ -150,7 +150,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:id="@+id/imageView3"
+                        android:id="@+id/fbShareImageView"
                         android:layout_alignTop="@+id/textView14"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
@@ -162,15 +162,15 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView4"
                         android:layout_alignTop="@+id/textView14"
-                        android:layout_toLeftOf="@+id/imageView3"
-                        android:layout_toStartOf="@+id/imageView3"
+                        android:layout_toLeftOf="@+id/fbShareImageView"
+                        android:layout_toStartOf="@+id/fbShareImageView"
                         android:src="@drawable/ic_navigation_18pt_2x"
                         android:layout_marginRight="5dp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView5"
+                        android:id="@+id/thumbImageView"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/imageView4"
                         android:layout_toStartOf="@+id/imageView4"
@@ -192,8 +192,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView6"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/imageView5"
-                        android:layout_toStartOf="@+id/imageView5"
+                        android:layout_toLeftOf="@+id/thumbImageView"
+                        android:layout_toStartOf="@+id/thumbImageView"
                         android:src="@drawable/ic_chat_bubble_outline_black_18dp"
                         android:layout_marginRight="5dp" />
                 </RelativeLayout>

@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "389820129274",
+    "firebase_url": "https://vendor-5acbc.firebaseio.com",
+    "project_id": "vendor-5acbc",
+    "storage_bucket": "vendor-5acbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389820129274:android:bbc5397168bb551d",
+        "android_client_info": {
+          "package_name": "com.example.peter.venderinformation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389820129274-lfs4up8p81akglcfqgif07mk6h702t49.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB2sQNE46nNgjfoYEuhIVzNowZfA8f-EA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389820129274:android:99e59cb356b83846",
+        "android_client_info": {
+          "package_name": "com.example.peter.vendorfocus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389820129274-lfs4up8p81akglcfqgif07mk6h702t49.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB2sQNE46nNgjfoYEuhIVzNowZfA8f-EA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

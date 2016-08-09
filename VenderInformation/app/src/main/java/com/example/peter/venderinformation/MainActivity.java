@@ -12,11 +12,15 @@ public class MainActivity extends AppCompatActivity implements VenderInformation
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //初始化FB功能
         FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AppEventsLogger.activateApp(this);
+
     }
 
     @Override

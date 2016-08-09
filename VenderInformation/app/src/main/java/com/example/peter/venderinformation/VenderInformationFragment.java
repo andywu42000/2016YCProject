@@ -1,12 +1,23 @@
 package com.example.peter.venderinformation;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 
 /**
@@ -22,12 +33,25 @@ public class VenderInformationFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int REQUEST_CODE_ONSHARE_INT = 100;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    TextView title;
+    ImageView vendorPic;
+    TextView address;
+    TextView time;
+    TextView tel;
+    TextView story;
+    ImageView thumb;
+    ImageView fbShare;
+
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+;
+    public OnFragmentInteractionListener mListener;
 
     public VenderInformationFragment() {
         // Required empty public constructor
@@ -64,7 +88,62 @@ public class VenderInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        title = (TextView)getView().findViewById(R.id.titleTextView);
+        vendorPic = (ImageView)getView().findViewById(R.id.vendorImageView);
+        time = (TextView)getView().findViewById(R.id.timeTextView);
+        address= (TextView)getView().findViewById(R.id.addressTextView);
+        tel = (TextView)getView().findViewById(R.id.telTextView);
+        story = (TextView)getView().findViewById(R.id.storyTextView);
+        thumb = (ImageView)getView().findViewById(R.id.thumbImageView);
+        fbShare = (ImageView)getView().findViewById(R.id.fbShareImageView);
+
+        callbackManager  = CallbackManager.Factory.create();
+
+        fbShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+                    @Override
+                    public void onSuccess(Sharer.Result result) {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+
+                if(shareDialog.canShow(ShareLinkContent.class)){
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                            .setContentTitle(title.toString())
+                            .setContentDescription(time.toString() + "/n" + address.toString())
+                            .setContentUrl(Uri.parse("http://harvest365.org/posts/3309"))
+                            .build();
+
+                    shareDialog.show(linkContent);
+                }
+            }
+        });
+
         return inflater.inflate(R.layout.fragment_vender_information, container, false);
+
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_ONSHARE_INT){
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
