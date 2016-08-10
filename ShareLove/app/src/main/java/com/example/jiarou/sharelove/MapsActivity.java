@@ -1,24 +1,22 @@
 package com.example.jiarou.sharelove;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chiayi.myapplication.CouponMainActivity;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,11 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textview2;
     String zip_number;
     String  zip_areas;
-
-
-
-
-
+    Button coupon_btn, vendor_btn, lovecode_btn;
 
 
 
@@ -56,6 +49,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         Firebase.setAndroidContext(this);
        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+
+
+        coupon_btn=(Button)findViewById(R.id.coupon_btn);
+        coupon_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, CouponMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        lovecode_btn=(Button)findViewById(R.id.lovecode_btn);
+        lovecode_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, com.example.chiayi.lovecode.MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        vendor_btn = (Button)findViewById(R.id.vendor_btn);
+        vendor_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, com.example.peter.focus.MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         mButton = (Button) findViewById(R.id.search_button);
         mButton.setOnClickListener(new Button.OnClickListener() {

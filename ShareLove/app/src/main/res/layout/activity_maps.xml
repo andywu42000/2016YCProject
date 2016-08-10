@@ -43,12 +43,41 @@
             android:text="Small Text"
             android:id="@+id/textView2"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="67dp"
-            android:text="search"
-            android:id="@+id/search_button"
-            android:layout_gravity="right"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="search"
+                android:id="@+id/search_button"
+                android:layout_gravity="right"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="攤販資訊"
+                android:id="@+id/vendor_btn"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="優惠券"
+                android:id="@+id/coupon_btn"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="愛心碼"
+                android:id="@+id/lovecode_btn"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
