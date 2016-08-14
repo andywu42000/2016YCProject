@@ -10,12 +10,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+
 /**
  * Created by Peter on 2016/8/9.
  */
 public class VenderInfoFragment extends Fragment {
+    final static String DB_URL = "https://vendor-5acbc.firebaseio.com/";
+    String imgurURL = "http://i.imgur.com/";
 
     private static final String ARGUMENT_TITLE = "VendorTitle";
+    /*
     private static final String ARGUMENT_VENDERURL = "VendorURL";
     private static final String ARGUMENT_PHONE = "VendorPhone";
     private static final String ARGUMENT_REMARK = "TimeRemark";
@@ -28,12 +37,14 @@ public class VenderInfoFragment extends Fragment {
     private static final String ARGUMENT_SUN = "SunTime";
     private static final String ARGUMENT_ADDRESS = "VendorAddress";
     private static final String ARGUMENT_STORY = "VendorStory";
+    */
 
-    public static VenderInfoFragment newInstance(String vendorTitle, String vendorURL, String vendorPhone, String timeRemark,
+    public static VenderInfoFragment newInstance(String vendorTitle/*, String vendorURL, String vendorPhone, String timeRemark,
                                                  String monTime, String tueTime, String wedTime, String thuTime, String friTime,
-                                                 String satTime, String sunTime, String vendorAddress, String vendorStory){
+                                                 String satTime, String sunTime, String vendorAddress, String vendorStory*/){
         final Bundle args = new Bundle();
         args.putString(ARGUMENT_TITLE, vendorTitle);
+        /*
         args.putString(ARGUMENT_VENDERURL, vendorURL);
         args.putString(ARGUMENT_PHONE, vendorPhone);
         args.putString(ARGUMENT_REMARK, timeRemark);
@@ -46,6 +57,7 @@ public class VenderInfoFragment extends Fragment {
         args.putString(ARGUMENT_SUN, sunTime);
         args.putString(ARGUMENT_ADDRESS, vendorAddress);
         args.putString(ARGUMENT_STORY, vendorStory);
+        */
 
         final VenderInfoFragment fragment = new VenderInfoFragment();
         fragment.setArguments(args);
@@ -78,6 +90,7 @@ public class VenderInfoFragment extends Fragment {
 
         final Bundle args = getArguments();
         titleTextView.setText(args.getString(ARGUMENT_TITLE));
+        /*
         DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
         downloadImage.execute(args.getString(ARGUMENT_VENDERURL));
         phoneTextView.setText(args.getString(ARGUMENT_PHONE));
@@ -91,6 +104,82 @@ public class VenderInfoFragment extends Fragment {
         sunTextView.setText(args.getString(ARGUMENT_SUN));
         addressTextView.setText(args.getString(ARGUMENT_ADDRESS));
         storyTextView.setText(args.getString(ARGUMENT_STORY));
+        */
+
+        Firebase.setAndroidContext(this.getActivity());
+        final Firebase vendor2 = new Firebase(DB_URL);
+        String mark = args.getString(ARGUMENT_TITLE);
+
+        Query focusVendor = vendor2.orderByChild("Information/Name").equalTo(mark);
+
+        focusVendor.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
+                String pic = imgurURL + picId + ".jpg";
+                DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
+                downloadImage.execute(pic);
+                String phone = (String) dataSnapshot.child("Information").child("Phone").getValue();
+                String remark = (String) dataSnapshot.child("Open_Days").child("Remark").getValue();
+                String monOpen = (String) dataSnapshot.child("Open_Days").child("Mon").child("Open_At").getValue();
+                String monClose = (String) dataSnapshot.child("Open_Days").child("Mon").child("Close_At").getValue();
+                String mon = monOpen + "~" + monClose;
+                String tueOpen = (String) dataSnapshot.child("Open_Days").child("Tue").child("Open_At").getValue();
+                String tueClose = (String) dataSnapshot.child("Open_Days").child("Tue").child("Close_At").getValue();
+                String tue = tueOpen + "~" + tueClose;
+                String wedOpen = (String) dataSnapshot.child("Open_Days").child("Wed").child("Open_At").getValue();
+                String wedClose = (String) dataSnapshot.child("Open_Days").child("Wed").child("Close_At").getValue();
+                String wed = wedOpen + "~" + wedClose;
+                String thuOpen = (String) dataSnapshot.child("Open_Days").child("Thu").child("Open_At").getValue();
+                String thuClose = (String) dataSnapshot.child("Open_Days").child("Thu").child("Close_At").getValue();
+                String thu = thuOpen + "~" + thuClose;
+                String friOpen = (String) dataSnapshot.child("Open_Days").child("Fri").child("Open_At").getValue();
+                String friClose = (String) dataSnapshot.child("Open_Days").child("Fri").child("Close_At").getValue();
+                String fri = friOpen + "~" + friClose;
+                String satOpen = (String) dataSnapshot.child("Open_Days").child("Sat").child("Open_At").getValue();
+                String satClose = (String) dataSnapshot.child("Open_Days").child("Sat").child("Close_At").getValue();
+                String sat = satOpen + "~" + satClose;
+                String sunOpen = (String) dataSnapshot.child("Open_Days").child("Sun").child("Open_At").getValue();
+                String sunClose = (String) dataSnapshot.child("Open_Days").child("Sun").child("Close_At").getValue();
+                String sun = sunOpen + "~" + sunClose;
+                String address = (String) dataSnapshot.child("Location").child("Address").getValue();
+                String story = (String) dataSnapshot.child("Information").child("Introduction").getValue();
+
+                phoneTextView.setText(phone);
+                remarkTextView.setText(remark);
+                monTextView.setText(mon);
+                tueTextView.setText(tue);
+                wedTextView.setText(wed);
+                thuTextView.setText(thu);
+                friTextView.setText(fri);
+                satTextView.setText(sat);
+                sunTextView.setText(sun);
+                addressTextView.setText(address);
+                storyTextView.setText(story);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         return view;
     }
