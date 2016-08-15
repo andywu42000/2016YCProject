@@ -1,18 +1,25 @@
 package com.example.jiarou.sharelove;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chiayi.myapplication.CouponMainActivity;
+import com.example.peter.focus.FocusFragment;
+import com.example.peter.focus.VendedInfoFragment;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -39,7 +46,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textview2;
     String zip_number;
     String  zip_areas;
-    Button coupon_btn, vendor_btn, lovecode_btn;
+    Button user_btn, vendor_btn, lovecode_btn;
+    String vendorTitle;
+    Spinner list;
 
 
 
@@ -51,12 +60,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
 
 
-        coupon_btn=(Button)findViewById(R.id.coupon_btn);
-        coupon_btn.setOnClickListener(new View.OnClickListener() {
+        user_btn=(Button)findViewById(R.id.user_btn);
+        user_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(MapsActivity.this, CouponMainActivity.class);
+                intent.setClass(MapsActivity.this, User_Activity.class);
                 startActivity(intent);
             }
         });
@@ -122,14 +131,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
-
-        ListView list = (ListView) findViewById(R.id.listView);
+        final ListView list = (ListView) findViewById(R.id.listView);
         final ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1,
                         android.R.id.text1);
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            Toast.makeText(MapsActivity.this, "get", Toast.LENGTH_LONG).show();
+                                            FragmentManager fm = getFragmentManager();
+                                            FragmentTransaction ft=fm.beginTransaction();
+                                            Fragment fragment = fm.findFragmentById(R.id.show_vender);
+
+                                            if(fragment==null){
+                                                getSupportFragmentManager()
+                                                        .beginTransaction()
+                                                        .add(com.example.peter.focus.R.id.focus_root, VendedInfoFragment.newInstance(), "Focus")
+                                                        .commit();
+
+                                            }
+
+                                        }
+                                    }
+        );
+
 
 
         ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
@@ -163,7 +190,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
+
     }
+
+    private AdapterView.OnItemSelectedListener vender = new AdapterView.OnItemSelectedListener(){
+        public void onItemSelected(AdapterView<?> parent, View v, int position,long id){
+            vendorTitle = list.getSelectedItem().toString();
+            Toast.makeText(MapsActivity.this, "get", Toast.LENGTH_LONG).show();
+
+
+
+        }
+
+        public void onNothingSelected(AdapterView<?> arg0){
+
+        }
+
+    };
+
+
+
+
+
 
 
 

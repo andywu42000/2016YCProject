@@ -28,6 +28,7 @@ public class FocusFragment extends Fragment {
 
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
     final static ArrayList<String> vendorPicList = new ArrayList<>();
+    /*
     final static ArrayList<String> vendorPhoneList = new ArrayList<>();
     final static ArrayList<String> timeRemarkList= new ArrayList<>();
     final static ArrayList<String> monTimeList = new ArrayList<>();
@@ -39,6 +40,7 @@ public class FocusFragment extends Fragment {
     final static ArrayList<String> sunTimeList = new ArrayList<>();
     final static ArrayList<String> vendorAddressList = new ArrayList<>();
     final static ArrayList<String> vendorStoryList = new ArrayList<>();
+    */
 
     private OnFocusSelected mListener;
 
@@ -84,9 +86,9 @@ public class FocusFragment extends Fragment {
 
     public void connectToFirebase(){
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList,
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList/*,
                 vendorPhoneList, timeRemarkList, monTimeList, tueTimeList, wedTimeList, thurTimeList, friTimeList,
-                satTimeList, sunTimeList, vendorAddressList, vendorStoryList);
+                satTimeList, sunTimeList, vendorAddressList, vendorStoryList*/);
 
         Firebase.setAndroidContext(this.getActivity());
 
@@ -98,6 +100,7 @@ public class FocusFragment extends Fragment {
 
                 String title = (String)dataSnapshot.child("Information").child("Name").getValue();
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
+                /*
                 String phone = (String)dataSnapshot.child("Information").child("Phone").getValue();
                 String remark = (String)dataSnapshot.child("Open_Days").child("Remark").getValue();
                 String monOpen = (String)dataSnapshot.child("Open_Days").child("Mon").child("Open_At").getValue();
@@ -123,6 +126,7 @@ public class FocusFragment extends Fragment {
                 String sun = sunOpen + "~" + sunClose;
                 String address = (String)dataSnapshot.child("Location").child("Address").getValue();
                 String story = (String)dataSnapshot.child("Information").child("Introduction").getValue();
+                */
 
                 String pic = imgurURL + picId + ".jpg";
                 vendorPicList.add(pic);
@@ -130,6 +134,7 @@ public class FocusFragment extends Fragment {
                 pic = imgurURL;
 
                 vendorTitleList.add(title);
+                /*
                 vendorPhoneList.add(phone);
                 timeRemarkList.add(remark);
                 monTimeList.add(mon);
@@ -141,6 +146,7 @@ public class FocusFragment extends Fragment {
                 sunTimeList.add(sun);
                 vendorAddressList.add(address);
                 vendorStoryList.add(story);
+                */
 
                 focusListView.setAdapter(adapter);
             }
@@ -168,6 +174,7 @@ public class FocusFragment extends Fragment {
 
         vendorTitleList.clear();
         vendorPicList.clear();
+        /*
         vendorPhoneList.clear();
         timeRemarkList.clear();
         monTimeList.clear();
@@ -179,12 +186,13 @@ public class FocusFragment extends Fragment {
         sunTimeList.clear();
         vendorAddressList.clear();
         vendorStoryList.clear();
+        */
     }
 
     public interface OnFocusSelected{
-        void onFocusSelected(String vendorTitle, String vendorURL, String vendorPhone, String timeRemark,
+        void onFocusSelected(String vendorTitle/*, String vendorURL, String vendorPhone, String timeRemark,
                              String monTime, String tueTime, String wedTime, String thuTime, String friTime,
-                             String satTime, String sunTime, String vendorAddress, String vendorStory);
+                             String satTime, String sunTime, String vendorAddress, String vendorStory*/);
     }
 
     public class CustomAdapter extends BaseAdapter{
@@ -194,6 +202,7 @@ public class FocusFragment extends Fragment {
         ArrayList<String> vendorTitle;
 
         ArrayList<String> vendorPic;
+        /*
 
         ArrayList<String> vendorPhone;
 
@@ -209,15 +218,17 @@ public class FocusFragment extends Fragment {
         ArrayList<String> vendorAddress;
 
         ArrayList<String> vendorStory;
+        */
 
-        public CustomAdapter(Context context, ArrayList<String> vendorTitle, ArrayList<String> vendorPic,
+        public CustomAdapter(Context context, ArrayList<String> vendorTitle, ArrayList<String> vendorPic/*,
                              ArrayList<String> vendorPhone, ArrayList<String> timeRemark, ArrayList<String> monTime,
                              ArrayList<String> tueTime, ArrayList<String> wedTime, ArrayList<String> thuTime,
                              ArrayList<String> friTime, ArrayList<String> satTime, ArrayList<String> sunTime,
-                             ArrayList<String> vendorAddress, ArrayList<String> vendorStory){
+                             ArrayList<String> vendorAddress, ArrayList<String> vendorStory*/){
             c = context;
             this.vendorTitle = vendorTitle;
             this.vendorPic = vendorPic;
+            /*
             this.vendorPhone = vendorPhone;
             this.timeRemark = timeRemark;
             this.monTime = monTime;
@@ -229,6 +240,7 @@ public class FocusFragment extends Fragment {
             this.sunTime = sunTime;
             this.vendorAddress = vendorAddress;
             this.vendorStory = vendorStory;
+            */
 
         }
 
@@ -265,6 +277,7 @@ public class FocusFragment extends Fragment {
             DownloadImageTask downloadImage = new DownloadImageTask(listImageView);
             downloadImage.execute(vendorURL);
 
+            /*
             final String phone = vendorPhone.get(position);
 
             final String remark = timeRemark.get(position);
@@ -286,13 +299,14 @@ public class FocusFragment extends Fragment {
             final String address = vendorAddress.get(position);
 
             final String story = vendorStory.get(position);
+            */
 
             list.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
-                    mListener.onFocusSelected(title, vendorURL, phone, remark, mon, tue, wed, thur,
-                            fri, sat, sun, address, story);
+                    mListener.onFocusSelected(title/*, vendorURL, phone, remark, mon, tue, wed, thur,
+                            fri, sat, sun, address, story*/);
                 }
             });
 
