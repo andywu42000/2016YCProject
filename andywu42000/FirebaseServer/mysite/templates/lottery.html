@@ -8,10 +8,19 @@
 {% block content %}
 	<label>期數(開獎日期)：<input type="date" id="periodAddInput"></label>
 	<button type="button" class="btn btn-default" onclick="createLottery()">開獎</button>
+	
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">編輯區域</h3>
+		</div>
+		<div class="panel-body" id="updateLotteryArea">
+			請選擇資料以編輯。
+		</div>
+	</div>
 
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">最近一次開獎紀錄</h3>
+			<h3 class="panel-title">開獎紀錄</h3>
 		</div>
 		<div class="panel-body">
 			<table class="table table-hover" id="myTable">
@@ -21,6 +30,8 @@
 			          <th>號碼一</th>
 			          <th>號碼二</th>
 			          <th>號碼三</th>
+			          <th>號碼四</th>
+			          <th>號碼五</th>
 			          <th>編輯</th>
 			        </tr>
 			    </thead>
@@ -46,16 +57,18 @@
 				"Numbers": {
 					"First": Math.floor(Math.random()*(9-0+1)+0),
 					"Second": Math.floor(Math.random()*(9-0+1)+0),
-					"Third": Math.floor(Math.random()*(9-0+1)+0)
+					"Third": Math.floor(Math.random()*(9-0+1)+0),
+					"Fourth": Math.floor(Math.random()*(9-0+1)+0),
+					"Fifth": Math.floor(Math.random()*(9-0+1)+0)
 				}
 			});
 		}
 		myFirebaseRef.orderByChild("Period").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
 			var lottery = snapshot.val();
-			add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, snapshot.key());
+			add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key());
 			//displayCoupon(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third);
 		});
-		function add_new_data(period, first, second, third, key) {
+		function add_new_data(period, first, second, third, fourth, fifth, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -73,7 +86,11 @@
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=third;
 			Td = Tr.insertCell(Tr.cells.length);
-			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + key + '">編輯</a></button>';
+			Td.innerHTML=fourth;
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=fifth;
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateLottery(' + "'" + key + "'" + ')">編輯</button>';
 		}
 		function displayCoupon(period, first, second, third) {
 			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
@@ -81,6 +98,33 @@
 			document.getElementById("firstLast").innerHTML = first;
 			document.getElementById("secondLast").innerHTML = second;
 			document.getElementById("thirdLast").innerHTML = third;
+		}
+		function updateLottery(key) {
+			var newFirebaseRef = new Firebase('https://lottery-72c58.firebaseio.com/' + key);
+			newFirebaseRef.once("value")
+			  .then(function(snapshot) {
+			    var period = snapshot.child("Period").val();
+			    var first = snapshot.child("Numbers").child("First").val();
+			    var second = snapshot.child("Numbers").child("Second").val();
+			    var third = snapshot.child("Numbers").child("Third").val();
+			    var fourth = snapshot.child("Numbers").child("Fourth").val();
+			    var fifth = snapshot.child("Numbers").child("Fifth").val();
+			    document.getElementById("updateLotteryArea").innerHTML = '<label>期數(開獎日期)：<input type="date" id="periodUpdate" value="' + period + '"></label><label>號碼一：<input type="text" pattern="[0-9]" id="firstUpdate" value="' + first + '"></label><label>號碼二：<input type="text" pattern="[0-9]" id="secondUpdate" value="' + second + '"></label><label>號碼三：<input type="text" pattern="[0-9]" id="thirdUpdate" value="' + third + '"></label><label>號碼四：<input type="text" pattern="[0-9]" id="fourthUpdate" value="' + fourth + '"></label><label>號碼五：<input type="text" pattern="[0-9]" id="fifthUpdate" value="' + fifth + '"></label><button type="button" class="btn btn-default" onclick="saveUpdatedLottery(' + "'" + key + "'" + ')">確認編輯</button>';
+			  });
+		}
+		function saveUpdatedLottery(key){
+			var newFirebaseRef = new Firebase('https://lottery-72c58.firebaseio.com/' + key);
+			newFirebaseRef.update({
+				"Period": $('#periodUpdate').val(),
+				"Numbers": {
+					"First": parseInt($('#firstUpdate').val()),
+					"Second": parseInt($('#secondUpdate').val()),
+					"Third": parseInt($('#thirdUpdate').val()),
+					"Fourth": parseInt($('#fourthUpdate').val()),
+					"Fifth": parseInt($('#fifthUpdate').val())
+				}
+			});
+			window.location.reload();
 		}
 	</script>
 {% endblock %}
