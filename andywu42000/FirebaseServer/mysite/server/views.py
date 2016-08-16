@@ -18,20 +18,20 @@ def vendor(request):
 	return render(request, "vendor.html", {
 			})
 
-@login_required       			
-def all_mark(request):
-	return render(request, "allMark.html", {
-			})
-
 @login_required                  
-def coupon_manage(request):
-    return render(request, "couponManage.html", {
+def coupon(request):
+    return render(request, "coupon.html", {
             })
             
 @login_required                
 def lottery(request):
     return render(request, "lottery.html", {
             })
+            
+@login_required                  
+def lovecode(request):
+    return render(request, "lovecode.html", {
+            })            
             
 def login(request):
     if request.user.is_authenticated(): 

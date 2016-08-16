@@ -46,6 +46,9 @@
 	        	{% block lotteryButton %}
 	        		<li ><a href="/lottery">樂透管理</a></li>
 	        	{% endblock %}
+	        	{% block lovecodeButton %}
+					<li><a href="/lovecode">愛心碼管理</a></li>
+				{% endblock %}
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		        {% if request.user.is_authenticated %}

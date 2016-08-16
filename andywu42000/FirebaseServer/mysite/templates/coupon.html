@@ -90,14 +90,14 @@
 			$('#priceAddInput').val("");	
 			$('#amountAddInput').val("");
 		};
-		myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
-			var coupon = snapshot.val();
-			add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
+
+		myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+  			myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+				var coupon = snapshot.val();
+				add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
+			});
 		});
-		/**myFirebaseRef.orderByChild("longitude").equalTo(121.5).on("child_added", function(snapshot) {
-			var mark = snapshot.val();
-			displayMark(mark.title, mark.context, mark.latitude, mark.longitude);
-		});*/
 
 		function add_new_data(name, information, photos, price, remainingAmount, key) {
 			//先取得目前的row數

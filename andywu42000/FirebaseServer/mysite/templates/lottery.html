@@ -63,11 +63,15 @@
 				}
 			});
 		}
-		myFirebaseRef.orderByChild("Period").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
-			var lottery = snapshot.val();
-			add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key());
-			//displayCoupon(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third);
+
+		myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+  			myFirebaseRef.orderByChild("Period").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+				var lottery = snapshot.val();
+				add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key());
+			});
 		});
+		
 		function add_new_data(period, first, second, third, fourth, fifth, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;

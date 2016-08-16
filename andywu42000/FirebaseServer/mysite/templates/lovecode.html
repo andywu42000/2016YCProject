@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}愛心碼管理{% endblock %}
+
+{% block lovecodeButton %}
+	<li class="active"><a href="/lovecode">愛心碼管理</a></li>
+{% endblock %}
+{% block content %}
+	<label>團體名稱：<input type="text" id="titleAddInput"></label>
+	<label>愛心碼：<input type="number" id="codeAddInput" min="0" step="1"></label>
+	<button type="button" class="btn btn-default" onclick="createLovecode()">新增</button>
+	
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">編輯區域</h3>
+		</div>
+		<div class="panel-body" id="updateLovecodeArea">
+			請選擇資料以編輯。
+		</div>
+	</div>
+
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">開獎紀錄</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover" id="myTable">
+				<thead>
+			        <tr>
+			          <th>團體名稱</th>
+			          <th>愛心碼</th>
+			          <th>編輯</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			    </tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		var myFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/');
+
+		function createLovecode() {
+			var title = $('#titleAddInput').val();
+			var code = parseInt($('#codeAddInput').val());
+			var newAddLovecode = myFirebaseRef.push({
+				"title": title,
+				"code": code
+			});
+			$('#titleAddInput').val("");
+			$('#codeAddInput').val("");
+		}
+
+		myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+  			myFirebaseRef.orderByChild("title").limitToLast(childNum).on("child_added", function(snapshot, prevChildKey) {
+				var lovecode = snapshot.val();
+				add_new_data(lovecode.title, lovecode.code, snapshot.key());
+			});
+		});
+
+		
+		function add_new_data(title, code, key) {
+			//先取得目前的row數
+			var num = document.getElementById("myTable").rows.length;
+			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
+			var Tr = document.getElementById("myTable").insertRow(-1);
+			//建立新的td 而Tr.cells.length就是這個tr目前的td數
+			Td = Tr.insertCell(Tr.cells.length);
+			//而這個就是要填入td中的innerHTML	
+			Td.innerHTML=title;
+			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=code;
+			//這樣就好囉 記得td數目要一樣 不然會亂掉~
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateLovecode(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteLovecode(' + "'" + key + "'" + ')">刪除</button>';
+		}
+
+		function updateLovecode(key) {
+			var newFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/' + key);
+			newFirebaseRef.once("value")
+			  .then(function(snapshot) {
+			    var title = snapshot.child("title").val();
+			    var code = snapshot.child("code").val();
+			    document.getElementById("updateLovecodeArea").innerHTML = '<label>團體名稱：<input type="text" id="titleUpdate" value="' + title + '"></label><label>愛心碼：<input type="number" min="0" step="1" id="codeUpdate" value="' + code + '"></label> 	<button type="button" class="btn btn-default" onclick="saveUpdatedLovecode(' + "'" + key + "'" + ')">確認編輯</button>';
+			  });
+		}
+		
+		function saveUpdatedLovecode(key){
+			var newFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/' + key);
+			newFirebaseRef.update({
+				"title": $('#titleUpdate').val(),
+				"code":  parseInt($('#codeUpdate').val())
+			});
+			window.location.reload();
+		}
+
+		function deleteLovecode(key) {
+			var newFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/' + key);
+			newFirebaseRef.remove();
+			window.location.reload();
+		}
+	</script>
+{% endblock %}

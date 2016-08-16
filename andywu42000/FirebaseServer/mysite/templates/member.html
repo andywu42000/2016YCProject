@@ -67,9 +67,12 @@
 			});
 		}
 
-		myFirebaseRef.orderByChild("Facebook_ID").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
-			var member = snapshot.val();
-			add_new_data(member.Facebook_ID, member.Nickname, member.Owned_Points, member.Photos.Photo_ID, member.Default_Zone, member.Suspended, snapshot.key());
+		myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+  			myFirebaseRef.orderByChild("Facebook_ID").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+				var member = snapshot.val();
+				add_new_data(member.Facebook_ID, member.Nickname, member.Owned_Points, member.Photos.Photo_ID, member.Default_Zone, member.Suspended, snapshot.key());
+			});
 		});
 
 		function add_new_data(fb_ID, name, points, photos, zone, suspended, key) {

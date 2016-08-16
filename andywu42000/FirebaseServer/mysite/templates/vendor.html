@@ -190,14 +190,16 @@
 			$('#satCloseAddInput').val("");
 			$('#remarkAddInput').val("");
 		};
-		myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
-			var vendor = snapshot.val();
-			add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Focus, snapshot.key());
+
+		myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+  			myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+				var vendor = snapshot.val();
+				add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Focus, snapshot.key());
+			});
 		});
-		/**myFirebaseRef.orderByChild("longitude").equalTo(121.5).on("child_added", function(snapshot) {
-			var mark = snapshot.val();
-			displayMark(mark.title, mark.context, mark.latitude, mark.longitude);
-		});*/
+
+		
 		function add_new_data(name, phone, type, zip, lati, longi, photos, focus, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
