@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="可使用優惠券"
-            android:id="@+id/button8"/>
+            android:id="@+id/owned_coupon_btn"/>
 
         <Button
             android:layout_width="match_parent"

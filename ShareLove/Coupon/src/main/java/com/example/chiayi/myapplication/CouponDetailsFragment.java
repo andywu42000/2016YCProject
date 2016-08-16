@@ -220,9 +220,7 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
 
         memberRef.child("-KPH9T4n7OuJQcVj_u4B").child("Owned_Coupons").push().setValue(My_Coupon);
 
-
-
-
+        
         //memberRef.child("-KPH9T4n7OuJQcVj_u4B").child("Owned_Coupons").child(key).child("Information").setValue(info);
 
 

@@ -34,7 +34,7 @@ public class UserFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     String imgurURL = "http://i.imgur.com/";
-    Button coupon_btn, lottery_btn;
+    Button coupon_btn, lottery_btn, owned_coupon_btn;
 
 
     // TODO: Rename and change types of parameters
@@ -112,6 +112,20 @@ public class UserFragment extends Fragment {
 
             }
         });
+
+        //跳到 Owned_coupon的按鈕
+        owned_coupon_btn=(Button)view.findViewById(R.id.owned_coupon_btn);
+        owned_coupon_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), OwnedCouponMainActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
 
         //連結ＸＭＬ文字跟圖片
         final TextView user_name = (TextView)view.findViewById(R.id.name);
