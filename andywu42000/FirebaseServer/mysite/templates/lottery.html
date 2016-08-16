@@ -92,13 +92,7 @@
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateLottery(' + "'" + key + "'" + ')">編輯</button>';
 		}
-		function displayCoupon(period, first, second, third) {
-			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
-			document.getElementById("periodLast").innerHTML = period;
-			document.getElementById("firstLast").innerHTML = first;
-			document.getElementById("secondLast").innerHTML = second;
-			document.getElementById("thirdLast").innerHTML = third;
-		}
+
 		function updateLottery(key) {
 			var newFirebaseRef = new Firebase('https://lottery-72c58.firebaseio.com/' + key);
 			newFirebaseRef.once("value")
@@ -109,9 +103,10 @@
 			    var third = snapshot.child("Numbers").child("Third").val();
 			    var fourth = snapshot.child("Numbers").child("Fourth").val();
 			    var fifth = snapshot.child("Numbers").child("Fifth").val();
-			    document.getElementById("updateLotteryArea").innerHTML = '<label>期數(開獎日期)：<input type="date" id="periodUpdate" value="' + period + '"></label><label>號碼一：<input type="text" pattern="[0-9]" id="firstUpdate" value="' + first + '"></label><label>號碼二：<input type="text" pattern="[0-9]" id="secondUpdate" value="' + second + '"></label><label>號碼三：<input type="text" pattern="[0-9]" id="thirdUpdate" value="' + third + '"></label><label>號碼四：<input type="text" pattern="[0-9]" id="fourthUpdate" value="' + fourth + '"></label><label>號碼五：<input type="text" pattern="[0-9]" id="fifthUpdate" value="' + fifth + '"></label><button type="button" class="btn btn-default" onclick="saveUpdatedLottery(' + "'" + key + "'" + ')">確認編輯</button>';
+			    document.getElementById("updateLotteryArea").innerHTML = '<label>期數(開獎日期)：<input type="date" id="periodUpdate" value="' + period + '"></label><label>號碼一：<input type="number" min="0" step="1" max="9" id="firstUpdate" value="' + first + '"></label><label>號碼二：<input type="number" min="0" step="1" max="9" id="secondUpdate" value="' + second + '"></label><label>號碼三：<input type="number" min="0" step="1" max="9" id="thirdUpdate" value="' + third + '"></label><label>號碼四：<input type="number" min="0" step="1" max="9" id="fourthUpdate" value="' + fourth + '"></label><label>號碼五：<input type="number" min="0" step="1" max="9" id="fifthUpdate" value="' + fifth + '"></label> <button type="button" class="btn btn-default" onclick="saveUpdatedLottery(' + "'" + key + "'" + ')">確認編輯</button>';
 			  });
 		}
+		
 		function saveUpdatedLottery(key){
 			var newFirebaseRef = new Firebase('https://lottery-72c58.firebaseio.com/' + key);
 			newFirebaseRef.update({

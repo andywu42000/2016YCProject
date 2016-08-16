@@ -21,6 +21,7 @@
 			          <th>擁有點數</th>
 			          <th>照片</th>
 			          <th>預設地區</th>
+			          <th>會員狀態變更</th>
 		       		  <th>編輯</th>
 			        </tr>
 			    </thead>
@@ -36,10 +37,7 @@
 		function createMember() {
 			var newAddCoupon = myFirebaseRef.push({
 				"Facebook_ID": 111111111111111,
-				"Birthday": {
-					"Month": 12,
-					"Day": 12
-				},
+				"Birthday": "1993-04-29",
 				"Nickname": "Test",
 				"Owned_Points": 100,
 				"Owned_Coupons": {
@@ -48,11 +46,13 @@
 					"Due_Date": 20160725
 				},
 				"Lottery_Numbers": {
-					"Period": 20160722,
+					"Period": "2016-07-22",
 					"Numbers": {
 						"First": 5,
 						"Second": 2,
-						"Third": 1
+						"Third": 1,
+						"Fourth": 7,
+						"Fifth": 3
 					}
 				},
 				"Favorite_Vendors": {
@@ -62,16 +62,17 @@
 					"Photo_ID": "UkqwHMT"
 				},
 				"Default_Zone": 106,
-				"Share_Times": 5
+				"Share_Times": 5,
+				"Suspended": false
 			});
 		}
 
 		myFirebaseRef.orderByChild("Facebook_ID").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
 			var member = snapshot.val();
-			add_new_data(member.Facebook_ID, member.Nickname, member.Owned_Points, member.Photos.Photo_ID, member.Default_Zone, snapshot.key());
+			add_new_data(member.Facebook_ID, member.Nickname, member.Owned_Points, member.Photos.Photo_ID, member.Default_Zone, member.Suspended, snapshot.key());
 		});
 
-		function add_new_data(fb_ID, name, points, photos, zone, key) {
+		function add_new_data(fb_ID, name, points, photos, zone, suspended, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -88,20 +89,76 @@
 			Td.innerHTML=points;
 			Td = Tr.insertCell(Tr.cells.length);
 			var photoLink = "http://imgur.com/" + photos;
-			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + photoLink + '">圖片</a></button>';
+			Td.innerHTML='<button type="button" class="btn btn-info" onClick="parent.open(' + "'" + photoLink + "'" + ')">圖片</button>';
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=zone;
 			Td = Tr.insertCell(Tr.cells.length);
-			Td.innerHTML='<button type="button" class="btn btn-link"><a href="' + key + '">編輯</a></button>';
+			if (suspended == false) {
+				Td.innerHTML='啟用中 <button type="button" class="btn btn-danger" onclick="suspend(' + "'" + key + "', " + suspended + ')">停權</button>';
+			}else {
+				Td.innerHTML='停權中 <button type="button" class="btn btn-success" onclick="suspend(' + "'" + key + "', " + suspended + ')">啟用</button>';
+			}	
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML='<button type="button" class="btn btn-danger" onclick="deleteMember(' + "'" + key + "'" + ')">刪除</button>';
+			//Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateMember(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteMember(' + "'" + key + "'" + ')">刪除</button>';
 		}
-		function displayCoupon(fb_ID, name, points, photos, zone) {
-			//document.getElementById("markDiv").innerHTML = "<tr><td>" + title + "</td><td>" + context + "</td><td>" + latitude + "</td><td>" + longitude + "</td></tr>";
-			document.getElementById("idLast").innerHTML = fb_ID;
-			document.getElementById("nicknameLast").innerHTML = name;
-			document.getElementById("pointsLast").innerHTML = points;
-			var photoLink = "http://imgur.com/" + photos;
-			document.getElementById("photoLast").innerHTML = "<a href='" + photoLink + "'>圖片</a>";
-			document.getElementById("zoneLast").innerHTML = zone;
+
+		function suspend(key, suspended) {
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			if(suspended == true) {
+				newFirebaseRef.update({
+					"Suspended": false
+				});
+				window.location.reload();
+			}else{
+				newFirebaseRef.update({
+					"Suspended": true
+				});
+				window.location.reload();
+			}
 		}
+
+		function deleteMember(key) {
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			newFirebaseRef.remove();
+			window.location.reload();
+		}
+
+		/*function updateMember(key) {
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			newFirebaseRef.once("value")
+			  .then(function(snapshot) {
+			    var facebookID = snapshot.child("Facebook_ID").val();
+			    var defaultZone = snapshot.child("Default_Zone").val();
+			    var photo = snapshot.child("Photos").child("Photo_ID").val();
+			    var nickname = snapshot.child("Nickname").val();
+			    var remainingAmount = snapshot.child("Remaining_Amount").val();
+			    document.getElementById("updateCouponArea").innerHTML = '<label>優惠券名稱：<input type="text" id="nameUpdate" value="' + name + '"></label><label>優惠券資訊：<input type="text" id="informationUpdate" value="' + information + '"></label><label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></label><label>價格：<input type="text" id="priceUpdate" value="' + price + '"></label><label>剩餘數量：<input type="text" id="remainingAmountUpdate" value="' + remainingAmount + '"></label><button type="button" class="btn btn-default" onclick="saveUpdatedCoupon(' + "'" + key + "'" + ')">確認編輯</button>';
+			  });
+		}
+
+		function saveUpdatedMember(key){
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			var price = $('#priceUpdate').val();
+			if (price<10) {
+				var type = "平價";
+			}else if (price < 20) {
+				var type = "中等";
+			}else if (price >= 20) {
+				var type = "豪華";
+			}
+			var remainingAmount = parseInt($('#amountAddInput').val());
+			newFirebaseRef.update({
+				"Name": $('#nameUpdate').val(),
+				"Information": $('#informationUpdate').val(),
+				"Photos": {
+					"Photo_ID": $('#photoUpdate').val()
+				},
+				"Type": type,
+				"Price": price,
+				"Remaining_Amount": $('#remainingAmountUpdate').val()
+			});
+			window.location.reload();
+		}*/
 	</script>
 {% endblock %}
