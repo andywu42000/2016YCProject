@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ShareLove</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_search">SearchActivity</string>
+
+    <string-array name="cities">
+        <item>台北</item>
+        <item>新北</item>
+        <item>基隆</item>
+        <item>台中</item>
+        <item>高雄</item>
+    </string-array>
+
+    <string-array name="vendor_types">
+        <item>饅頭</item>
+        <item>果汁</item>
+        <item>民生用品</item>
+        <item>甜湯</item>
+        <item>地瓜</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
