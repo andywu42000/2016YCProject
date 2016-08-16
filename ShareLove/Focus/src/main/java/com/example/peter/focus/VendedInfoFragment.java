@@ -20,7 +20,7 @@ import com.firebase.client.Query;
  * Created by Peter on 2016/8/9.
  */
 public class VendedInfoFragment extends Fragment {
-    final static String DB_URL = "https://vendor-5acbc.firebaseio.com/";
+    final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     String imgurURL = "http://i.imgur.com/";
 
     private static final String ARGUMENT_TITLE = "VendorTitle";
