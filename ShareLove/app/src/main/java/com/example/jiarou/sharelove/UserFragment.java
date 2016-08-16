@@ -34,7 +34,7 @@ public class UserFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     String imgurURL = "http://i.imgur.com/";
-    Button coupon_btn;
+    Button coupon_btn, lottery_btn;
 
 
     // TODO: Rename and change types of parameters
@@ -96,6 +96,18 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 final Intent intent = new Intent();
                 intent.setClass(getActivity(), CouponMainActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        //跳到 Lottery的按鈕
+        lottery_btn=(Button)view.findViewById(R.id.lottery_btn);
+        lottery_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), LotteryMainActivity.class);
                 startActivity(intent);
 
             }

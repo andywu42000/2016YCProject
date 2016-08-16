@@ -54,6 +54,9 @@
         </activity>
         <activity android:name=".User_Activity">
         </activity>
+        <activity android:name=".LotteryMainActivity">
+        </activity>
+
     </application>
 
 </manifest>
