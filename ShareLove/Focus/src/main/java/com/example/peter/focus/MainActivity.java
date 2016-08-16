@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
                                 String monTime, String tueTime, String wedTime, String thuTime, String friTime,
                                 String satTime, String sunTime, String vendorAddress, String vendorStory*/) {
 
-        final VenderInfoFragment infoFragment =
-                VenderInfoFragment.newInstance(vendorTitle/*, vendorURL, vendorPhone, timeRemark, monTime,
+        final VendedInfoFragment infoFragment =
+                VendedInfoFragment.newInstance(vendorTitle/*, vendorURL, vendorPhone, timeRemark, monTime,
                         tueTime, wedTime, thuTime, friTime, satTime, sunTime, vendorAddress, vendorStory*/);
         getSupportFragmentManager()
                 .beginTransaction()

@@ -125,6 +125,8 @@ public class SearchActivity extends AppCompatActivity {
         zips.setAdapter(adapter2);
         zips.setOnItemSelectedListener(zipListener);
     }
+
+
     private AdapterView.OnItemSelectedListener selectListener = new AdapterView.OnItemSelectedListener(){
         public void onItemSelected(AdapterView<?> parent, View v, int position,long id){
             //讀取第一個下拉選單是選擇第幾個

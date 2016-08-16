@@ -9,8 +9,6 @@ public class CouponMainActivity extends AppCompatActivity implements CouponTypes
 
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +24,10 @@ public class CouponMainActivity extends AppCompatActivity implements CouponTypes
 
 
     @Override
-    public void onCouponSelected(String CouponName, String Price, String couponURL, String Info, String Amount) {
+    public void onCouponSelected(String CouponName, String Price, String couponURL, String Info) {
 
         final CouponDetailsFragment detailsFragment =
-                CouponDetailsFragment.newInstance(CouponName,Price,couponURL,Info,Amount);
+                CouponDetailsFragment.newInstance(CouponName,Price,couponURL,Info);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.root_layout, detailsFragment, "CouponDetails")

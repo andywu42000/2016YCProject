@@ -1,8 +1,5 @@
 package com.example.chiayi.myapplication;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +12,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -23,14 +19,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import static com.example.chiayi.myapplication.R.id.button;
 import static com.example.chiayi.myapplication.R.id.button2;
 import static com.example.chiayi.myapplication.R.id.button3;
+import static com.example.chiayi.myapplication.R.id.textView2;
 
 /**
  * Created by chiayi on 16/7/27.
@@ -38,18 +32,18 @@ import static com.example.chiayi.myapplication.R.id.button3;
 public class CouponTypesFragment extends Fragment{
 
 
-
-    TextView textView2;
+    TextView member_owned_points;
     Button coupon_type1;
     Button coupon_type2;
     Button coupon_type3;
     GridView gridView;
+
     final  static ArrayList<Long> couponPriceList= new ArrayList<>();
-    final  static ArrayList<Long> couponAmountList= new ArrayList<>();
     final static ArrayList<String> couponInfoList= new ArrayList<>();
     final static ArrayList<String> couponNameList= new ArrayList<>();
     final static ArrayList<String> couponImagesList=new ArrayList<>();
-    final static String DB_URL="https://coupon-da649.firebaseio.com/";
+    final static String Coupn_DB_URL ="https://coupon-da649.firebaseio.com/";
+    final static String MEMBER_DB_URL = "https://member-139bd.firebaseio.com/";
     String imgurURL = "http://i.imgur.com/";
     private OnCouponSelected mListener;
 
@@ -58,7 +52,6 @@ public class CouponTypesFragment extends Fragment{
     public static CouponTypesFragment newInstance() {
 
         Bundle args = new Bundle();
-
         CouponTypesFragment fragment = new CouponTypesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -79,12 +72,22 @@ public class CouponTypesFragment extends Fragment{
         }
 
 
+
+
     }
+
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+
+        connectToCouponFirebase("平價");
+        connectToMemberFirebase();
+
+
 
         //將畫面設為coupon_types_fragment.xml
         final View view = inflater.inflate(R.layout.coupon_types_fragment,container,false);
@@ -98,10 +101,11 @@ public class CouponTypesFragment extends Fragment{
         coupon_type2.setOnClickListener(ChangePage);
         coupon_type3.setOnClickListener(ChangePage);
 
+        //宣告上方的會員擁有點數
+        member_owned_points = (TextView) view.findViewById(textView2);
+
         //宣告 GridView
         gridView=(GridView)view.findViewById(R.id.gridView);
-        connectToFirebase("平價");
-
         return view;
     }
 
@@ -110,44 +114,73 @@ public class CouponTypesFragment extends Fragment{
     private View.OnClickListener ChangePage = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            switch(v.getId()){
-//
-//                case button:
-//                    connectToFirebase("平價");
-//                    return;
-//                case button2:
-//                    connectToFirebase("中等");
-//                    return;
-//                case button3:
-//                    connectToFirebase("豪華");
-//                    return;
-//                default:
-//            }
-
             if (v.getId()== button){
-                connectToFirebase("平價");
+                connectToCouponFirebase("平價");
             }
             else if (v.getId()== button2){
-                connectToFirebase("中等");
+                connectToCouponFirebase("中等");
             }else {
-                connectToFirebase("豪華");
+                connectToCouponFirebase("豪華");
             }
-
-
-
         }
     };
 
 
-    //連接Firebase取出名字、價錢、照片，置入ArrayList中
-    public void connectToFirebase(String couponType){
-        //Adapter宣告
-        final CustomAdapter adapter= new CustomAdapter(this.getActivity(), couponNameList, couponPriceList, couponImagesList, couponAmountList, couponInfoList);
-        //Connection Firebase
+
+    //連接到 Member 的 Firebase
+    public void connectToMemberFirebase(){
         Firebase.setAndroidContext(this.getActivity());
-        final Firebase ref = new Firebase(DB_URL);
+        final Firebase memberRef = new Firebase(MEMBER_DB_URL);
+
+        Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                Long owned_points= (Long) dataSnapshot.child("Owned_Points").getValue();
+                member_owned_points.setText(String.valueOf(owned_points));
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                Long owned_points= (Long) dataSnapshot.child("Owned_Points").getValue();
+                member_owned_points.setText(String.valueOf(owned_points));
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+    }
+
+
+
+
+    //連接Firebase取出名字、價錢、照片，置入ArrayList中
+    public void connectToCouponFirebase(String couponType){
+        Firebase.setAndroidContext(this.getActivity());
+        //Adapter宣告
+        final CustomAdapter adapter= new CustomAdapter(this.getActivity(), couponNameList, couponPriceList, couponImagesList, couponInfoList);
+        //Connection Firebase
+        final Firebase couponRef = new Firebase(Coupn_DB_URL);
         //Query
-        Query budgetRef = ref.orderByChild("Type").equalTo(couponType);
+        Query budgetRef = couponRef.orderByChild("Type").equalTo(couponType);
         budgetRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -156,20 +189,13 @@ public class CouponTypesFragment extends Fragment{
                 String name = (String) dataSnapshot.child("Name").getValue();
                 String photoId = (String) dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String information = (String) dataSnapshot.child("Information").getValue();
-                Long remainingAmount= (Long)dataSnapshot.child("Remaining_Amount").getValue();
 
-                //CouponURL是完整rl
+                //CouponURL是完整url
                 String couponURL = imgurURL + photoId + ".jpg";
                 couponImagesList.add(couponURL);
-                System.out.println(couponURL);
-                couponURL = imgurURL;
-
-
-
                 couponNameList.add(name);
                 couponPriceList.add(price);
                 couponInfoList.add(information);
-                couponAmountList.add(remainingAmount);
 
 
                 gridView.setAdapter(adapter);
@@ -179,6 +205,7 @@ public class CouponTypesFragment extends Fragment{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
 
             }
 
@@ -202,14 +229,16 @@ public class CouponTypesFragment extends Fragment{
         couponNameList.clear();
         couponPriceList.clear();
         couponInfoList.clear();
-        couponAmountList.clear();
     }
+
+
+    //Interface
     public interface OnCouponSelected{
-        void onCouponSelected(String CouponName, String Price, String couponURL, String url, String info);
+        void onCouponSelected(String CouponName, String Price, String couponURL, String info);
     }
 
 
-
+    //Adapter
     public class CustomAdapter extends BaseAdapter {
 
         final ArrayList<String> couponName;
@@ -217,15 +246,14 @@ public class CouponTypesFragment extends Fragment{
         Context context;
         ArrayList<String> couponImage;
         ArrayList<String> couponInfo;
-        ArrayList<Long> couponAmount;
 
-        public CustomAdapter(Context c, final ArrayList<String> couponName, final ArrayList<Long> couponPrice,  ArrayList<String> couponImage, ArrayList<Long> couponAmount, ArrayList<String> couponInfo){
+
+        public CustomAdapter(Context c, final ArrayList<String> couponName, final ArrayList<Long> couponPrice,  ArrayList<String> couponImage, ArrayList<String> couponInfo){
 
             context = c;
             this.couponImage=couponImage;
             this.couponPrice=couponPrice;
             this.couponName=couponName;
-            this.couponAmount=couponAmount;
             this.couponInfo=couponInfo;
 
 
@@ -275,14 +303,13 @@ public class CouponTypesFragment extends Fragment{
             final String info = couponInfo.get(position);
 
 
-            final String amount = String.valueOf(couponAmount.get(position));
+
 
 
             grid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(context, "You Clicked " + couponName.get(position)+ couponPrice.get(position)+ couponImage.get(position), Toast.LENGTH_LONG).show();
-                    mListener.onCouponSelected(name,price,couponURL,info,amount);
+                    mListener.onCouponSelected(name, price, couponURL, info);
 
                 }
             });

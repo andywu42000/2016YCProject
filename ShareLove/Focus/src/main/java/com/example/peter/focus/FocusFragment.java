@@ -44,7 +44,7 @@ public class FocusFragment extends Fragment {
 
     private OnFocusSelected mListener;
 
-    final static String DB_URL = "https://vendor-5acbc.firebaseio.com/";
+    final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
 
     String imgurURL = "http://i.imgur.com/";
 
