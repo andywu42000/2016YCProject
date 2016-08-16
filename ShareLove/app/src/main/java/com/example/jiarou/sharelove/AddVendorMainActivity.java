@@ -1,18 +1,21 @@
 package com.example.jiarou.sharelove;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class LotteryMainActivity extends AppCompatActivity {
+/**
+ * Created by chiayi on 16/8/17.
+ */
+public class AddVendorMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lottery);
+        setContentView(R.layout.activity_add_vender);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.root_layout, AddVendorFragment.newInstance(), "LotteryDisplay")
+                    .add(R.id.root_layout, LotteryDisplayFragment.newInstance(), "AddVendor")
                     .commit();
         }
     }

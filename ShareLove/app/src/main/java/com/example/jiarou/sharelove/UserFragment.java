@@ -34,7 +34,7 @@ public class UserFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     String imgurURL = "http://i.imgur.com/";
-    Button coupon_btn, lottery_btn, owned_coupon_btn;
+    Button coupon_btn, lottery_btn, owned_coupon_btn, add_vendor_btn, collect_store_btn;
 
 
     // TODO: Rename and change types of parameters
@@ -125,6 +125,31 @@ public class UserFragment extends Fragment {
             }
         });
 
+
+        //跳到 Add_Vendor的按鈕
+        add_vendor_btn=(Button)view.findViewById(R.id.add_vendor_btn);
+        add_vendor_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), AddVendorMainActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+        //跳到 collect_store的按鈕
+        collect_store_btn=(Button)view.findViewById(R.id.collect_store_btn);
+        collect_store_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), CollectStoreMainActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
         //連結ＸＭＬ文字跟圖片

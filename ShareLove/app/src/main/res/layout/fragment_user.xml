@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="店家收藏"
-                    android:id="@+id/button5"
+                    android:id="@+id/collect_store_btn"
                     />
 
             </LinearLayout>
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="新增店家"
-            android:id="@+id/button9"/>
+            android:id="@+id/add_vendor_btn"/>
 
     </LinearLayout>
 </FrameLayout>

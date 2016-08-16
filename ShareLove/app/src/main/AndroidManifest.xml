@@ -58,6 +58,10 @@
         </activity>
         <activity android:name=".OwnedCouponMainActivity">
         </activity>
+        <activity android:name=".AddVendorMainActivity">
+        </activity>
+        <activity android:name=".CollectStoreMainActivity">
+        </activity>
 
     </application>
 
