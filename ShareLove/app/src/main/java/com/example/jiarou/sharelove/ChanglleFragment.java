@@ -1,7 +1,5 @@
 package com.example.jiarou.sharelove;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,23 +7,21 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GameFragment.OnFragmentInteractionListener} interface
+ * {@link ChanglleFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GameFragment#newInstance} factory method to
+ * Use the {@link ChanglleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GameFragment extends Fragment implements View.OnClickListener{
+public class ChanglleFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Button generate_btn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -33,7 +29,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
 
     private OnFragmentInteractionListener mListener;
 
-    public GameFragment() {
+    public ChanglleFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +39,11 @@ public class GameFragment extends Fragment implements View.OnClickListener{
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GameFragment.
+     * @return A new instance of fragment ChanglleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GameFragment newInstance(String param1, String param2) {
-        GameFragment fragment = new GameFragment();
+    public static ChanglleFragment newInstance(String param1, String param2) {
+        ChanglleFragment fragment = new ChanglleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,42 +64,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view =inflater.inflate(R.layout.fragment_game, container, false);
-
-        generate_btn= (Button)  getActivity().findViewById(R.id.general_btn);
-        generate_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              /**  getActivity().getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.c_root, new  ChanglleFragment())
-                        .addToBackStack(null).commitAllowingStateLoss();
-              /**  FragmentManager fragmentMgr = getFragmentManager();
-                FragmentTransaction fragmentTrans = fragmentMgr.beginTransaction();
-                ChanglleFragment changlleFragment=  new ChanglleFragment();
-                fragmentTrans.replace(R.id.c_root, changlleFragment, "changenge");
-                fragmentTrans.commit();*/
-
-                switch (v.getId()) {
-                    case R.id.general_btn:
-                        FragmentManager fm = getFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ft.replace(R.id.c_root, new ChanglleFragment(), "changllenge");
-                        ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-                        ft.addToBackStack(null);
-                        ft.commit();
-                        break;
-                }
-
-
-            }
-        });
-
-
-
-
-
-        return view;
+        return inflater.inflate(R.layout.fragment_changlle, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -128,11 +89,6 @@ public class GameFragment extends Fragment implements View.OnClickListener{
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     /**

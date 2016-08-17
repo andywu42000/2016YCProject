@@ -76,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(MapsActivity.this, GameActivity.class);
+                intent.setClass(MapsActivity.this, TestActivity.class);
                 startActivity(intent);
             }
         });
