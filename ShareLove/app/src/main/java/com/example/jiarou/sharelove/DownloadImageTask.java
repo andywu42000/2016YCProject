@@ -1,5 +1,4 @@
 package com.example.jiarou.sharelove;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,7 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by Peter on 2016/8/9.
+ * Created by chiayi on 2016/8/9.
  */
 class DownloadImageTask extends AsyncTask<String, Integer, Bitmap>{
 

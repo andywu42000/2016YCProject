@@ -54,6 +54,19 @@
         </activity>
         <activity android:name=".User_Activity">
         </activity>
+        <activity android:name=".LotteryMainActivity">
+        </activity>
+        <activity android:name=".OwnedCouponMainActivity">
+        </activity>
+        <activity android:name=".AddVendorMainActivity">
+        </activity>
+        <activity android:name=".CollectStoreMainActivity">
+        </activity>
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

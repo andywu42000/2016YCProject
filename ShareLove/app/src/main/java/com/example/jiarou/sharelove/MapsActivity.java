@@ -46,7 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textview2;
     String zip_number;
     String  zip_areas;
-    Button user_btn, vendor_btn, lovecode_btn;
+    Button user_btn, vendor_btn, lovecode_btn,index_btn,game_btn;
     String vendorTitle;
     Spinner list;
 
@@ -59,6 +59,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Firebase.setAndroidContext(this);
        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
 
+
+
+        index_btn=(Button)findViewById(R.id.index);
+        index_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        game_btn=(Button)findViewById(R.id.game);
+        game_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, GameActivity.class);
+                startActivity(intent);
+            }
+        });
 
         user_btn=(Button)findViewById(R.id.user_btn);
         user_btn.setOnClickListener(new View.OnClickListener() {
@@ -143,15 +164,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                             Toast.makeText(MapsActivity.this, "get", Toast.LENGTH_LONG).show();
                                             FragmentManager fm = getFragmentManager();
                                             FragmentTransaction ft=fm.beginTransaction();
-                                            Fragment fragment = fm.findFragmentById(R.id.show_vender);
+                                           // **Fragment fragment = fm.findFragmentById(R.id.show_vender);
 
-                                            if(fragment==null){
+                                         /**   if(fragment==null){
                                                 getSupportFragmentManager()
                                                         .beginTransaction()
                                                         .add(com.example.peter.focus.R.id.focus_root, VendedInfoFragment.newInstance(), "Focus")
                                                         .commit();
 
-                                            }
+                                            }**/
 
                                         }
                                     }
