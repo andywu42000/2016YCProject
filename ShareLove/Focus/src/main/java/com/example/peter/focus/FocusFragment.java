@@ -16,6 +16,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 import java.util.ArrayList;
 
@@ -94,7 +95,9 @@ public class FocusFragment extends Fragment {
 
         final Firebase vendor = new Firebase(DB_URL);
 
-        vendor.addChildEventListener(new ChildEventListener() {
+        Query focusVendor = vendor.orderByChild("Focus").equalTo(true);
+
+        focusVendor.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 

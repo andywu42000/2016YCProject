@@ -1,6 +1,5 @@
 package com.example.jiarou.sharelove;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -17,9 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chiayi.myapplication.CouponMainActivity;
-import com.example.peter.focus.FocusFragment;
-import com.example.peter.focus.VendedInfoFragment;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -46,19 +44,63 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textview2;
     String zip_number;
     String  zip_areas;
-    Button user_btn, vendor_btn, lovecode_btn;
+    Button user_btn, vendor_btn, lovecode_btn,index_btn,game_btn;
     String vendorTitle;
     Spinner list;
+
+    TextView textView21;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //初始化臉書
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Firebase.setAndroidContext(this);
        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
 
+        textView21 = (TextView)findViewById(R.id.textView21);
+
+        //如果找不到臉書是用者相關資料，跳轉至登入頁面
+        if(AccessToken.getCurrentAccessToken() == null){
+            Intent intent = new Intent();
+            intent.setClass(MapsActivity.this, Login.class);
+            startActivity(intent);
+        }else{
+            textView21.setText("登出");
+            textView21.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MapsActivity.this, Login.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+
+        index_btn=(Button)findViewById(R.id.index);
+        index_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        game_btn=(Button)findViewById(R.id.game);
+        game_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, TestActivity.class);
+                startActivity(intent);
+            }
+        });
 
         user_btn=(Button)findViewById(R.id.user_btn);
         user_btn.setOnClickListener(new View.OnClickListener() {
@@ -143,15 +185,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                             Toast.makeText(MapsActivity.this, "get", Toast.LENGTH_LONG).show();
                                             FragmentManager fm = getFragmentManager();
                                             FragmentTransaction ft=fm.beginTransaction();
-                                            Fragment fragment = fm.findFragmentById(R.id.show_vender);
+                                           // **Fragment fragment = fm.findFragmentById(R.id.show_vender);
 
-                                            if(fragment==null){
+                                         /**   if(fragment==null){
                                                 getSupportFragmentManager()
                                                         .beginTransaction()
                                                         .add(com.example.peter.focus.R.id.focus_root, VendedInfoFragment.newInstance(), "Focus")
                                                         .commit();
 
-                                            }
+                                            }**/
 
                                         }
                                     }

@@ -26,6 +26,8 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
@@ -54,6 +56,28 @@
         </activity>
         <activity android:name=".User_Activity">
         </activity>
+        <activity android:name=".LotteryMainActivity">
+        </activity>
+        <activity android:name=".OwnedCouponMainActivity">
+        </activity>
+        <activity android:name=".AddVendorMainActivity">
+        </activity>
+        <activity android:name=".CollectStoreMainActivity">
+        </activity>
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".TestActivity">
+        </activity>
+        <activity android:name=".Test02Activity">
+        </activity>
+        <activity android:name=".Test03Activity">
+        </activity>
+        <activity android:name=".Test04Activity">
+        </activity>
+        <activity android:name=".Login"></activity>
     </application>
 
 </manifest>

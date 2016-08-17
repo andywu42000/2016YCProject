@@ -21,6 +21,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <string name="facebook_app_id">1266123886739578</string>
 
 
 </resources>

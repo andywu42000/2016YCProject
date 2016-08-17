@@ -121,9 +121,9 @@ public class VendedInfoFragment extends Fragment {
         final Firebase vendor2 = new Firebase(DB_URL);
         String mark = args.getString(ARGUMENT_TITLE);
 
-        Query focusVendor = vendor2.orderByChild("Information/Name").equalTo(mark);
+        Query focusVendor2 = vendor2.orderByChild("Information/Name").equalTo(mark);
 
-        focusVendor.addChildEventListener(new ChildEventListener() {
+        focusVendor2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
