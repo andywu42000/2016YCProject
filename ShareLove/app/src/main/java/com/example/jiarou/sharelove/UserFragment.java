@@ -107,7 +107,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), LotteryMainActivity.class);
+                intent.setClass(getActivity(),  LotteryMainActivity.class );
                 startActivity(intent);
 
             }
@@ -145,7 +145,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), CollectStoreMainActivity.class);
+                intent.setClass(getActivity(), LotteryMainActivity.class);
                 startActivity(intent);
 
             }

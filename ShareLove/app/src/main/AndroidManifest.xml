@@ -62,7 +62,19 @@
         </activity>
         <activity android:name=".CollectStoreMainActivity">
         </activity>
-
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".TestActivity">
+        </activity>
+        <activity android:name=".Test02Activity">
+        </activity>
+        <activity android:name=".Test03Activity">
+        </activity>
+        <activity android:name=".Test04Activity">
+        </activity>
     </application>
 
 </manifest>

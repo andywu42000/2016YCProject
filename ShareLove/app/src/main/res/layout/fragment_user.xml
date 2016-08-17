@@ -10,7 +10,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right|top">
+        android:layout_gravity="right|top"
+        android:weightSum="1">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -72,25 +73,29 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="樂透"
-            android:id="@+id/lottery_btn"/>
+            android:id="@+id/lottery_btn"
+            android:layout_weight="0.30"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="優惠券"
-            android:id="@+id/coupon_btn"/>
+            android:id="@+id/coupon_btn"
+            android:layout_weight="0.30"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="可使用優惠券"
-            android:id="@+id/owned_coupon_btn"/>
+            android:id="@+id/owned_coupon_btn"
+            android:layout_weight="0.30"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="新增店家"
-            android:id="@+id/add_vendor_btn"/>
+            android:id="@+id/add_vendor_btn"
+            android:layout_weight="0.30"/>
 
     </LinearLayout>
 </FrameLayout>

@@ -12,7 +12,7 @@ public class LotteryMainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.root_layout, AddVendorFragment.newInstance(), "LotteryDisplay")
+                    .add(R.id.LotteryDisplay_layout, LotteryDisplayFragment.newInstance(), "LotteryDisplay")
                     .commit();
         }
     }
