@@ -80,4 +80,8 @@
         <activity android:name=".Login"></activity>
     </application>
 
+    <provider android:authorities="com.facebook.app.FacebookContentProvider1266123886739578"
+        android:name="com.facebook.FacebookContentProvider"
+        android:exported="true"/>
+
 </manifest>

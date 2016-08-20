@@ -29,7 +29,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
                 <TextView
@@ -204,7 +204,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
                 <TextView
@@ -225,7 +225,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
                 <TextView
@@ -284,15 +284,17 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageView4"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/imageView5"
+                    android:layout_toLeftOf="@+id/fbShareImageView"
                     android:src="@mipmap/ic_navigation_18pt_2x"/>
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:id="@+id/imageView5"
+                    android:id="@+id/fbShareImageView"
                     android:src="@mipmap/fb_35"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:longClickable="false"
+                    android:clickable="true" />
             </RelativeLayout>
 
         </LinearLayout>
