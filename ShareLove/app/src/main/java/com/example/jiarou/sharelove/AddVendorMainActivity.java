@@ -15,7 +15,7 @@ public class AddVendorMainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.AddVendo_layout, LotteryDisplayFragment.newInstance(), "AddVendor")
+                    .add(R.id.AddVendo_layout, AddVendorFragment.newInstance(), "AddVendor")
                     .commit();
         }
     }

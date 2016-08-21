@@ -1,4 +1,4 @@
-package com.example.peter.focus;
+package com.example.jiarou.sharelove;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -76,9 +76,9 @@ public class FocusFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        final View view = inflater.inflate(R.layout.focus_fragment, container, false);
+        final View view = inflater.inflate(com.example.peter.focus.R.layout.focus_fragment, container, false);
 
-        focusListView = (ListView)view.findViewById(R.id.focusListView);
+        focusListView = (ListView)view.findViewById(com.example.peter.focus.R.id.focusListView);
 
         connectToFirebase();
 
@@ -268,10 +268,10 @@ public class FocusFragment extends Fragment {
             View list;
             LayoutInflater inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            list = inflater.inflate(R.layout.custom_listview, null);
+            list = inflater.inflate(com.example.peter.focus.R.layout.custom_listview, null);
 
-            TextView listTextView = (TextView)list.findViewById(R.id.listTextView);
-            ImageView listImageView = (ImageView)list.findViewById(R.id.listImageView);
+            TextView listTextView = (TextView)list.findViewById(com.example.peter.focus.R.id.listTextView);
+            ImageView listImageView = (ImageView)list.findViewById(com.example.peter.focus.R.id.listImageView);
 
             final String title = vendorTitle.get(position);
             listTextView.setText(title);

@@ -11,16 +11,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/coupon_name"
+        android:id="@+id/coupon_id"
         android:textSize="10dp"
-        android:text="Test1"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="false"
-        android:layout_alignTop="@+id/use_btn"
-        android:layout_toLeftOf="@+id/use_btn"
-        android:layout_toRightOf="@+id/listImageView" />
+        android:text="CouponID"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textView2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,5 +45,14 @@
         android:layout_above="@+id/due_date"
         android:layout_toRightOf="@+id/due_date"
         android:layout_toEndOf="@+id/due_date" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="CouponName"
+        android:id="@+id/coupon_name"
+        android:layout_alignTop="@+id/listImageView"
+        android:layout_toEndOf="@+id/listImageView" />
 
 </RelativeLayout>

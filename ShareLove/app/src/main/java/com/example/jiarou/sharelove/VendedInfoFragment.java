@@ -1,4 +1,4 @@
-package com.example.peter.focus;
+package com.example.jiarou.sharelove;
 
 
 import android.content.Intent;
@@ -109,25 +109,25 @@ public class VendedInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        final View view = inflater.inflate(R.layout.vender_info_fragment, container, false);
+        final View view = inflater.inflate(com.example.peter.focus.R.layout.vender_info_fragment, container, false);
 
-        final TextView titleTextView = (TextView)view.findViewById(R.id.titleTextView);
+        final TextView titleTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.titleTextView);
 
-        final ImageView vendorImageView = (ImageView)view.findViewById(R.id.vendorImageView);
+        final ImageView vendorImageView = (ImageView)view.findViewById(com.example.peter.focus.R.id.vendorImageView);
 
-        final TextView phoneTextView = (TextView)view.findViewById(R.id.phoneTextView);
-        final TextView remarkTextView = (TextView)view.findViewById(R.id.remarkTextView);
-        final TextView monTextView = (TextView)view.findViewById(R.id.monTextView);
-        final TextView tueTextView = (TextView)view.findViewById(R.id.tueTextView);
-        final TextView wedTextView = (TextView)view.findViewById(R.id.wedTextView);
-        final TextView thuTextView = (TextView)view.findViewById(R.id.thuTextView);
-        final TextView friTextView = (TextView)view.findViewById(R.id.friTextView);
-        final TextView satTextView = (TextView)view.findViewById(R.id.satTextView);
-        final TextView sunTextView = (TextView)view.findViewById(R.id.sunTextView);
-        final TextView addressTextView = (TextView)view.findViewById(R.id.addressTextView);
-        final TextView storyTextView = (TextView)view.findViewById(R.id.storyTextView);
+        final TextView phoneTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.phoneTextView);
+        final TextView remarkTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.remarkTextView);
+        final TextView monTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.monTextView);
+        final TextView tueTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.tueTextView);
+        final TextView wedTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.wedTextView);
+        final TextView thuTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.thuTextView);
+        final TextView friTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.friTextView);
+        final TextView satTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.satTextView);
+        final TextView sunTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.sunTextView);
+        final TextView addressTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.addressTextView);
+        final TextView storyTextView = (TextView)view.findViewById(com.example.peter.focus.R.id.storyTextView);
 
-        final ImageView fbShare = (ImageView)view.findViewById(R.id.fbShareImageView);
+        final ImageView fbShare = (ImageView)view.findViewById(com.example.peter.focus.R.id.fbShareImageView);
         fbShare.bringToFront();
 
         final Bundle args = getArguments();
@@ -160,7 +160,7 @@ public class VendedInfoFragment extends Fragment {
 
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
-                DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
+               DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
                 downloadImage.execute(pic);
 
                 forShareUse = pic;

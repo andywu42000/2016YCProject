@@ -102,12 +102,12 @@ public class UserFragment extends Fragment {
         });
 
         //跳到 Lottery的按鈕
-        lottery_btn=(Button)view.findViewById(R.id.add_vendor_btn);
+        lottery_btn=(Button)view.findViewById(R.id.lottery_btn);
         lottery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(),  CollectStoreMainActivity.class );
+                intent.setClass(getActivity(),  LotteryMainActivity.class );
                 startActivity(intent);
 
             }
@@ -127,7 +127,7 @@ public class UserFragment extends Fragment {
 
 
         //跳到 Add_Vendor的按鈕
-        add_vendor_btn=(Button)view.findViewById(R.id.lottery_btn);
+        add_vendor_btn=(Button)view.findViewById(R.id.add_vendor_btn);
         add_vendor_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

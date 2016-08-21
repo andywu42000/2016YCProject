@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.example.jiarou.sharelove"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="com.example.jiarou.sharelove"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -26,6 +27,10 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
@@ -75,6 +80,14 @@
         </activity>
         <activity android:name=".Test04Activity">
         </activity>
+        <activity android:name=".IndexActivity">
+        </activity>
+        <activity android:name=".Login"></activity>
     </application>
+
+    <provider
+        android:name="com.facebook.FacebookContentProvider"
+        android:authorities="com.facebook.app.FacebookContentProvider1266123886739578"
+        android:exported="true"/>
 
 </manifest>
