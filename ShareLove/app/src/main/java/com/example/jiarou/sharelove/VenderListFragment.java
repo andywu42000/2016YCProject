@@ -1,9 +1,10 @@
 package com.example.jiarou.sharelove;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,25 +20,26 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link VenderListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link VenderListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class VenderListFragment extends Fragment {
+public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
      ListView list;
+    private MapView mapView;
+    private GoogleMap map;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -45,42 +47,50 @@ public class VenderListFragment extends Fragment {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     private OnFragmentInteractionListener mListener;
 
+
+
+
+    public static  VenderListFragment newInstance(){
+        Bundle args = new Bundle();
+
+        VenderListFragment fragment = new VenderListFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     public VenderListFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment VenderListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static VenderListFragment newInstance(String param1, String param2) {
-        VenderListFragment fragment = new VenderListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(context instanceof OnFragmentInteractionListener){
+            mListener = (OnFragmentInteractionListener)context;
+        }else{
+            throw new ClassCastException(context.toString() + "must implement  OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view =  inflater.inflate(R.layout.fragment_vender_list, container, false);
+        //fragment加入地圖頁面
+        mapView = (MapView) view.findViewById(R.id.map1);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();// needed to get the map to display immediately
+
+        MapsInitializer.initialize(getActivity());
+
+        map = mapView.getMap();
+
+
+
+
 
         list = (ListView) view.findViewById(R.id.venderlist_view);
         connectToFirebase();
@@ -138,6 +148,14 @@ public class VenderListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+
+
+
     public class CustomAdapter extends BaseAdapter{
 
         Context c;
@@ -186,8 +204,7 @@ public class VenderListFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    mListener.onFocusSelected(title/*, vendorURL, phone, remark, mon, tue, wed, thur,
-                            fri, sat, sun, address, story*/);
+                    mListener.onFocusSelected(title);
                 }
             });
 
@@ -206,16 +223,7 @@ public class VenderListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+
 
     @Override
     public void onDetach() {

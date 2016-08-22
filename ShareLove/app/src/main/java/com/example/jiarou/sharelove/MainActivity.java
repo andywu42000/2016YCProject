@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.peter.focus.R.layout.focus_main);
+
         if(savedInstanceState == null){
             getSupportFragmentManager()
                     .beginTransaction()
