@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +38,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
-
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.io.IOException;
 import java.util.List;
@@ -53,11 +59,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
     ListView list;
     private MapView mapView;
-    private GoogleMap map;
     String zip_areas;
     String zip_number;
     Button search;
     TextView noshop;
+    String shop_list;
     private GoogleMap mMap;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -125,10 +131,56 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         MapsInitializer.initialize(getActivity());
 
-        map = mapView.getMap();
+        mMap = mapView.getMap();
+        LatLng nccu = new LatLng(24.9849998, 121.5761281);
+        mMap.addMarker(new MarkerOptions().position(nccu).title("Marker in NCCU"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(nccu));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
 
-       //測試取得得 zip_areas
-        Toast.makeText(getActivity(), zip_areas, Toast.LENGTH_SHORT).show();
+        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+        ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                String Latitude = dataSnapshot.child("Location/Latitude").getValue().toString();
+                String Longitude = dataSnapshot.child("Location/Longitude").getValue().toString();
+
+
+                double location_left = Double.parseDouble(Latitude);
+                double location_right = Double.parseDouble( Longitude);
+                String name =(String) dataSnapshot.child("Information/Name").getValue();
+                LatLng cod = new LatLng( location_left, location_right);
+                mMap.addMarker(new MarkerOptions().position(cod).title(name));
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+        //測試取得得 zip_areas
+       // Toast.makeText(getActivity(), zip_areas, Toast.LENGTH_SHORT).show();
 
 
         list = (ListView) view.findViewById(R.id.venderlist_view);
@@ -155,14 +207,13 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(zip_areas==null) {
                     String title = (String) dataSnapshot.child("Information").child("Name").getValue();
-                    Toast.makeText(getActivity(), zip_areas, Toast.LENGTH_SHORT).show();
-
 
                     vendorTitleList.add(title);
                 }else {
                     zip_number =zip_areas.substring(1,4);
                     if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
                         vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                        shop_list=(String) dataSnapshot.child("Information/Name").getValue();
 
 
 
@@ -203,6 +254,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
 
     }
 
@@ -320,30 +372,41 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
                 connectToFirebase();
 
-                if(list==null){
+                if(shop_list==null){
                     //textview
                     noshop = (TextView) getView().findViewById(R.id.noshop);
                     noshop.setText("尚無店家");
                 }
 
                 zip_number =zip_areas.substring(1,4);
+                String  address= "台灣";
+                String  address01= address+zip_areas;
+
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 //有問題
 
                 List<Address> addressLocation = null;
 
+
                 try {
-                    addressLocation = geoCoder.getFromLocationName(zip_areas, 1);
+
+                    addressLocation = geoCoder.getFromLocationName( address01, 1);
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
                 double latitude = addressLocation.get(0).getLatitude();
                 double longitude = addressLocation.get(0).getLongitude();
 
                 LatLng area_type = new LatLng(latitude, longitude);
 
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(area_type));
                 mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
 
                 /**
                  textview2 = (TextView) this.findViewById(R.id.textView2);
