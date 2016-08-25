@@ -17,11 +17,28 @@
             android:layout_height="222dp"
             android:id="@+id/map1"
             android:layout_weight="0.46"/>
+
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="175dp"
             android:id="@+id/venderlist_view"
             android:layout_gravity="left|bottom"/>
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/noshop"
+            android:layout_gravity="right"
+            android:layout_weight="0.46"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜尋店家"
+            android:id="@+id/search01"
+            android:layout_weight="0.46"/>
     </LinearLayout>
 
 </FrameLayout>

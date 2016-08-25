@@ -69,6 +69,11 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        Bundle bundle=new Bundle();
+        bundle.putString(zip_areas, "From Activity");
+        //set Fragmentclass Arguments
+        VenderListFragment fragobj=new  VenderListFragment();
+        fragobj.setArguments(bundle);
 
 
 
@@ -76,16 +81,25 @@ public class SearchActivity extends AppCompatActivity {
        search.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //與maps相通
                 Intent intent01 = getIntent();
                 Bundle bundle = new Bundle();
                 bundle.putString("name", zip_areas);
                 intent01.putExtras(bundle);
-                setResult(1, intent01);
+                setResult(2, intent01);
+
+                /** 與fragment相通
+                Bundle bundle=new Bundle();
+                bundle.putString(zip_areas, "From Activity");
+                //set Fragmentclass Arguments
+                VenderListFragment fragobj=new  VenderListFragment();
+                fragobj.setArguments(bundle); **/
                 SearchActivity.this.finish();
 
 
 
-         //requestCode需跟A.class的一樣
+
+                //requestCode需跟A.class的一樣
 
 
             }
@@ -168,13 +182,13 @@ public class SearchActivity extends AppCompatActivity {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
                         arealist.add((String) dataSnapshot.child("Information/Name").getValue());
-                        int store_number;
+                        /**  int store_number;
                         store_number=((String) dataSnapshot.child("Information/Name").getValue()).length();
-                        if(store_number>0) {
+                       if(store_number>0) {
                             Toast.makeText(SearchActivity.this, "目前有"+ zip_areas+"筆", Toast.LENGTH_LONG).show();
                         }else {
                             Toast.makeText(SearchActivity.this, "您沒有選擇任何項目"+store_number, Toast.LENGTH_LONG).show();
-                        }
+                        } **/
                     }
                 }
 
@@ -212,6 +226,7 @@ public class SearchActivity extends AppCompatActivity {
 
         String []  vendor_types=getResources().getStringArray(R.array.vendor_types);
     }
+
 
 
 
