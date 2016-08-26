@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textView21 = (TextView)findViewById(R.id.textView21);
 
         //如果找不到臉書是用者相關資料，跳轉至登入頁面
-        if(AccessToken.getCurrentAccessToken() == null){
+      if(AccessToken.getCurrentAccessToken() == null){
             Intent intent = new Intent();
             intent.setClass(MapsActivity.this, Login.class);
             startActivity(intent);
@@ -79,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startActivity(intent);
                 }
             });
-        }
+        } 
 
 
         index_btn=(Button)findViewById(R.id.index);
@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(MapsActivity.this, TestActivity.class);
+                intent.setClass(MapsActivity.this, IndexActivity.class);
                 startActivity(intent);
             }
         });
@@ -305,6 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
 
 
             }
