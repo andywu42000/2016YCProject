@@ -31,7 +31,12 @@ def lottery(request):
 @login_required                  
 def lovecode(request):
     return render(request, "lovecode.html", {
-            })            
+            })    
+
+@login_required                  
+def activity(request):
+    return render(request, "activity.html", {
+            })               
             
 def login(request):
     if request.user.is_authenticated(): 

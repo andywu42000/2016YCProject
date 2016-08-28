@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^coupon/$', coupon),
     url(r'^lottery/$', lottery),
     url(r'^lovecode/$', lovecode),
+    url(r'^activity/$', activity),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout),
     #url(r'^accounts/register/$',register),
