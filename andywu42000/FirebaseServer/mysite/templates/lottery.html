@@ -6,8 +6,15 @@
 	<li class="active"><a href="/lottery">樂透管理</a></li>
 {% endblock %}
 {% block content %}
-	<label>期數(開獎日期)：<input type="date" id="periodAddInput"></label>
-	<button type="button" class="btn btn-default" onclick="createLottery()">開獎</button>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">新增團體</h3>
+		</div>
+		<div class="panel-body">
+			<label>期數(開獎日期)：<input type="date" id="periodAddInput"></label>
+			<button type="button" class="btn btn-default" onclick="createLottery()">開獎</button>
+		</div>
+	</div>
 	
 	<div class="panel panel-primary">
 		<div class="panel-heading">

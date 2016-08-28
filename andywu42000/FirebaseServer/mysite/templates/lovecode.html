@@ -6,9 +6,16 @@
 	<li class="active"><a href="/lovecode">愛心碼管理</a></li>
 {% endblock %}
 {% block content %}
-	<label>團體名稱：<input type="text" id="titleAddInput"></label>
-	<label>愛心碼：<input type="number" id="codeAddInput" min="0" step="1"></label>
-	<button type="button" class="btn btn-default" onclick="createLovecode()">新增</button>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">新增團體</h3>
+		</div>
+		<div class="panel-body">
+			<label>團體名稱：<input type="text" id="titleAddInput"></label>
+			<label>愛心碼：<input type="number" id="codeAddInput" min="0" step="1"></label>
+			<button type="button" class="btn btn-default" onclick="createLovecode()">新增</button>
+		</div>
+	</div>
 	
 	<div class="panel panel-primary">
 		<div class="panel-heading">

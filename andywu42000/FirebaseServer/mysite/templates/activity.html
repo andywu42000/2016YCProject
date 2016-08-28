@@ -19,6 +19,20 @@
 			<button type="button" onclick="addNewActivity()" class="btn btn-default" id="addNewActivityBtn">新增</button>
 		</div>
 	</div>
+	<div id="addAlert"></div>
+
+	<!-- <div>
+		<div id="statusChoose">
+			<ul class="nav nav-tabs">
+				<li role="presentation" class="active" onclick="statusChoose('all')"><a href="#">全部</a></li>
+				<li role="presentation" onclick="statusChoose('scheduled')"><a href="#">已預定</a></li>
+				<li role="presentation" onclick="statusChoose('ended')"><a href="#">已結束</a></li>
+				<li role="presentation" onclick="statusChoose('deleted')"><a href="#">已清除</a></li>
+			</ul>
+		</div>
+		<br>
+	</div> -->
+
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">編輯區域</h3>
@@ -27,6 +41,8 @@
 			請選擇資料以編輯。
 		</div>
 	</div>
+	<div id="updateAlert"></div>
+
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">成功新增活動</h3>
@@ -52,36 +68,97 @@
 {% block script %}
 	<script type="text/javascript">
 		var myFirebaseRef = new Firebase('https://activity-a59ea.firebaseio.com/');
-		function beforeCheck() {
-			addNewActivity();
+
+		/*function statusChoose(status) {
+			today = new Date();
+			today_year = today.getFullYear(); //西元年份
+			today_month = today.getMonth()+1; //一年中的第幾月
+			today_date = today.getDate(); //一月份中的第幾天
+			document.getElementById("myTable").innerHTML = '<thead><tr><th>活動名稱</th><th>活動內容</th><th>開始日期</th><th>結束日期</th><th>清除日期</th><th>編輯</th></tr></thead><tbody></tbody>';
+			if(status == "all") {
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" class="active" onclick="statusChoose("all")"><a href="#">全部</a></li><li role="presentation" onclick="statusChoose("scheduled")"><a href="#">已預定</a></li><li role="presentation" onclick="statusChoose("ended")"><a href="#">已結束</a></li><li role="presentation" onclick="statusChoose("deleted")"><a href="#">已清除</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
+						var activity = snapshot.val();
+						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
+					});
+				});
+			}else if(status == "scheduled") {
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" onclick="statusChoose("all")"><a href="#">全部</a></li><li role="presentation" class="active" onclick="statusChoose("scheduled")"><a href="#">已預定</a></li><li role="presentation" onclick="statusChoose("ended")"><a href="#">已結束</a></li><li role="presentation" onclick="statusChoose("deleted")"><a href="#">已清除</a></li></ul>';
+				var current = today_year+"-"+today_month+"-"+(today_date+1);
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("StartDate").startAt(current).on("child_added", function(snapshot, prevChildKey) {
+						var activity = snapshot.val();
+						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
+					});
+				});
+			}else if(status == "ended") {
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" onclick="statusChoose("all")"><a href="#">全部</a></li><li role="presentation" onclick="statusChoose("scheduled")"><a href="#">已預定</a></li><li role="presentation" class="active" onclick="statusChoose("ended")"><a href="#">已結束</a></li><li role="presentation" onclick="statusChoose("deleted")"><a href="#">已清除</a></li></ul>';
+				var current = today_year+"-"+today_month+"-"+(today_date+1);
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("EndDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
+						var activity = snapshot.val();
+						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
+					});
+				});
+			}else if(status == "deleted") {
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" onclick="statusChoose(all)"><a href="#">全部</a></li><li role="presentation" onclick="statusChoose(scheduled)"><a href="#">已預定</a></li><li role="presentation" onclick="statusChoose(ended)"><a href="#">已結束</a></li><li role="presentation" class="active" onclick="statusChoose(deleted)"><a href="#">已清除</a></li></ul>';
+				var current = today_year+"-"+today_month+"-"+(today_date+1);
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+						var activity = snapshot.val();
+						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
+					});
+				});
+			}
+			
+		}*/
+
+		function beforeCheck(start, end, del, where) {
+			if((Date.parse(start)).valueOf() > (Date.parse(end)).valueOf()) {
+				document.getElementById(where).innerHTML = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>錯誤！</strong>結束日期須大或等於開始日期。</div>';
+				return false;
+			}else if((Date.parse(end)).valueOf() >= (Date.parse(del)).valueOf()) {
+				document.getElementById(where).innerHTML = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>錯誤！</strong>清除日期須大於結束日期。</div>';
+				return false;
+			}else {
+				document.getElementById(where).innerHTML = '';
+				return true;
+			}
 		}
+
 		function addNewActivity() {
 			var name = $('#nameAddInput').val();
 			var content = $('#contentAddInput').val();
 			var startDate = document.getElementById('startAddInput').value;
 			var endDate = document.getElementById('endAddInput').value;
 			var deleteDate = document.getElementById('deleteAddInput').value;
-			var newAddActivity = myFirebaseRef.push({
-				"Name": name,
-				"Content": content,
-				"Period": {
+			var check = beforeCheck(startDate, endDate, deleteDate, "addAlert");
+			if (check == true) {
+				var newAddActivity = myFirebaseRef.push({
+					"Name": name,
+					"Content": content,
 					"StartDate": startDate,
 					"EndDate": endDate,
 					"DeleteDate": deleteDate
-				}
-			});
-			$('#nameAddInput').val("");
-			$('#contentAddInput').val("");
-			$('#startAddInput').val("");
-			$('#endAddInput').val("");	
-			$('#deleteAddInput').val("");
+				});
+				$('#nameAddInput').val("");
+				$('#contentAddInput').val("");
+				$('#startAddInput').val("");
+				$('#endAddInput').val("");	
+				$('#deleteAddInput').val("");
+			}
 		};
 
 		myFirebaseRef.once("value", function(snapshot) {
 	  		var childNum = snapshot.numChildren();
-  			myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
 				var activity = snapshot.val();
-				add_new_data(activity.Name, activity.Content, activity.Period.StartDate, activity.Period.EndDate, activity.Period.DeleteDate, snapshot.key());
+				add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
 			});
 		});
 
@@ -91,9 +168,10 @@
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
 			var Tr = document.getElementById("myTable").insertRow(-1);
 			//建立新的td 而Tr.cells.length就是這個tr目前的td數
+			var tag = checkDate(start, end, del);
 			Td = Tr.insertCell(Tr.cells.length);
 			//而這個就是要填入td中的innerHTML	
-			Td.innerHTML=name;
+			Td.innerHTML=name + " " + tag;
 			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=content;
@@ -108,15 +186,37 @@
 			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateActivity(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteActivity(' + "'" + key + "'" + ')">刪除</button>';
 		}
 
+		function checkDate(start, end, del) {
+			today = new Date();
+			start+=" 00:00:00";
+			end+=" 23:59:59";
+			del+=" 23:59:59";
+			//today_year = today.getFullYear(); //西元年份
+			//today_month = today.getMonth()+1; //一年中的第幾月
+			//today_date = today.getDate(); //一月份中的第幾天
+			//var CurrentDate = today_year+"-"+today_month+"-"+today_date;
+			if (((Date.parse(start)).valueOf() <= (today).valueOf()) && (((Date.parse(end)).valueOf() >= (today).valueOf()))) {
+				return '<span class="label label-primary">活動進行中</span>';
+			}else if ((Date.parse(start)).valueOf() > (today).valueOf()) {
+				return '<span class="label label-success">活動已預定</span>';
+			}else if (((Date.parse(end)).valueOf() < (today).valueOf()) && ((Date.parse(del)).valueOf() <= (today).valueOf())) {
+				return '<span class="label label-default">活動已清除</span>';
+			}else if (((Date.parse(end)).valueOf() < (today).valueOf()) && ((Date.parse(del)).valueOf() > (today).valueOf())) {
+				return '<span class="label label-warning">活動已結束</span>';
+			}
+			//<span class="label label-info">Info</span>
+			//<span class="label label-danger">Danger</span>
+		}
+
 		function updateActivity(key) {
 			var newFirebaseRef = new Firebase('hhttps://activity-a59ea.firebaseio.com/' + key);
 			newFirebaseRef.once("value")
 			  .then(function(snapshot) {
 			    var name = snapshot.child("Name").val();
 			    var content = snapshot.child("Content").val();
-			    var start = snapshot.child("Period").child("StartDate").val();
-			    var end = snapshot.child("Period").child("EndDate").val();
-			    var del = snapshot.child("Period").child("DeleteDate").val();
+			    var start = snapshot.child("StartDate").val();
+			    var end = snapshot.child("EndDate").val();
+			    var del = snapshot.child("DeleteDate").val();
 			    document.getElementById("updateActivityArea").innerHTML = '<label>活動名稱：<input type="text" id="nameUpdate" value="' + name + '"></label><label>活動內容：<input type="text" id="contentUpdate" value="' + content + '"></label><label>開始日期：<input type="date" id="startUpdate" value="' + start + '"></label><label>結束日期(需大或等於開始日期)：<input type="date" id="endUpdate" value="' + end + '"></label><label>清除日期(需大於結束日期)：<input type="date" id="deleteUpdate" value="' + del + '"></label> <button type="button" class="btn btn-default" onclick="saveUpdatedActivity(' + "'" + key + "'" + ')">確認編輯</button>';
 			  });
 		}
@@ -128,16 +228,17 @@
 			var startDate = document.getElementById('startUpdate').value;
 			var endDate = document.getElementById('endUpdate').value;
 			var deleteDate = document.getElementById('deleteUpdate').value;
-			newFirebaseRef.update({
-				"Name": name,
-				"Content": content,
-				"Period": {
+			var check = beforeCheck(startDate, endDate, deleteDate, "updateAlert");
+			if (check == true) {
+				newFirebaseRef.update({
+					"Name": name,
+					"Content": content,
 					"StartDate": startDate,
 					"EndDate": endDate,
 					"DeleteDate": deleteDate
-				}
-			});
-			window.location.reload();
+				});
+				window.location.reload();
+			}
 		}
 
 		function deleteActivity(key) {
