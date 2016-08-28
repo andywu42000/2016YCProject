@@ -38,6 +38,7 @@ public class Start_GameFragment extends Fragment {
     private GoogleMap mMap;
     private MapView mapView;
 
+
     public Start_GameFragment() {
         // Required empty public constructor
     }

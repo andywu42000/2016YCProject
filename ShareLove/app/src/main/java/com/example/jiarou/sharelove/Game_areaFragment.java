@@ -11,6 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -47,6 +56,12 @@ public class Game_areaFragment extends Fragment {
     private Context context;
     ArrayAdapter<String> adapter2;
     Button start;
+    String get_select;
+    String to_chinese;
+    String get_zip;
+    String shop;
+    String shop_name;
+    int len;
 
 
 
@@ -134,7 +149,75 @@ public class Game_areaFragment extends Fragment {
 
     private AdapterView.OnItemSelectedListener zipListener = new AdapterView.OnItemSelectedListener(){
         public void onItemSelected(AdapterView<?> parent, View v, int position,long id){
-           //選完區域後要做的事
+
+
+            //存選取的資料
+            get_select = area.getSelectedItem().toString();
+            //變成中文字
+            to_chinese = get_select.substring(0,8);
+           //選得區域號碼
+            get_zip= to_chinese.substring(1,4);
+
+
+            final ArrayList shop_List = new ArrayList();
+            //顯示沒有店家!!!!!!!!!!!
+            if(shop==null){
+                Toast.makeText(getActivity(), "尚無店家", Toast.LENGTH_SHORT).show();
+            }
+
+
+
+
+            final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+            ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                   //有問題的code
+                    if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(get_zip)) {
+                        //array加入地區資料
+
+                       shop_List.add((String) dataSnapshot.child("Information/Name").getValue());
+
+                        //取得此區域的店家資料
+                        shop=(String) dataSnapshot.child("Information/Name").getValue();
+
+                            Random ran = new Random();
+                            int len =  shop_List.size();
+
+                            int ran_num=ran.nextInt(len);
+                            shop_name= (String) shop_List.get(ran_num);
+                            Toast.makeText(getActivity(),shop_name , Toast.LENGTH_SHORT).show();
+
+
+
+
+
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+
+
 
         }
 
