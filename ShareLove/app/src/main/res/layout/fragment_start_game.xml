@@ -2,36 +2,29 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.example.jiarou.sharelove.GameFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
+             tools:context="com.example.jiarou.sharelove.Start_GameFragment">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:weightSum="1">
 
-        <Button
+        <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="一般任務"
-            android:id="@+id/general_btn"
+            android:id="@+id/game_map"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:layout_weight="0.20"
-            android:textSize="50dp"/>
+            android:layout_weight="0.71"/>
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="節日限定"
-            android:id="@+id/button5"
+            android:text="已到達"
+            android:id="@+id/get"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:layout_weight="0.20"
-            android:textSize="50dp"/>
-
+            android:layout_weight="0.14"/>
     </LinearLayout>
+
 </FrameLayout>

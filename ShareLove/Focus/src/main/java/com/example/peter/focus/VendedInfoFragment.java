@@ -3,7 +3,6 @@ package com.example.peter.focus;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,12 +27,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Created by Peter on 2016/8/9.
@@ -233,6 +226,9 @@ public class VendedInfoFragment extends Fragment {
                     @Override
                     public void onSuccess(Sharer.Result result) {
                         Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                        /*
+                        !!!在這裡做分享完成後想要做的動作，幫助樂透運行
+                         */
 
                     }
 
@@ -251,8 +247,8 @@ public class VendedInfoFragment extends Fragment {
                     //Bitmap image = getBitmap(forShareUse);
 
                     ShareLinkContent content = new ShareLinkContent.Builder()
-                            .setContentTitle("Hello Facebook")
-                            .setImageUrl(Uri.parse("http://developers.facebook.com/android"))
+                            .setContentTitle(args.getString(ARGUMENT_TITLE))
+                            .setImageUrl(Uri.parse(forShareUse))
                             .build();
 
                     /*
@@ -273,6 +269,7 @@ public class VendedInfoFragment extends Fragment {
         return view;
     }
 
+    /*
     public Bitmap getBitmap(String... params){
         HttpURLConnection connection;
         final Bitmap myBitmap;
@@ -293,6 +290,7 @@ public class VendedInfoFragment extends Fragment {
         }
         return bitmap;
     }
+    */
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
