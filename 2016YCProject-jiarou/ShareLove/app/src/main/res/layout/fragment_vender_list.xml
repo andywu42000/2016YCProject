@@ -1,0 +1,53 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.example.jiarou.sharelove.VenderListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="222dp"
+            android:id="@+id/map1"
+            android:layout_weight="0.46"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.46">
+
+            <ListView
+                android:layout_width="174dp"
+                android:layout_height="175dp"
+                android:id="@+id/venderlist_view"
+                />
+
+            <TextView
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/noshop"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.46"/>
+
+            <Button
+                android:layout_width="103dp"
+                android:layout_height="wrap_content"
+                android:text="搜尋店家"
+                android:id="@+id/search01"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

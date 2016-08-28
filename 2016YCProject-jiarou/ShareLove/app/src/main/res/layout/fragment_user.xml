@@ -1,0 +1,101 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.example.jiarou.sharelove.UserFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|top"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:layout_width="143dp"
+                android:layout_height="match_parent"
+                android:id="@+id/photo"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="right">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="62dp"
+                    android:weightSum="1"
+                  >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Large Text"
+                        android:id="@+id/name"
+                        android:layout_weight="1.30"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="修改"
+                        android:id="@+id/button10"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="195dp"
+                    android:layout_height="36dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="lovecode"
+                    android:id="@+id/lovecode"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="店家收藏"
+                    android:id="@+id/collect_store_btn"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="樂透"
+            android:id="@+id/lottery_btn"
+            android:layout_weight="0.30"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="優惠券"
+            android:id="@+id/coupon_btn"
+            android:layout_weight="0.30"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="可使用優惠券"
+            android:id="@+id/owned_coupon_btn"
+            android:layout_weight="0.30"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="新增店家"
+            android:id="@+id/add_vendor_btn"
+            android:layout_weight="0.30"/>
+
+    </LinearLayout>
+</FrameLayout>
