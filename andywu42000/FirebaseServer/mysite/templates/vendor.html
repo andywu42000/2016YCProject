@@ -208,7 +208,11 @@
 			//建立新的td 而Tr.cells.length就是這個tr目前的td數
 			Td = Tr.insertCell(Tr.cells.length);
 			//而這個就是要填入td中的innerHTML	
-			Td.innerHTML=name;
+			if (focus) {
+				Td.innerHTML=name + ' <span class="label label-success">焦點</span>';
+			}else {
+				Td.innerHTML=name;
+			}
 			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=phone;
@@ -226,9 +230,9 @@
 			Td.innerHTML='<button type="button" class="btn btn-info" onClick="parent.open(' + "'" + photoLink + "'" + ')">圖片</button>';
 			Td = Tr.insertCell(Tr.cells.length);
 			if (focus == false) {
-				Td.innerHTML='非焦點 <button type="button" class="btn btn-success" onclick="focusUpdate(' + "'" + key + "', " + focus + ')">選為焦點</button>';
+				Td.innerHTML='<button type="button" class="btn btn-success" onclick="focusUpdate(' + "'" + key + "', " + focus + ')">選為焦點</button>';
 			}else {
-				Td.innerHTML='是焦點 <button type="button" class="btn btn-danger" onclick="focusUpdate(' + "'" + key + "', " + focus + ')">取消焦點</button>';
+				Td.innerHTML='<button type="button" class="btn btn-danger" onclick="focusUpdate(' + "'" + key + "', " + focus + ')">取消焦點</button>';
 			}
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateVendor(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteVendor(' + "'" + key + "'" + ')">刪除</button>';

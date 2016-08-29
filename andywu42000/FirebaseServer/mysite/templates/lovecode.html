@@ -11,12 +11,13 @@
 			<h3 class="panel-title">新增團體</h3>
 		</div>
 		<div class="panel-body">
-			<label>團體名稱：<input type="text" id="titleAddInput"></label>
-			<label>愛心碼：<input type="number" id="codeAddInput" min="0" step="1"></label>
+			<font color="red"><h5>*必填</h5></font>
+			<label>*團體名稱：<input type="text" id="titleAddInput"></label>
+			<label>*愛心碼：<input type="number" id="codeAddInput" min="0" step="1"></label>
 			<button type="button" class="btn btn-default" onclick="createLovecode()">新增</button>
 		</div>
 	</div>
-	
+	<div id="addAlert"></div>
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">編輯區域</h3>
@@ -25,10 +26,10 @@
 			請選擇資料以編輯。
 		</div>
 	</div>
-
+	<div id="updateAlert"></div>
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">開獎紀錄</h3>
+			<h3 class="panel-title">所有愛心碼</h3>
 		</div>
 		<div class="panel-body">
 			<table class="table table-hover" id="myTable">
@@ -39,36 +40,76 @@
 			          <th>編輯</th>
 			        </tr>
 			    </thead>
-			    <tbody>
-			    </tbody>
 			</table>
 		</div>
+		<div style="text-align:center;" id="pagination"></div>
 	</div>
+	
 {% endblock %}
 {% block script %}
 	<script type="text/javascript">
 		var myFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/');
 
-		function createLovecode() {
-			var title = $('#titleAddInput').val();
-			var code = parseInt($('#codeAddInput').val());
-			var newAddLovecode = myFirebaseRef.push({
-				"title": title,
-				"code": code
-			});
-			$('#titleAddInput').val("");
-			$('#codeAddInput').val("");
+		function beforecheck(title, code, where) {
+			if (title == "" || code == "") {
+				document.getElementById(where).innerHTML = '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>警告！</strong>還有未填入的資料喔。</div>';
+				return false;
+			}else {
+				return true;
+			}
 		}
 
+		function createLovecode() {
+			var title = $('#titleAddInput').val();
+			var check = beforecheck(title, $('#codeAddInput').val(), "addAlert");
+			if (check == true) {
+				var code = parseInt($('#codeAddInput').val());
+				var newAddLovecode = myFirebaseRef.push({
+					"title": title,
+					"code": code
+				});
+				$('#titleAddInput').val("");
+				$('#codeAddInput').val("");
+			}
+		}
 		myFirebaseRef.once("value", function(snapshot) {
 	  		var childNum = snapshot.numChildren();
-  			myFirebaseRef.orderByChild("title").limitToLast(childNum).on("child_added", function(snapshot, prevChildKey) {
-				var lovecode = snapshot.val();
-				add_new_data(lovecode.title, lovecode.code, snapshot.key());
-			});
+	  		var quotient = parseInt(childNum / 10);
+	  		var remainder = childNum % 10;
+	  		var output = '<nav><ul class="pagination">'
+	  		if (quotient != 0) {
+	  			for (i = 1; i <= quotient; i++) {
+		  			output += '<li><a href="javascript:void(0);" onclick="page(' + i + ')">' + i + '</a></li>';
+		  		}
+		  		if (remainder != 0) {
+		  			output += '<li><a href="javascript:void(0);" onclick="page(' + (quotient+ 1) + ')">' + (quotient + 1) + '</a></li>';
+		  		}
+	  		}else {
+	  			output += '<li><a href="javascript:void(0);" onclick="page(0)">1</a></li>';
+	  		}
+	  		output += '</ul></nav>';
+			document.getElementById("pagination").innerHTML = output;
 		});
 
-		
+		myFirebaseRef.orderByChild("title").limitToFirst(10).on("child_added", function(snapshot, prevChildKey) {
+			var lovecode = snapshot.val();
+			add_new_data(lovecode.title, lovecode.code, snapshot.key());
+		});
+
+		function page(quo) {
+			document.getElementById("myTable").innerHTML = '<thead><tr><th>團體名稱</th><th>愛心碼</th><th>編輯</th></tr></thead>';
+			var count = 0;
+			if(quo > 0) {
+				myFirebaseRef.orderByChild("title").limitToFirst(quo*10).on("child_added", function(snapshot, prevChildKey) {
+					var lovecode = snapshot.val();
+					count++;
+					if ((count > (quo-1)*10) && (count <= (quo)*10)) {
+						add_new_data(lovecode.title, lovecode.code, snapshot.key());
+					}
+				});
+			}
+		}
+
 		function add_new_data(title, code, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
@@ -92,17 +133,21 @@
 			  .then(function(snapshot) {
 			    var title = snapshot.child("title").val();
 			    var code = snapshot.child("code").val();
-			    document.getElementById("updateLovecodeArea").innerHTML = '<label>團體名稱：<input type="text" id="titleUpdate" value="' + title + '"></label><label>愛心碼：<input type="number" min="0" step="1" id="codeUpdate" value="' + code + '"></label> 	<button type="button" class="btn btn-default" onclick="saveUpdatedLovecode(' + "'" + key + "'" + ')">確認編輯</button>';
+			    document.getElementById("updateLovecodeArea").innerHTML = '<font color="red"><h5>*必填</h5></font><label>*團體名稱：<input type="text" id="titleUpdate" value="' + title + '"></label><label>*愛心碼：<input type="number" min="0" step="1" id="codeUpdate" value="' + code + '"></label> 	<button type="button" class="btn btn-default" onclick="saveUpdatedLovecode(' + "'" + key + "'" + ')">確認編輯</button>';
 			  });
 		}
 		
 		function saveUpdatedLovecode(key){
 			var newFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/' + key);
-			newFirebaseRef.update({
-				"title": $('#titleUpdate').val(),
-				"code":  parseInt($('#codeUpdate').val())
-			});
-			window.location.reload();
+			var title = $('#titleUpdate').val();
+			var check = beforecheck(title, $('#codeUpdate').val(), "updateAlert");
+			if (check == true) {
+				newFirebaseRef.update({
+					"title": title,
+					"code":  parseInt($('#codeUpdate').val())
+				});
+				window.location.reload();
+			}
 		}
 
 		function deleteLovecode(key) {
