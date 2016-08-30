@@ -2,6 +2,15 @@
 
 {% block title %}首頁{% endblock %}
 
+{% block style %}
+	<style>
+		body{margin:0;padding:0;background:#000 url(/static/img/background3.jpg) center center fixed no-repeat;-moz-background-size:cover;background-size:cover;}
+	</style>
+{% endblock %}
+
 {% block indexButton %}
 	<li class="active"><a href="/">首頁</a></li>
 {% endblock %}	
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>{% endblock %}
+{% block content %}{% endblock %}

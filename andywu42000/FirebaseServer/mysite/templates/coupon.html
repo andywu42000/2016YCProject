@@ -5,20 +5,25 @@
 {% block couponButton %}
 	<li class="active"><a href="/coupon">優惠券管理</a></li>
 {% endblock %}
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>
+{% endblock %}
 {% block content %}
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">新增優惠券</h3>
 		</div>
 		<div class="panel-body">
-			<label>優惠券名稱：<input type="text" id="nameAddInput"></input></label>
-			<label>優惠券資訊：<input type="text" id="informationAddInput"></input></label>
-			<label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoAddInput"></input></label>
-			<label>價格：<input type="number" id="priceAddInput" placeholder="請輸入大於0的整數" min="0" step="1"></input></label><p></p>
-			<label>總共數量：<input type="number" id="amountAddInput" placeholder="請輸入大於0的整數" min="0" step="1"></input></label>
-			<button type="button" onclick="beforeCheck()" class="btn btn-default" id="addNewCouponBtn">新增</button>
+			<font color="red"><h5>*必填</h5></font>
+			<label>*優惠券名稱：<input type="text" id="nameAddInput"></input></label>
+			<label>*優惠券資訊：<input type="text" id="informationAddInput"></input></label>
+			<label>*相片(imgur後7碼，不含.jpg)：<input type="text" id="photoAddInput"></input></label>
+			<label>*價格：<input type="number" id="priceAddInput"min="0" step="1"></input></label><p></p>
+			<label>*總共數量：<input type="number" id="amountAddInput"min="0" step="1"></input></label>
+			<button type="button" onclick="addNewCoupon()" class="btn btn-default" id="addNewCouponBtn">新增</button>
 		</div>
 	</div>
+	<div id="addAlert"></div>
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">編輯區域</h3>
@@ -27,36 +32,35 @@
 			請選擇資料以編輯。
 		</div>
 	</div>
+	<div id="updateAlert"></div>
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">末筆成功新增優惠券</h3>
+			<h3 class="panel-title">優惠券列表</h3>
 		</div>
-		<div class="panel-body">
-			<table class="table table-hover" id="myTable">
-				<thead>
-			        <tr>
-			          <th>優惠券名稱</th>
-			          <th>優惠券資訊</th>
-			          <th>相片(imgur後7碼，不含.jpg)</th>
-			          <th>價格</th>
-			          <th>剩餘數量</th>
-			          <th>編輯</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			    </tbody>
-			</table>
-		</div>
+		<table class="table table-hover" id="myTable">
+			<thead>
+		        <tr>
+		          <th>優惠券名稱</th>
+		          <th>優惠券資訊</th>
+		          <th>相片(imgur後7碼，不含.jpg)</th>
+		          <th>價格</th>
+		          <th>剩餘數量</th>
+		          <th>編輯</th>
+		        </tr>
+		    </thead>
+		</table>
+		<div style="text-align:center;" id="pagination"></div>
 	</div>
 {% endblock %}
 {% block script %}
 	<script type="text/javascript">
 		var myFirebaseRef = new Firebase('https://coupon-da649.firebaseio.com/');
-		function beforeCheck() {
-			if (parseInt($('#priceAddInput').val()) <= 0 || parseInt($('#amountAddInput').val()) <= 0) {
-				alert("價格或數量不可小或等於零！");
-			}else{
-				addNewCoupon();
+		function beforeCheck(name, info, photo, where) {
+			if (name == "" || info == "" || photo == "") {
+				document.getElementById(where).innerHTML = '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>警告！</strong>還有未填入的資料喔。</div>';
+				return false;
+			}else {
+				return true;
 			}
 		}
 		function addNewCoupon() {
@@ -72,31 +76,62 @@
 				var type = "豪華";
 			}
 			var remainingAmount = parseInt($('#amountAddInput').val());
-			var newAddCoupon = myFirebaseRef.push({
-				"Name": name,
-				"Information": information,
-				"Photos": {
-					"Photo_ID": photo
-				},
-				"Type": type,
-				"Price": price,
-				"Remaining_Amount": remainingAmount
-			});
-			//var newAddMarkId = newAddMark.key();
-			alert(name + " 新增成功!");
-			$('#nameAddInput').val("");
-			$('#informationAddInput').val("");
-			$('#photoAddInput').val("");
-			$('#priceAddInput').val("");	
-			$('#amountAddInput').val("");
+			var check = beforeCheck(name, information, photo, "addAlert");
+			if (check) {
+				var newAddCoupon = myFirebaseRef.push({
+					"Name": name,
+					"Information": information,
+					"Photos": {
+						"Photo_ID": photo
+					},
+					"Type": type,
+					"Price": price,
+					"Remaining_Amount": remainingAmount
+				});
+				$('#nameAddInput').val("");
+				$('#informationAddInput').val("");
+				$('#photoAddInput').val("");
+				$('#priceAddInput').val("");	
+				$('#amountAddInput').val("");
+			}
 		};
 
 		myFirebaseRef.once("value", function(snapshot) {
 	  		var childNum = snapshot.numChildren();
-  			myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
-				var coupon = snapshot.val();
-				add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
-			});
+	  		var quotient = parseInt(childNum / 10);
+	  		var remainder = childNum % 10;
+	  		var output = '<nav><ul class="pagination">'
+	  		if (quotient != 0) {
+	  			for (i = 1; i <= quotient; i++) {
+		  			output += '<li><a href="javascript:void(0);" onclick="page(' + i + ')">' + i + '</a></li>';
+		  		}
+		  		if (remainder != 0) {
+		  			output += '<li><a href="javascript:void(0);" onclick="page(' + (quotient+ 1) + ')">' + (quotient + 1) + '</a></li>';
+		  		}
+	  		}else {
+	  			output += '<li class="disabled"><a href="javascript:void(0);" onclick="page(0)">1</a></li>';
+	  		}
+	  		output += '</ul></nav>';
+			document.getElementById("pagination").innerHTML = output;
+		});
+
+		function page(nowPage) {
+			var count = 0;
+			if(nowPage > 0) {
+				document.getElementById("myTable").innerHTML = '<thead><tr><th>優惠券名稱</th><th>優惠券資訊</th><th>相片(imgur後7碼，不含.jpg)</th><th>價格</th><th>剩餘數量</th><th>編輯</th></tr></thead>';
+				myFirebaseRef.orderByChild("Name").limitToFirst(nowPage*10).on("child_added", function(snapshot, prevChildKey) {
+					var lovecode = snapshot.val();
+					count++;
+					if ((count > (nowPage-1)*10) && (count <= (nowPage)*10)) {
+						add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
+					}
+				});
+			}
+		}
+
+		myFirebaseRef.orderByChild("Name").limitToFirst(10).on("child_added", function(snapshot, prevChildKey) {
+			var coupon = snapshot.val();
+			add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
 		});
 
 		function add_new_data(name, information, photos, price, remainingAmount, key) {
@@ -107,7 +142,13 @@
 			//建立新的td 而Tr.cells.length就是這個tr目前的td數
 			Td = Tr.insertCell(Tr.cells.length);
 			//而這個就是要填入td中的innerHTML	
-			Td.innerHTML=name;
+			if (remainingAmount == 0) {
+				Td.innerHTML=name + ' <span class="label label-danger">售罄</span>';
+			}else if (remainingAmount <= 20) {
+				Td.innerHTML=name + ' <span class="label label-warning">熱銷</span>';
+			}else {
+				Td.innerHTML=name + ' <span class="label label-primary">普通</span>';
+			}
 			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=information;
@@ -118,7 +159,7 @@
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=price;
 			Td = Tr.insertCell(Tr.cells.length);
-			Td.innerHTML=remainingAmount;
+			d.innerHTML=remainingAmount;
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateCoupon(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteCoupon(' + "'" + key + "'" + ')">刪除</button>';
 		}
@@ -132,7 +173,7 @@
 			    var photo = snapshot.child("Photos").child("Photo_ID").val();
 			    var price = snapshot.child("Price").val();
 			    var remainingAmount = snapshot.child("Remaining_Amount").val();
-			    document.getElementById("updateCouponArea").innerHTML = '<label>優惠券名稱：<input type="text" id="nameUpdate" value="' + name + '"></label><label>優惠券資訊：<input type="text" id="informationUpdate" value="' + information + '"></label><label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></label><label>價格：<input type="number" id="priceUpdate" value="' + price + '" min="0" step="1"></label><label>剩餘數量：<input type="number" id="remainingAmountUpdate" value="' + remainingAmount + '" min="0" step="1"></label> <button type="button" class="btn btn-default" onclick="saveUpdatedCoupon(' + "'" + key + "'" + ')">確認編輯</button>';
+			    document.getElementById("updateCouponArea").innerHTML = '<font color="red"><h5>*必填</h5></font><label>*優惠券名稱：<input type="text" id="nameUpdate" value="' + name + '"></label><label>*優惠券資訊：<input type="text" id="informationUpdate" value="' + information + '"></label><label>*相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></label><label>*價格：<input type="number" id="priceUpdate" value="' + price + '" min="0" step="1"></label><label>*剩餘數量：<input type="number" id="remainingAmountUpdate" value="' + remainingAmount + '" min="0" step="1"></label> <button type="button" class="btn btn-default" onclick="saveUpdatedCoupon(' + "'" + key + "'" + ')">確認編輯</button>';
 			  });
 		}
 
@@ -147,17 +188,23 @@
 				var type = "豪華";
 			}
 			var remainingAmount = parseInt($('#amountAddInput').val());
-			newFirebaseRef.update({
-				"Name": $('#nameUpdate').val(),
-				"Information": $('#informationUpdate').val(),
-				"Photos": {
-					"Photo_ID": $('#photoUpdate').val()
-				},
-				"Type": type,
-				"Price": price,
-				"Remaining_Amount": $('#remainingAmountUpdate').val()
-			});
-			window.location.reload();
+			var name = $('#nameUpdate').val();
+			var information = $('#informationUpdate').val();
+			var photo = $('#photoUpdate').val();
+			var check = beforeCheck(name, information, photo, "updateAlert");
+			if (check) {
+				newFirebaseRef.update({
+					"Name": name,
+					"Information": information,
+					"Photos": {
+						"Photo_ID": photo
+					},
+					"Type": type,
+					"Price": price,
+					"Remaining_Amount": $('#remainingAmountUpdate').val()
+				});
+				window.location.reload();
+			}
 		}
 
 		function deleteCoupon(key) {

@@ -2,15 +2,54 @@
 
 {% block title %}登入{% endblock %}
 
+{% block style %}
+	<style type="text/css">
+		#submitArea {
+		  margin: 0 auto;
+		  position: absolute;
+		  left: 63%;
+		  top: 30%;
+		  width: 20%; /*畫面顯示90%*/
+		}
+		body{margin:0;padding:0;background:#000 url(/static/img/background2.jpg) center center fixed no-repeat;-moz-background-size:cover;background-size:cover;}
+	</style>
+{% endblock %}
+
 {% block loginButton %}
 	<li class="active"><a href="/accounts/login">登入</a></li>
 {% endblock %}
 {% block content %}
-	<form action="" method="post">
-        <label for="username">用戶名稱:</label>
-        <input type="text" name="username" value="" id="username"> <br />
-        <label for="password">用戶密碼:</label>
-        <input type="password" name="password" value="" id="password"> <br />
-        <input type="submit" value="登入" />
-    </form>
+	<div id="submitArea" class="panel panel-info">
+		<div class="panel-heading">登入</div>
+		<div class="panel-body">
+			<form action="" method="post">
+				<div class="input-group">
+			        <span class="input-group-addon">帳號</span>
+			        <input type="text" class="form-control" placeholder="username" name="username" value="" id="username">
+				</div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon">密碼</span>
+		        	<input type="password" class="form-control" placeholder="password" name="password" value="" id="password">
+				</div>
+				<br>
+	        <input type="submit" class="btn btn-success" value="登入" id="submit">
+	    </form>
+		</div>	
+	</div>
 {% endblock %}	
+
+<!--
+  <input type="text" class="form-control" placeholder="Username">
+</div>
+
+<div class="input-group">
+  <input type="text" class="form-control">
+  <span class="input-group-addon">.00</span>
+</div>
+
+<div class="input-group">
+  <span class="input-group-addon">$</span>
+  <input type="text" class="form-control">
+  <span class="input-group-addon">.00</span>
+</div>-->

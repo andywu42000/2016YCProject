@@ -13,6 +13,9 @@
 {% block vendorButton %}
 	<li class="active"><a href="/vendor">攤販管理</a></li>
 {% endblock %}
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>
+{% endblock %}
 {% block content %}
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -51,6 +54,21 @@
 			<button type="button" onclick="addNewVendor()" class="btn btn-default" id="addNewVendorBtn">新增</button>
 		</div>
 	</div>
+
+	<div>
+		<div id="typeChoose">
+			<ul class="nav nav-tabs">
+				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose('all');">全部</a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('isFocus');">焦點</a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('notFocus');">非焦點</a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popLow');">人氣低迷</a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popFine');">人氣尚可</a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popHigh');">人氣高漲</a></li>
+			</ul>
+		</div>
+		<br>
+	</div>
+
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">編輯區域</h3>
@@ -63,25 +81,22 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">末筆成功新增攤販</h3>
 		</div>
-		<div class="panel-body">
-			<table class="table table-hover" id="myTable">
-				<thead>
-			        <tr>
-			          <th>攤販名稱</th>
-			          <th>攤販電話</th>
-			          <th>攤販類型</th>
-			          <th>郵遞區號</th>
-			          <th>緯度</th>
-			          <th>經度</th>
-			          <th>相片</th>
-			          <th>焦點狀態</th>
-			          <th>編輯</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			    </tbody>
-			</table>
-		</div>
+		<table class="table table-hover" id="myTable">
+			<thead>
+		        <tr>
+		          <th>攤販名稱</th>
+		          <th>攤販電話</th>
+		          <th>攤販類型</th>
+		          <th>郵遞區號</th>
+		          <th>緯度</th>
+		          <th>經度</th>
+		          <th>相片</th>
+		          <th>焦點狀態</th>
+		          <th>編輯</th>
+		        </tr>
+		    </thead>
+		</table>
+		<div style="text-align:center;" id="pagination"></div>
 	</div>
 {% endblock %}
 {% block script %}
@@ -193,14 +208,115 @@
 
 		myFirebaseRef.once("value", function(snapshot) {
 	  		var childNum = snapshot.numChildren();
-  			myFirebaseRef.orderByChild("Name").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 				var vendor = snapshot.val();
-				add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Focus, snapshot.key());
+				add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
 			});
 		});
 
+		/*myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+	  		var quotient = parseInt(childNum / 10);
+	  		var remainder = childNum % 10;
+	  		var output = '<nav><ul class="pagination">'
+	  		if (quotient != 0) {
+	  			for (i = 1; i <= quotient; i++) {
+		  			output += '<li><a href="javascript:void(0);" onclick="page(' + i + ')">' + i + '</a></li>';
+		  		}
+		  		if (remainder != 0) {
+		  			output += '<li><a href="javascript:void(0);" onclick="page(' + (quotient+ 1) + ')">' + (quotient + 1) + '</a></li>';
+		  		}
+	  		}else {
+	  			output += '<li class="disabled"><a href="javascript:void(0);" onclick="page(0)">1</a></li>';
+	  		}
+	  		output += '</ul></nav>';
+			document.getElementById("pagination").innerHTML = output;
+		});
+
+		function page(nowPage) {
+			var count = 0;
+			if(nowPage > 0) {
+				document.getElementById("myTable").innerHTML = '<thead><tr><th>攤販名稱</th><th>攤販電話</th><th>攤販類型</th><th>郵遞區號</th><th>緯度</th><th>經度</th><th>相片</th><th>焦點狀態</th><th>編輯</th></tr></thead>';
+				myFirebaseRef.orderByChild("Popularity").limitToFirst(nowPage*10).on("child_added", function(snapshot, prevChildKey) {
+					var lovecode = snapshot.val();
+					count++;
+					if ((count > (nowPage-1)*10) && (count <= (nowPage)*10)) {
+						add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+					}
+				});
+			}
+		}*/
+
+		function typeChoose(type) {
+			document.getElementById("myTable").innerHTML = '<thead><tr><th>攤販名稱</th><th>攤販電話</th><th>攤販類型</th><th>郵遞區號</th><th>緯度</th><th>經度</th><th>相片</th><th>焦點狀態</th><th>編輯</th></tr></thead>';
+			if(type == "all") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+					});
+				});
+			}else if(type == "isFocus") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Focus == true) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "notFocus") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Focus == false) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "popLow") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Popularity <= 20) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "popFine") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Popularity > 20 && vendor.Popularity < 100) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "popHigh") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
+				myFirebaseRef.once("value", function(snapshot) {
+			  		var childNum = snapshot.numChildren();
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Popularity >= 100) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}
+		}
 		
-		function add_new_data(name, phone, type, zip, lati, longi, photos, focus, key) {
+		function add_new_data(name, phone, type, zip, lati, longi, photos, popularity, focus, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -208,17 +324,36 @@
 			//建立新的td 而Tr.cells.length就是這個tr目前的td數
 			Td = Tr.insertCell(Tr.cells.length);
 			//而這個就是要填入td中的innerHTML	
+			if (popularity <= 20) {
+				name += ' <span class="label label-warning">人氣低迷</span>';
+			}else if(popularity >= 100) {
+				name += ' <span class="label label-danger">人氣高漲</span>';
+			}else {
+				name += ' <span class="label label-success">人氣尚可</span>';
+			}
 			if (focus) {
 				Td.innerHTML=name + ' <span class="label label-success">焦點</span>';
 			}else {
-				Td.innerHTML=name;
+				Td.innerHTML=name + ' <span class="label label-default">非焦點</span>';
 			}
 			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=phone;
 			//這樣就好囉 記得td數目要一樣 不然會亂掉~
 			Td = Tr.insertCell(Tr.cells.length);
-			Td.innerHTML=type;
+			switch(type) {
+				case 1: 
+					Td.innerHTML="食物";
+					break;
+				case 2: 
+					Td.innerHTML="飲料";
+					break;
+				case 3: 
+					Td.innerHTML="其它";
+					break;
+				default:
+					Td.innerHTML="UNKNOWN";
+			}
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=zip;
 			Td = Tr.insertCell(Tr.cells.length);

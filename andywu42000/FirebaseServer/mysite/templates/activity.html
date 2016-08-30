@@ -5,6 +5,9 @@
 {% block activityButton %}
 	<li class="active"><a href="/activity">活動管理</a></li>
 {% endblock %}
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>
+{% endblock %}
 {% block content %}
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -47,24 +50,20 @@
 
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">成功新增活動</h3>
+			<h3 class="panel-title">活動列表</h3>
 		</div>
-		<div class="panel-body">
-			<table class="table table-hover" id="myTable">
-				<thead>
-			        <tr>
-			          <th>活動名稱</th>
-			          <th>活動內容</th>
-			          <th>開始日期</th>
-			          <th>結束日期</th>
-			          <th>清除日期</th>
-			          <th>編輯</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			    </tbody>
-			</table>
-		</div>
+		<table class="table table-hover" id="myTable">
+			<thead>
+		        <tr>
+		          <th>活動名稱</th>
+		          <th>活動內容</th>
+		          <th>開始日期</th>
+		          <th>結束日期</th>
+		          <th>清除日期</th>
+		          <th>編輯</th>
+		        </tr>
+		    </thead>
+		</table>
 	</div>
 {% endblock %}
 {% block script %}
@@ -128,7 +127,7 @@
 				var current = today_year+"-"+today_month+"-"+(today_date-1);
 				myFirebaseRef.once("value", function(snapshot) {
 			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+		  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
 						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
 					});
@@ -160,7 +159,7 @@
 			var endDate = document.getElementById('endAddInput').value;
 			var deleteDate = document.getElementById('deleteAddInput').value;
 			var check = beforeCheck(name, content, startDate, endDate, deleteDate, "addAlert");
-			if (check == true) {
+			if (check) {
 				var newAddActivity = myFirebaseRef.push({
 					"Name": name,
 					"Content": content,
@@ -251,7 +250,7 @@
 			var endDate = document.getElementById('endUpdate').value;
 			var deleteDate = document.getElementById('deleteUpdate').value;
 			var check = beforeCheck(name, content, startDate, endDate, deleteDate, "updateAlert");
-			if (check == true) {
+			if (check) {
 				newFirebaseRef.update({
 					"Name": name,
 					"Content": content,

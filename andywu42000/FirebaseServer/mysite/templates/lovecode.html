@@ -5,6 +5,9 @@
 {% block lovecodeButton %}
 	<li class="active"><a href="/lovecode">愛心碼管理</a></li>
 {% endblock %}
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>
+{% endblock %}
 {% block content %}
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -29,19 +32,17 @@
 	<div id="updateAlert"></div>
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">所有愛心碼</h3>
+			<h3 class="panel-title">團體列表</h3>
 		</div>
-		<div class="panel-body">
-			<table class="table table-hover" id="myTable">
-				<thead>
-			        <tr>
-			          <th>團體名稱</th>
-			          <th>愛心碼</th>
-			          <th>編輯</th>
-			        </tr>
-			    </thead>
-			</table>
-		</div>
+		<table class="table table-hover" id="myTable">
+			<thead>
+		        <tr>
+		          <th>團體名稱</th>
+		          <th>愛心碼</th>
+		          <th>編輯</th>
+		        </tr>
+		    </thead>
+		</table>
 		<div style="text-align:center;" id="pagination"></div>
 	</div>
 	
@@ -62,7 +63,7 @@
 		function createLovecode() {
 			var title = $('#titleAddInput').val();
 			var check = beforecheck(title, $('#codeAddInput').val(), "addAlert");
-			if (check == true) {
+			if (check) {
 				var code = parseInt($('#codeAddInput').val());
 				var newAddLovecode = myFirebaseRef.push({
 					"title": title,
@@ -85,7 +86,7 @@
 		  			output += '<li><a href="javascript:void(0);" onclick="page(' + (quotient+ 1) + ')">' + (quotient + 1) + '</a></li>';
 		  		}
 	  		}else {
-	  			output += '<li><a href="javascript:void(0);" onclick="page(0)">1</a></li>';
+	  			output += '<li class="disabled"><a href="javascript:void(0);" onclick="page(0)">1</a></li>';
 	  		}
 	  		output += '</ul></nav>';
 			document.getElementById("pagination").innerHTML = output;
@@ -96,14 +97,14 @@
 			add_new_data(lovecode.title, lovecode.code, snapshot.key());
 		});
 
-		function page(quo) {
-			document.getElementById("myTable").innerHTML = '<thead><tr><th>團體名稱</th><th>愛心碼</th><th>編輯</th></tr></thead>';
+		function page(nowPage) {
 			var count = 0;
-			if(quo > 0) {
-				myFirebaseRef.orderByChild("title").limitToFirst(quo*10).on("child_added", function(snapshot, prevChildKey) {
+			if(nowPage > 0) {
+				document.getElementById("myTable").innerHTML = '<thead><tr><th>團體名稱</th><th>愛心碼</th><th>編輯</th></tr></thead>';
+				myFirebaseRef.orderByChild("title").limitToFirst(nowPage*10).on("child_added", function(snapshot, prevChildKey) {
 					var lovecode = snapshot.val();
 					count++;
-					if ((count > (quo-1)*10) && (count <= (quo)*10)) {
+					if ((count > (nowPage-1)*10) && (count <= (nowPage)*10)) {
 						add_new_data(lovecode.title, lovecode.code, snapshot.key());
 					}
 				});
@@ -141,7 +142,7 @@
 			var newFirebaseRef = new Firebase('https://barcode-29a1e.firebaseio.com/Invoice/' + key);
 			var title = $('#titleUpdate').val();
 			var check = beforecheck(title, $('#codeUpdate').val(), "updateAlert");
-			if (check == true) {
+			if (check) {
 				newFirebaseRef.update({
 					"title": title,
 					"code":  parseInt($('#codeUpdate').val())

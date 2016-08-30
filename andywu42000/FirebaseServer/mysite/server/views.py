@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
+@login_required  
 def index(request):
     return render_to_response('index.html',locals())
             

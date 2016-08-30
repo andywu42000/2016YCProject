@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 		<!-- BootStrap JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-		{% block styleArea %}{% endblock %}
+		{% block style %}{% endblock %}
 	</head>
 	<body>
 		<nav class="navbar navbar-default" role="navigation">
@@ -25,7 +25,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="/">YCProject</a>
+		      <a class="navbar-brand" href="/">Share Love</a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,6 +52,7 @@
 				{% block activityButton %}
 					<li><a href="/activity">活動管理</a></li>
 				{% endblock %}
+				{% block firebaseLinkButton %}{% endblock %}
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		        {% if request.user.is_authenticated %}

@@ -5,30 +5,30 @@
 {% block memberButton %}
 	<li class="active"><a href="/member">會員管理</a></li>
 {% endblock %}
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>
+{% endblock %}
 {% block content %}
-	<button type="button" class="btn btn-default" onclick="createMember()">新增測試會員</button>
-
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">末筆成功新增會員</h3>
+			<h3 class="panel-title">會員列表</h3>
 		</div>
 		<div class="panel-body">
-			<table class="table table-hover" id="myTable">
-				<thead>
-			        <tr>
-			          <th>Facebook ID</th>
-			          <th>暱稱</th>
-			          <th>擁有點數</th>
-			          <th>照片</th>
-			          <th>預設地區</th>
-			          <th>會員狀態變更</th>
-		       		  <th>編輯</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			    </tbody>
-			</table>
+			<button type="button" class="btn btn-default" onclick="createMember()">新增測試會員</button>
 		</div>
+		<table class="table table-hover" id="myTable">
+			<thead>
+		        <tr>
+		          <th>Facebook ID</th>
+		          <th>暱稱</th>
+		          <th>擁有點數</th>
+		          <th>照片</th>
+		          <th>預設地區</th>
+		          <th>會員狀態變更</th>
+	       		  <th>編輯</th>
+		        </tr>
+		    </thead>
+		</table>
 	</div>
 {% endblock %}
 {% block script %}
