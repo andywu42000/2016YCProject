@@ -27,12 +27,12 @@
 
 	<div>
 		<div id="statusChoose">
-			<ul class="nav nav-tabs">
-				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose('all');">全部</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('processing');">進行中</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('scheduled');">已預定</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('ended');">已結束</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('deleted');">已清除</a></li>
+			<ul class="nav nav-pills">
+				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose('all');">全部<span class="badge" id="allSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('processing');">進行中<span class="badge" id="processingSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('scheduled');">已預定<span class="badge" id="scheduledSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('ended');">已結束<span class="badge" id="endedSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('deleted');">已清除<span class="badge" id="deletedSpan"></span></a></li>
 			</ul>
 		</div>
 		<br>
@@ -70,17 +70,68 @@
 	<script type="text/javascript">
 		var myFirebaseRef = new Firebase('https://activity-a59ea.firebaseio.com/');
 
+		getAllStatusNums();
+
+		var today = new Date();
+		var today_year = today.getFullYear(); //西元年份
+		var today_month = today.getMonth()+1; //一年中的第幾月
+		if(today_month < 10) {
+			today_month = "0" + today_month;
+		}
+		var today_date = today.getDate(); //一月份中的第幾天
+
+		function getAllStatusNums() {
+			myFirebaseRef.once("value", function(snapshot) {
+		  		var childNum = snapshot.numChildren();
+		  		document.getElementById("allSpan").innerHTML = childNum;
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+		  		var current = today_year+"-"+today_month+"-"+(today_date+1);
+	  			myFirebaseRef.orderByChild("StartDate").startAt(current).on("child_added", function(snapshot, prevChildKey) {
+					var activity = snapshot.val();
+					count++;
+					document.getElementById("scheduledSpan").innerHTML = count;
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+		  		var current = today_year+"-"+today_month+"-"+(today_date);
+	  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
+					var activity = snapshot.val();
+					if(((Date.parse(activity.EndDate)).valueOf() >= (Date.parse(current)).valueOf()) && ((Date.parse(activity.StartDate)).valueOf() <= (Date.parse(current)).valueOf())) {
+						count++;
+						document.getElementById("processingSpan").innerHTML = count;
+					}	
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+				var current = today_year+"-"+today_month+"-"+(today_date-1);
+	  			myFirebaseRef.orderByChild("EndDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
+					var activity = snapshot.val();
+					if((Date.parse(activity.DeleteDate)).valueOf() > (Date.parse(current)).valueOf()) {
+						count++;
+						document.getElementById("endedSpan").innerHTML = count;
+					}
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var current = today_year+"-"+today_month+"-"+(today_date-1);
+				var count = 0;
+	  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
+					var activity = snapshot.val();
+					count++;
+					document.getElementById("deletedSpan").innerHTML = count;
+				});
+			});
+		}
+
 		function statusChoose(status) {
-			today = new Date();
-			today_year = today.getFullYear(); //西元年份
-			today_month = today.getMonth()+1; //一年中的第幾月
-			if(today_month < 10) {
-				today_month = "0" + today_month;
-			}
-			today_date = today.getDate(); //一月份中的第幾天
 			document.getElementById("myTable").innerHTML = '<thead><tr><th>活動名稱</th><th>活動內容</th><th>開始日期</th><th>結束日期</th><th>清除日期</th><th>編輯</th></tr></thead><tbody></tbody>';
 			if(status == "all") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除</a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				getAllStatusNums();
 				myFirebaseRef.once("value", function(snapshot) {
 			  		var childNum = snapshot.numChildren();
 		  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
@@ -89,20 +140,20 @@
 					});
 				});
 			}else if(status == "scheduled") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除</a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				getAllStatusNums();
+				var current = today_year+"-"+today_month+"-"+(today_date+1);	
 				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-			  		var current = today_year+"-"+today_month+"-"+(today_date+1);
 		  			myFirebaseRef.orderByChild("StartDate").startAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
 						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
 					});
 				});
 			}else if(status == "processing") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除</a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+					getAllStatusNums();
+		  		var current = today_year+"-"+today_month+"-"+(today_date);
 				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-			  		var current = today_year+"-"+today_month+"-"+(today_date);
 		  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
 						if(((Date.parse(activity.EndDate)).valueOf() >= (Date.parse(current)).valueOf()) && ((Date.parse(activity.StartDate)).valueOf() <= (Date.parse(current)).valueOf())) {
@@ -111,10 +162,10 @@
 					});
 				});
 			}else if(status == "ended") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除</a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				getAllStatusNums();		
 				var current = today_year+"-"+today_month+"-"+(today_date-1);
 				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
 		  			myFirebaseRef.orderByChild("EndDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
 						if((Date.parse(activity.DeleteDate)).valueOf() > (Date.parse(current)).valueOf()) {
@@ -123,10 +174,10 @@
 					});
 				});
 			}else if(status == "deleted") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定</a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除</a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+					getAllStatusNums();
 				var current = today_year+"-"+today_month+"-"+(today_date-1);
 				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
 		  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
 						add_new_data(activity.Name, activity.Content, activity.StartDate, activity.EndDate, activity.DeleteDate, snapshot.key());
