@@ -33,11 +33,11 @@
 
 	<div id="updateAlert"></div>
 
-	<div class="panel panel-success">
+	<div class="panel panel-danger">
 		<div class="panel-heading">
-			<h3 class="panel-title">獎號列表</h3>
+			<h3 class="panel-title">當期獎號</h3>
 		</div>
-		<table class="table table-hover" id="myTable">
+		<table class="table table-hover" id="nowTable">
 			<thead>
 		        <tr>
 		          <th>期數</th>
@@ -50,7 +50,25 @@
 		        </tr>
 		    </thead>
 		</table>
-		<div style="text-align:center;" id="pagination"></div>
+	</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">過期獎號</h3>
+		</div>
+		<table class="table table-hover" id="pastTable">
+			<thead>
+		        <tr>
+		          <th>期數</th>
+		          <th>號碼一</th>
+		          <th>號碼二</th>
+		          <th>號碼三</th>
+		          <th>號碼四</th>
+		          <th>號碼五</th>
+		          <th>編輯</th>
+		        </tr>
+		    </thead>
+		</table>
+		<!--<div style="text-align:center;" id="pagination"></div>-->
 	</div>
 {% endblock %}
 {% block script %}
@@ -66,7 +84,7 @@
 			}
 		}
 
-		myFirebaseRef.once("value", function(snapshot) {
+		/*myFirebaseRef.once("value", function(snapshot) {
 	  		var childNum = snapshot.numChildren();
 	  		var quotient = parseInt(childNum / 10);
 	  		var remainder = childNum % 10;
@@ -90,14 +108,14 @@
 			if(nowPage > 0) {
 				document.getElementById("myTable").innerHTML = '<thead><tr><th>期數</th><th>號碼一</th><th>號碼二</th><th>號碼三</th><th>號碼四</th><th>號碼五</th><th>編輯</th></tr></thead>';
 				myFirebaseRef.orderByChild("Period").limitToFirst(nowPage*10).on("child_added", function(snapshot, prevChildKey) {
-					var lovecode = snapshot.val();
+					var lottery = snapshot.val();
 					count++;
 					if ((count > (nowPage-1)*10) && (count <= (nowPage)*10)) {
-						add_new_data(lovecode.title, lovecode.code, snapshot.key());
+						add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key());
 					}
 				});
 			}
-		}
+		}*/
 
 		Date.prototype.toDateInputValue = (function() {
 		    var local = new Date(this);
@@ -123,22 +141,28 @@
 			}
 		}
 
-		myFirebaseRef.orderByChild("Period").limitToFirst(10).on("child_added", function(snapshot, prevChildKey) {
-			var lottery = snapshot.val();
-			add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key());
-		});
-		
-		function add_new_data(period, first, second, third, fourth, fifth, key) {
+		myFirebaseRef.orderByChild("Period").on("child_added", function(snapshot, prevChildKey) {
+			var lottery = snapshot.val();	
 			var today = new Date();
 			today.setDate(new Date().getDate() - 7);
+			if ((Date.parse(lottery.Period)).valueOf() > (today).valueOf()) {
+				add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key(), "nowTable", true);
+			}else {
+
+				add_new_data(lottery.Period, lottery.Numbers.First, lottery.Numbers.Second, lottery.Numbers.Third, lottery.Numbers.Fourth, lottery.Numbers.Fifth, snapshot.key(), "pastTable", false);
+			}
+		});
+
+		
+		function add_new_data(period, first, second, third, fourth, fifth, key, where, today) {
 			//先取得目前的row數
-			var num = document.getElementById("myTable").rows.length;
+			var num = document.getElementById(where).rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
-			var Tr = document.getElementById("myTable").insertRow(-1);
+			var Tr = document.getElementById(where).insertRow(-1);
 			//建立新的td 而Tr.cells.length就是這個tr目前的td數
 			Td = Tr.insertCell(Tr.cells.length);
 			//而這個就是要填入td中的innerHTML	
-			if((Date.parse(period)).valueOf() > (today).valueOf()) {
+			if(today) {
 				Td.innerHTML=period + ' <span class="label label-primary">當期</span>';
 			}else {
 				Td.innerHTML=period + ' <span class="label label-default">過期</span>';

@@ -120,7 +120,7 @@
 			if(nowPage > 0) {
 				document.getElementById("myTable").innerHTML = '<thead><tr><th>優惠券名稱</th><th>優惠券資訊</th><th>相片(imgur後7碼，不含.jpg)</th><th>價格</th><th>剩餘數量</th><th>編輯</th></tr></thead>';
 				myFirebaseRef.orderByChild("Name").limitToFirst(nowPage*10).on("child_added", function(snapshot, prevChildKey) {
-					var lovecode = snapshot.val();
+					var coupon = snapshot.val();
 					count++;
 					if ((count > (nowPage-1)*10) && (count <= (nowPage)*10)) {
 						add_new_data(coupon.Name, coupon.Information, coupon.Photos.Photo_ID, coupon.Price, coupon.Remaining_Amount, snapshot.key());
@@ -159,7 +159,7 @@
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML=price;
 			Td = Tr.insertCell(Tr.cells.length);
-			d.innerHTML=remainingAmount;
+			Td.innerHTML=remainingAmount;
 			Td = Tr.insertCell(Tr.cells.length);
 			Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateCoupon(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteCoupon(' + "'" + key + "'" + ')">刪除</button>';
 		}
