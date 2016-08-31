@@ -27,7 +27,7 @@
 
 	<div>
 		<div id="statusChoose">
-			<ul class="nav nav-pills">
+			<ul class="nav nav-tabs">
 				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose('all');">全部<span class="badge" id="allSpan"></span></a></li>
 				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('processing');">進行中<span class="badge" id="processingSpan"></span></a></li>
 				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('scheduled');">已預定<span class="badge" id="scheduledSpan"></span></a></li>
@@ -130,7 +130,7 @@
 		function statusChoose(status) {
 			document.getElementById("myTable").innerHTML = '<thead><tr><th>活動名稱</th><th>活動內容</th><th>開始日期</th><th>結束日期</th><th>清除日期</th><th>編輯</th></tr></thead><tbody></tbody>';
 			if(status == "all") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 				getAllStatusNums();
 				myFirebaseRef.once("value", function(snapshot) {
 			  		var childNum = snapshot.numChildren();
@@ -140,7 +140,7 @@
 					});
 				});
 			}else if(status == "scheduled") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 				getAllStatusNums();
 				var current = today_year+"-"+today_month+"-"+(today_date+1);	
 				myFirebaseRef.once("value", function(snapshot) {
@@ -150,7 +150,7 @@
 					});
 				});
 			}else if(status == "processing") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 					getAllStatusNums();
 		  		var current = today_year+"-"+today_month+"-"+(today_date);
 				myFirebaseRef.once("value", function(snapshot) {
@@ -162,7 +162,7 @@
 					});
 				});
 			}else if(status == "ended") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 				getAllStatusNums();		
 				var current = today_year+"-"+today_month+"-"+(today_date-1);
 				myFirebaseRef.once("value", function(snapshot) {
@@ -174,7 +174,7 @@
 					});
 				});
 			}else if(status == "deleted") {
-				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-pills"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
+				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 					getAllStatusNums();
 				var current = today_year+"-"+today_month+"-"+(today_date-1);
 				myFirebaseRef.once("value", function(snapshot) {

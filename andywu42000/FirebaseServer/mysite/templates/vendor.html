@@ -22,17 +22,18 @@
 			<h3 class="panel-title">新增攤販</h3>
 		</div>
 		<div class="panel-body">
+			<font color="red"><h5>*必填</h5></font>
 			<label><p>攤販資訊：<p>
-				<label>攤販名稱：<input type="text" id="nameAddInput"></input></label>
+				<label>*攤販名稱：<input type="text" id="nameAddInput"></input></label>
 				<label>攤販電話：<input type="text" id="phoneAddInput"></input></label>
-				<label>攤販介紹：<textarea rows="5" cols="30"id="introductionAddInput"></textarea></label>
+				<label>*攤販介紹：<textarea rows="5" cols="30"id="introductionAddInput"></textarea></label>
 				<label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoAddInput"></input></label>
 			</label>
 			<label><p>攤販地點：<p>
 				<label>地址：<input type="text" id="addressAddInput"></input></label>
-				<label>郵遞區號：<input type="text" id="zipAddInput"></input></label>
-				<label>緯度：<input type="number" id="latiAddInput" placeholder="Float Only" min="-90" max="90" step="0.0000001"></input></label>
-				<label>經度：<input type="number" id="longiAddInput" placeholder="Float Only" min="-180" max="180" step="0.0000001"></input></label>
+				<label>*郵遞區號：<input type="number" id="zipAddInput" placeholder="100~983" min="100" max="983" step="1"></input></label>
+				<label>*緯度：<input type="number" id="latiAddInput" placeholder="Float Only" min="-90" max="90" step="0.0000001"></input></label>
+				<label>*經度：<input type="number" id="longiAddInput" placeholder="Float Only" min="-180" max="180" step="0.0000001"></input></label>
 			</label>
 			<label><p>營業時間：<p>
 				<label>週日：<input type="time" id="sunOpenAddInput">~<input type="time" id="sunCloseAddInput"></label>
@@ -44,7 +45,7 @@
 				<label>週六：<input type="time" id="satOpenAddInput">~<input type="time" id="satCloseAddInput"></label>
 				<label>備註：<input type="text" id="remarkAddInput"></input></label>
 			</label>
-			<label><p>攤販類型：
+			<label><p>*攤販類型：
 				<select id="typeAddInput">
 					<option value=1>食物</option>
 					<option value=2>飲料</option>
@@ -55,15 +56,17 @@
 		</div>
 	</div>
 
+	<div id="addAlert"></div>
+
 	<div>
 		<div id="typeChoose">
 			<ul class="nav nav-tabs">
-				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose('all');">全部</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('isFocus');">焦點</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('notFocus');">非焦點</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popLow');">人氣低迷</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popFine');">人氣尚可</a></li>
-				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popHigh');">人氣高漲</a></li>
+				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose('all');">全部<span class="badge" id="allSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('isFocus');">焦點<span class="badge" id="isFocusSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('notFocus');">非焦點<span class="badge" id="notFocusSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popLow');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popFine');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="typeChoose('popHigh');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li>
 			</ul>
 		</div>
 		<br>
@@ -77,9 +80,12 @@
 			請選擇資料以編輯。
 		</div>
 	</div>
+
+	<div id="updateAlert"></div>
+
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">末筆成功新增攤販</h3>
+			<h3 class="panel-title">攤販列表</h3>
 		</div>
 		<table class="table table-hover" id="myTable">
 			<thead>
@@ -96,12 +102,150 @@
 		        </tr>
 		    </thead>
 		</table>
-		<div style="text-align:center;" id="pagination"></div>
+		<!--<div style="text-align:center;" id="pagination"></div>-->
 	</div>
 {% endblock %}
 {% block script %}
 	<script type="text/javascript">
 		var myFirebaseRef = new Firebase('https://vendor-5acbc.firebaseio.com/Vendors');
+
+		getAllTypeNums();
+
+		function getAllTypeNums() {
+			myFirebaseRef.once("value", function(snapshot) {
+		  		var childNum = snapshot.numChildren();
+		  		document.getElementById("allSpan").innerHTML = childNum;
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+					var vendor = snapshot.val();
+					if (vendor.Focus == true) {
+						count++;
+						document.getElementById("isFocusSpan").innerHTML = count;
+					}
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+					var vendor = snapshot.val();
+					if (vendor.Focus == false) {
+						count++;
+						document.getElementById("notFocusSpan").innerHTML = count;
+					}
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+					var vendor = snapshot.val();
+					if (vendor.Popularity <= 20) {
+						count++;
+						document.getElementById("popLowSpan").innerHTML = count;
+					}
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+					var vendor = snapshot.val();
+					if (vendor.Popularity > 20 && vendor.Popularity < 100) {
+						count++;
+						document.getElementById("popFineSpan").innerHTML = count;
+					}
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+					var vendor = snapshot.val();
+					if (vendor.Popularity >= 100) {
+						count++;
+						document.getElementById("popHighSpan").innerHTML = count;
+					}
+				});
+			});
+		}
+
+		function typeChoose(type) {
+			document.getElementById("myTable").innerHTML = '<thead><tr><th>攤販名稱</th><th>攤販電話</th><th>攤販類型</th><th>郵遞區號</th><th>緯度</th><th>經度</th><th>相片</th><th>焦點狀態</th><th>編輯</th></tr></thead>';
+			if(type == "all") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點<span class="badge" id="isFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點<span class="badge" id="notFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li></ul>';
+				getAllTypeNums();
+				myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+					});
+				});
+			}else if(type == "isFocus") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點<span class="badge" id="isFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點<span class="badge" id="notFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li></ul>';
+				getAllTypeNums();
+				myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Focus == true) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "notFocus") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點<span class="badge" id="isFocusSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點<span class="badge" id="notFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li></ul>';
+				getAllTypeNums();
+				myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Focus == false) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "popLow") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點<span class="badge" id="isFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點<span class="badge" id="notFocusSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li></ul>';
+				getAllTypeNums();
+				myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Popularity <= 20) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "popFine") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點<span class="badge" id="isFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點<span class="badge" id="notFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li></ul>';
+				getAllTypeNums();
+				myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Popularity > 20 && vendor.Popularity < 100) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}else if(type == "popHigh") {
+				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點<span class="badge" id="isFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點<span class="badge" id="notFocusSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷<span class="badge" id="popLowSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可<span class="badge" id="popFineSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲<span class="badge" id="popHighSpan"></span></a></li></ul>';
+				getAllTypeNums();
+				myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
+						var vendor = snapshot.val();
+						if (vendor.Popularity >= 100) {
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						}
+					});
+				});
+			}
+		}
+
+		function beforeCheck(name, introduction, zip, lati, longi, type, where) {
+			if(name == "" || introduction == "" || zip == "" || lati == "" || longi == "" || type == "") {
+				document.getElementById(where).innerHTML = '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>警告！</strong>還有未填入的資料喔。</div>';
+				return false;
+			}else{
+				return true;
+			}
+		}
+
 		function addNewVendor() {
 			var name = $('#nameAddInput').val();
 			var phone = $('#phoneAddInput').val();
@@ -127,83 +271,85 @@
 			var satClose = $('#satCloseAddInput').val();
 			var remark = $('#remarkAddInput').val();
 			var type = parseInt($('#typeAddInput').val());
-			var newAddvendor = myFirebaseRef.push({
-				"Location": {
-					"Address": address,
-					"ZIP": zip,
-					"Latitude": lati,
-					"Longitude": longi
-				},
-				"Information": {
-					"Name": name,
-					"Phone": phone,
-					"Introduction": introduction
-				},
-				"Open_Days": {
-					"Sun": {
-						"Open_At": sunOpen,
-						"Close_At": sunClose
+			var check = beforeCheck(name, introduction, zip, lati, longi, type, "addAlert");
+			if(check) {
+				var newAddvendor = myFirebaseRef.push({
+					"Location": {
+						"Address": address,
+						"ZIP": zip,
+						"Latitude": lati,
+						"Longitude": longi
 					},
-					"Mon": {
-						"Open_At": monOpen,
-						"Close_At": monClose
+					"Information": {
+						"Name": name,
+						"Phone": phone,
+						"Introduction": introduction
 					},
-					"Tue": {
-						"Open_At": tueOpen,
-						"Close_At": tueClose
+					"Open_Days": {
+						"Sun": {
+							"Open_At": sunOpen,
+							"Close_At": sunClose
+						},
+						"Mon": {
+							"Open_At": monOpen,
+							"Close_At": monClose
+						},
+						"Tue": {
+							"Open_At": tueOpen,
+							"Close_At": tueClose
+						},
+						"Wed": {
+							"Open_At": wedOpen,
+							"Close_At": wedClose
+						},
+						"Thu": {
+							"Open_At": thuOpen,
+							"Close_At": thuClose
+						},
+						"Fri": {
+							"Open_At": friOpen,
+							"Close_At": friClose
+						},
+						"Sat": {
+							"Open_At": satOpen,
+							"Close_At": satClose
+						},
+						"Remark": remark
 					},
-					"Wed": {
-						"Open_At": wedOpen,
-						"Close_At": wedClose
+					"Types": {
+						"Type_ID": type
 					},
-					"Thu": {
-						"Open_At": thuOpen,
-						"Close_At": thuClose
-					},
-					"Fri": {
-						"Open_At": friOpen,
-						"Close_At": friClose
-					},
-					"Sat": {
-						"Open_At": satOpen,
-						"Close_At": satClose
-					},
-					"Remark": remark
-				},
-				"Types": {
-					"Type_ID": type
-				},
-				"Popularity": 0,
-				"Comments": null,
-				"Focus": false,
-				"Photos": {
-					"Photo_ID": photo
-				}
-			});
-			//var newAddMarkId = newAddMark.key();
-			$('#nameAddInput').val("");
-			$('#phoneAddInput').val("");
-			$('#introductionAddInput').val("");
-			$('#photoAddInput').val("");
-			$('#addressAddInput').val("");
-			$('#zipAddInput').val("");
-			$('#latiAddInput').val("");
-			$('#longiAddInput').val("");
-			$('#sunOpenAddInput').val("");
-			$('#sunCloseAddInput').val("");
-			$('#monOpenAddInput').val("");
-			$('#monCloseAddInput').val("");
-			$('#tueOpenAddInput').val("");
-			$('#tueCloseAddInput').val("");
-			$('#wedOpenAddInput').val("");
-			$('#wedCloseAddInput').val("");
-			$('#thuOpenAddInput').val("");
-			$('#thuCloseAddInput').val("");
-			$('#friOpenAddInput').val("");
-			$('#friCloseAddInput').val("");
-			$('#satOpenAddInput').val("");
-			$('#satCloseAddInput').val("");
-			$('#remarkAddInput').val("");
+					"Popularity": 0,
+					"Comments": null,
+					"Focus": false,
+					"Photos": {
+						"Photo_ID": photo
+					}
+				});
+				$('#nameAddInput').val("");
+				$('#phoneAddInput').val("");
+				$('#introductionAddInput').val("");
+				$('#photoAddInput').val("");
+				$('#addressAddInput').val("");
+				$('#zipAddInput').val("");
+				$('#latiAddInput').val("");
+				$('#longiAddInput').val("");
+				$('#sunOpenAddInput').val("");
+				$('#sunCloseAddInput').val("");
+				$('#monOpenAddInput').val("");
+				$('#monCloseAddInput').val("");
+				$('#tueOpenAddInput').val("");
+				$('#tueCloseAddInput').val("");
+				$('#wedOpenAddInput').val("");
+				$('#wedCloseAddInput').val("");
+				$('#thuOpenAddInput').val("");
+				$('#thuCloseAddInput').val("");
+				$('#friOpenAddInput').val("");
+				$('#friCloseAddInput').val("");
+				$('#satOpenAddInput').val("");
+				$('#satCloseAddInput').val("");
+				$('#remarkAddInput').val("");
+			}
 		};
 
 		myFirebaseRef.once("value", function(snapshot) {
@@ -246,75 +392,6 @@
 				});
 			}
 		}*/
-
-		function typeChoose(type) {
-			document.getElementById("myTable").innerHTML = '<thead><tr><th>攤販名稱</th><th>攤販電話</th><th>攤販類型</th><th>郵遞區號</th><th>緯度</th><th>經度</th><th>相片</th><th>焦點狀態</th><th>編輯</th></tr></thead>';
-			if(type == "all") {
-				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
-				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
-						var vendor = snapshot.val();
-						add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
-					});
-				});
-			}else if(type == "isFocus") {
-				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
-				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
-						var vendor = snapshot.val();
-						if (vendor.Focus == true) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
-						}
-					});
-				});
-			}else if(type == "notFocus") {
-				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
-				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
-						var vendor = snapshot.val();
-						if (vendor.Focus == false) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
-						}
-					});
-				});
-			}else if(type == "popLow") {
-				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
-				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
-						var vendor = snapshot.val();
-						if (vendor.Popularity <= 20) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
-						}
-					});
-				});
-			}else if(type == "popFine") {
-				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
-				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
-						var vendor = snapshot.val();
-						if (vendor.Popularity > 20 && vendor.Popularity < 100) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
-						}
-					});
-				});
-			}else if(type == "popHigh") {
-				document.getElementById("typeChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'all\');">全部</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'isFocus\');">焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'notFocus\');">非焦點</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popLow\');">人氣低迷</a></li><li role="presentation"><a href="javascript:void(0);" onclick="typeChoose(\'popFine\');">人氣尚可</a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="typeChoose(\'popHigh\');">人氣高漲</a></li></ul>';
-				myFirebaseRef.once("value", function(snapshot) {
-			  		var childNum = snapshot.numChildren();
-		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
-						var vendor = snapshot.val();
-						if (vendor.Popularity >= 100) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
-						}
-					});
-				});
-			}
-		}
 		
 		function add_new_data(name, phone, type, zip, lati, longi, photos, popularity, focus, key) {
 			//先取得目前的row數
@@ -402,13 +479,13 @@
 			    var satClose = snapshot.child("Open_Days").child("Sat").child("Close_At").val();
 			    var remark = snapshot.child("Open_Days").child("Remark").val();
 			    var type = snapshot.child("Types").child("Type_ID").val();
-			    var content = '<label><p>攤販資訊：<p><label>攤販名稱：<input type="text" id="nameUpdate" value="' + name + '"></input></label><label>攤販電話：<input type="text" id="phoneUpdate" value="' + phone + '"></input></label><label>攤販介紹：<textarea rows="5" cols="30" id="introductionUpdate">' + introduction + '</textarea></label><label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></input></label></label><label><p>攤販地點：<p><label>地址：<input type="text" id="addressUpdate" value="' + address + '"></input></label><label>郵遞區號：<input type="text" id="zipUpdate" value="' + zip + '"></input></label><label>緯度：<input type="number" id="latiUpdate" placeholder="Float Only" value="' + latitude + '" min="-90" max="90" step="0.0000001"></input></label><label>經度：<input type="number" id="longiUpdate" placeholder="Float Only" value="' + longitude + '" min="-180" max="180" step="0.0000001"></input></label></label><label><p>營業時間：<p><label>週日：<input type="time" id="sunOpenUpdate" value="' + sunOpen + '">~<input type="time" id="sunCloseUpdate" value="' + sunClose + '"></label><label>週一：<input type="time" id="monOpenUpdate" value="' + monOpen + '">~<input type="time" id="monCloseUpdate" value="' + monClose + '"></label><label>週二：<input type="time" id="tueOpenUpdate" value="' + tueOpen + '">~<input type="time" id="tueCloseUpdate" value="' + tueClose + '"></label><label>週三：<input type="time" id="wedOpenUpdate" value="' + wedOpen + '">~<input type="time" id="wedCloseUpdate" value="' + wedClose + '"></label><label>週四：<input type="time" id="thuOpenUpdate" value="' + thuOpen + '">~<input type="time" id="thuCloseUpdate" value="' + thuClose + '"></label><label>週五：<input type="time" id="friOpenUpdate" value="' + friOpen + '">~<input type="time" id="friCloseUpdate" value="' + friClose + '"></label><label>週六：<input type="time" id="satOpenUpdate" value="' + satOpen + '">~<input type="time" id="satCloseUpdate" value="' + satClose + '"></label><label>備註：<input type="text" id="remarkUpdate" value="' + remark + '"></input></label></label>';
+			    var content = '<font color="red"><h5>*必填</h5></font><label><p>攤販資訊：<p><label>*攤販名稱：<input type="text" id="nameUpdate" value="' + name + '"></input></label><label>攤販電話：<input type="text" id="phoneUpdate" value="' + phone + '"></input></label><label>*攤販介紹：<textarea rows="5" cols="30" id="introductionUpdate">' + introduction + '</textarea></label><label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></input></label></label><label><p>攤販地點：<p><label>地址：<input type="text" id="addressUpdate" value="' + address + '"></input></label><label>*郵遞區號：<input type="text" id="zipUpdate" value="' + zip + '"></input></label><label>*緯度：<input type="number" id="latiUpdate" placeholder="Float Only" value="' + latitude + '" min="-90" max="90" step="0.0000001"></input></label><label>*經度：<input type="number" id="longiUpdate" placeholder="Float Only" value="' + longitude + '" min="-180" max="180" step="0.0000001"></input></label></label><label><p>營業時間：<p><label>週日：<input type="time" id="sunOpenUpdate" value="' + sunOpen + '">~<input type="time" id="sunCloseUpdate" value="' + sunClose + '"></label><label>週一：<input type="time" id="monOpenUpdate" value="' + monOpen + '">~<input type="time" id="monCloseUpdate" value="' + monClose + '"></label><label>週二：<input type="time" id="tueOpenUpdate" value="' + tueOpen + '">~<input type="time" id="tueCloseUpdate" value="' + tueClose + '"></label><label>週三：<input type="time" id="wedOpenUpdate" value="' + wedOpen + '">~<input type="time" id="wedCloseUpdate" value="' + wedClose + '"></label><label>週四：<input type="time" id="thuOpenUpdate" value="' + thuOpen + '">~<input type="time" id="thuCloseUpdate" value="' + thuClose + '"></label><label>週五：<input type="time" id="friOpenUpdate" value="' + friOpen + '">~<input type="time" id="friCloseUpdate" value="' + friClose + '"></label><label>週六：<input type="time" id="satOpenUpdate" value="' + satOpen + '">~<input type="time" id="satCloseUpdate" value="' + satClose + '"></label><label>備註：<input type="text" id="remarkUpdate" value="' + remark + '"></input></label></label>';
 			if(type == 1) {
-				content += '<label><p>攤販類型：<select id="typeUpdate"><option value=1 selected="selected">食物</option><option value=2>飲料</option><option value=3>其它</option></select></label>';
+				content += '<label><p>*攤販類型：<select id="typeUpdate"><option value=1 selected="selected">食物</option><option value=2>飲料</option><option value=3>其它</option></select></label>';
 			}else if(type == 2) {
-				content += '<label><p>攤販類型：<select id="typeUpdate"><option value=1>食物</option><option value=2 selected="selected">飲料</option><option value=3>其它</option></select></label>';
+				content += '<label><p>*攤販類型：<select id="typeUpdate"><option value=1>食物</option><option value=2 selected="selected">飲料</option><option value=3>其它</option></select></label>';
 			}else if(type == 3) {
-				content += '<label><p>攤販類型：<select id="typeUpdate"><option value=1>食物</option><option value=2>飲料</option><option value=3 selected="selected">其它</option></select></label>';
+				content += '<label><p>*攤販類型：<select id="typeUpdate"><option value=1>食物</option><option value=2>飲料</option><option value=3 selected="selected">其它</option></select></label>';
 			}
 			    document.getElementById("updateVendorArea").innerHTML = content + ' <button type="button" class="btn btn-default" onclick="saveUpdatedVendor(' + "'" + key + "'" + ')">確認編輯</button>';
 			
@@ -441,60 +518,63 @@
 			var satClose = $('#satCloseUpdate').val();
 			var remark = $('#remarkUpdate').val();
 			var type = parseInt($('#typeUpdate').val());
-			newFirebaseRef.update({
-				"Location": {
-					"Address": address,
-					"ZIP": zip,
-					"Latitude": lati,
-					"Longitude": longi
-				},
-				"Information": {
-					"Name": name,
-					"Phone": phone,
-					"Introduction": introduction
-				},
-				"Open_Days": {
-					"Sun": {
-						"Open_At": sunOpen,
-						"Close_At": sunClose
+			var check = beforeCheck(name, introduction, zip, lati, longi, type, "updateAlert");
+			if(check) {
+				newFirebaseRef.update({
+					"Location": {
+						"Address": address,
+						"ZIP": zip,
+						"Latitude": lati,
+						"Longitude": longi
 					},
-					"Mon": {
-						"Open_At": monOpen,
-						"Close_At": monClose
+					"Information": {
+						"Name": name,
+						"Phone": phone,
+						"Introduction": introduction
 					},
-					"Tue": {
-						"Open_At": tueOpen,
-						"Close_At": tueClose
+					"Open_Days": {
+						"Sun": {
+							"Open_At": sunOpen,
+							"Close_At": sunClose
+						},
+						"Mon": {
+							"Open_At": monOpen,
+							"Close_At": monClose
+						},
+						"Tue": {
+							"Open_At": tueOpen,
+							"Close_At": tueClose
+						},
+						"Wed": {
+							"Open_At": wedOpen,
+							"Close_At": wedClose
+						},
+						"Thu": {
+							"Open_At": thuOpen,
+							"Close_At": thuClose
+						},
+						"Fri": {
+							"Open_At": friOpen,
+							"Close_At": friClose
+						},
+						"Sat": {
+							"Open_At": satOpen,
+							"Close_At": satClose
+						},
+						"Remark": remark
 					},
-					"Wed": {
-						"Open_At": wedOpen,
-						"Close_At": wedClose
+					"Types": {
+						"Type_ID": type
 					},
-					"Thu": {
-						"Open_At": thuOpen,
-						"Close_At": thuClose
-					},
-					"Fri": {
-						"Open_At": friOpen,
-						"Close_At": friClose
-					},
-					"Sat": {
-						"Open_At": satOpen,
-						"Close_At": satClose
-					},
-					"Remark": remark
-				},
-				"Types": {
-					"Type_ID": type
-				},
-				"Popularity": 0,
-				"Comments": null,
-				"Focus": false,
-				"Photos": {
-					"Photo_ID": photo
-				}
-			});
-			window.location.reload();
+					"Popularity": 0,
+					"Comments": null,
+					"Focus": false,
+					"Photos": {
+						"Photo_ID": photo
+					}
+				});
+				window.location.reload();
+			}
 		}
 
 		function deleteVendor(key) {
