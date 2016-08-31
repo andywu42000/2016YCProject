@@ -72,8 +72,11 @@ public class OwnedCouponFragment extends Fragment {
     }
 
 
+
     public void connectToMemberFirebase() {
         final CustomAdapter adapter = new CustomAdapter(this.getActivity(), couponIDList, couponDueDateList, couponInfoList, couponkeyList);
+
+
         Firebase.setAndroidContext(this.getActivity());
         final Firebase member_db = new Firebase(MEMBER_DB_URL);
 
@@ -102,7 +105,10 @@ public class OwnedCouponFragment extends Fragment {
                         String coupon_info = id.get(key).get("Information");
 
 
-                        //ToCouponFirebase(coupon_id);
+
+
+                        final ToCouponFireBase toCouponFireBase = new ToCouponFireBase(getActivity(),coupon_id);
+                        toCouponFireBase.getCouponInfo();
                         //System.out.println(couponNameList);
 
 
@@ -147,36 +153,82 @@ public class OwnedCouponFragment extends Fragment {
     }
 
 
-    public void ToCouponFirebase(String coupon_id) {
-
-        final ArrayList<String> name = new ArrayList<>();
-        final Firebase coupon_db = new Firebase(COUPON_DB_URL);
-        coupon_db.child(coupon_id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                String coupon_name = (String) dataSnapshot.child("Name").getValue();
-                String photo_id = (String) dataSnapshot.child("Photos").child("Photo_ID").getValue();
-
-                name.add(coupon_name);
-                couponNameList = name;
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
 
 
-        });
+    public class ToCouponFireBase {
 
 
-        System.out.println(couponNameList);
-        //name.clear();
+        String c_ID;
+        Context c;
+
+
+        public ToCouponFireBase(Context context, String couponID){
+
+            this.c_ID=couponID;
+            this.c = context;
+        }
+
+
+
+        public void getCouponInfo (){
+
+            final Firebase coupon_db = new Firebase(COUPON_DB_URL);
+            coupon_db.child(c_ID).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    //String n = (String)dataSnapshot.child("Name").getValue();
+
+
+
+
+
+
+//                    TextView couponName = (TextView)getView().findViewById(R.id.coupon_name);
+//                    couponName.setText(n);
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+        }
+
+
+
+
+
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     public class CustomAdapter extends BaseAdapter {

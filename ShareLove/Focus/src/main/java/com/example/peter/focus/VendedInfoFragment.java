@@ -1,6 +1,9 @@
 package com.example.peter.focus;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -38,13 +50,22 @@ public class VendedInfoFragment extends Fragment {
     private static final String ARGUMENT_ADDRESS = "VendorAddress";
     private static final String ARGUMENT_STORY = "VendorStory";
     */
-    public static VendedInfoFragment newInstance(){
-        Bundle args = new Bundle();
 
-       VendedInfoFragment fragment = new VendedInfoFragment();
-        fragment.setArguments(args);
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
 
-        return fragment;
+    Bitmap bitmap;
+    String forShareUse;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        super.onCreate(savedInstanceState);
+
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+
+
     }
 
     public static VendedInfoFragment newInstance(String vendorTitle/*, String vendorURL, String vendorPhone, String timeRemark,
@@ -99,6 +120,9 @@ public class VendedInfoFragment extends Fragment {
         final TextView addressTextView = (TextView)view.findViewById(R.id.addressTextView);
         final TextView storyTextView = (TextView)view.findViewById(R.id.storyTextView);
 
+        final ImageView fbShare = (ImageView)view.findViewById(R.id.fbShareImageView);
+        fbShare.bringToFront();
+
         final Bundle args = getArguments();
         titleTextView.setText(args.getString(ARGUMENT_TITLE));
         /*
@@ -121,9 +145,9 @@ public class VendedInfoFragment extends Fragment {
         final Firebase vendor2 = new Firebase(DB_URL);
         String mark = args.getString(ARGUMENT_TITLE);
 
-        Query focusVendor = vendor2.orderByChild("Information/Name").equalTo(mark);
+        Query focusVendor2 = vendor2.orderByChild("Information/Name").equalTo(mark);
 
-        focusVendor.addChildEventListener(new ChildEventListener() {
+        focusVendor2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -131,6 +155,8 @@ public class VendedInfoFragment extends Fragment {
                 String pic = imgurURL + picId + ".jpg";
                 DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
                 downloadImage.execute(pic);
+
+                forShareUse = pic;
 
                 String phone = (String) dataSnapshot.child("Information").child("Phone").getValue();
                 String remark = (String) dataSnapshot.child("Open_Days").child("Remark").getValue();
@@ -193,12 +219,89 @@ public class VendedInfoFragment extends Fragment {
             }
         });
 
+        fbShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+                    @Override
+                    public void onSuccess(Sharer.Result result) {
+                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+                        /*
+                        !!!在這裡做分享完成後想要做的動作，幫助樂透運行
+                         */
+
+
+                        //8/27變動部分
+                        MemberDB memberDB = new MemberDB(getActivity(),getContext());
+                        memberDB.getLottoNum();
+
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(getContext(), "cancel", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                if(ShareDialog.canShow(SharePhotoContent.class)){
+                    //Bitmap image = getBitmap(forShareUse);
+
+                    ShareLinkContent content = new ShareLinkContent.Builder()
+                            .setContentTitle(args.getString(ARGUMENT_TITLE))
+                            .setImageUrl(Uri.parse(forShareUse))
+                            .build();
+
+                    /*
+                    SharePhoto photo = new SharePhoto.Builder().setImageUrl(Uri.parse(forShareUse)).build();
+                    SharePhotoContent content = new SharePhotoContent
+                            .Builder().addPhoto(photo).build();
+                            */
+
+                    shareDialog.show(content);
+
+                }else {
+                    Toast.makeText(getContext(), "QQ", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
         return view;
     }
 
+    /*
+    public Bitmap getBitmap(String... params){
+        HttpURLConnection connection;
+        final Bitmap myBitmap;
+
+        try{
+            URL url = new URL(params[0]);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            InputStream input = connection.getInputStream();
+            myBitmap = BitmapFactory.decodeStream(input);
+            this.bitmap = myBitmap;
 
 
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+    */
 
-
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

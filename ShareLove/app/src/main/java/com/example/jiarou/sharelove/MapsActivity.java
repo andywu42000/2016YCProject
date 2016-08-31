@@ -1,6 +1,5 @@
 package com.example.jiarou.sharelove;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -17,9 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chiayi.myapplication.CouponMainActivity;
-import com.example.peter.focus.FocusFragment;
-import com.example.peter.focus.VendedInfoFragment;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -50,15 +48,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String vendorTitle;
     Spinner list;
 
+    TextView textView21;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //初始化臉書
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Firebase.setAndroidContext(this);
        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
 
+        textView21 = (TextView)findViewById(R.id.textView21);
+
+        //如果找不到臉書是用者相關資料，跳轉至登入頁面
+      if(AccessToken.getCurrentAccessToken() == null){
+            Intent intent = new Intent();
+            intent.setClass(MapsActivity.this, Login.class);
+            startActivity(intent);
+        }else{
+            textView21.setText("登出");
+            textView21.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(MapsActivity.this, Login.class);
+                    startActivity(intent);
+                }
+            });
+        } 
 
 
         index_btn=(Button)findViewById(R.id.index);
@@ -76,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(MapsActivity.this, TestActivity.class);
+                intent.setClass(MapsActivity.this, GameActivity.class);
                 startActivity(intent);
             }
         });
@@ -120,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             public void onClick(View v) {
                 Intent intent;
-                intent = new Intent(MapsActivity.this, SearchActivity.class);
+                intent = new Intent(MapsActivity.this, IndexActivity.class);
                 startActivityForResult(intent, 1);
 
 
@@ -284,6 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
 
 
             }
