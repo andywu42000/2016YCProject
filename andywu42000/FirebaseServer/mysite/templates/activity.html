@@ -73,12 +73,16 @@
 		getAllStatusNums();
 
 		var today = new Date();
-		var today_year = today.getFullYear(); //西元年份
+		/*var today_year = today.getFullYear(); //西元年份
 		var today_month = today.getMonth()+1; //一年中的第幾月
+
+		var today_date = today.getDate(); //一月份中的第幾天
 		if(today_month < 10) {
 			today_month = "0" + today_month;
 		}
-		var today_date = today.getDate(); //一月份中的第幾天
+		if(today_date < 10) {
+			today_date = "0" + today_date;
+		}*/
 
 		function getAllStatusNums() {
 			myFirebaseRef.once("value", function(snapshot) {
@@ -87,7 +91,18 @@
 			});
 			myFirebaseRef.once("value", function(snapshot) {
 				var count = 0;
-		  		var current = today_year+"-"+today_month+"-"+(today_date+1);
+		  		var date = new Date();
+		  		date.setDate(new Date().getDate()+1);
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+		  		var current = date_year+"-"+date_month+"-"+(date_date);
 	  			myFirebaseRef.orderByChild("StartDate").startAt(current).on("child_added", function(snapshot, prevChildKey) {
 					var activity = snapshot.val();
 					count++;
@@ -96,7 +111,18 @@
 			});
 			myFirebaseRef.once("value", function(snapshot) {
 				var count = 0;
-		  		var current = today_year+"-"+today_month+"-"+(today_date);
+				var date = new Date();
+		  		date.setDate(new Date().getDate());
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+		  		var current = date_year+"-"+date_month+"-"+(date_date);
 	  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
 					var activity = snapshot.val();
 					if(((Date.parse(activity.EndDate)).valueOf() >= (Date.parse(current)).valueOf()) && ((Date.parse(activity.StartDate)).valueOf() <= (Date.parse(current)).valueOf())) {
@@ -107,7 +133,18 @@
 			});
 			myFirebaseRef.once("value", function(snapshot) {
 				var count = 0;
-				var current = today_year+"-"+today_month+"-"+(today_date-1);
+				var date = new Date();
+		  		date.setDate(new Date().getDate()-1);
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+				var current = date_year+"-"+date_month+"-"+(date_date);
 	  			myFirebaseRef.orderByChild("EndDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 					var activity = snapshot.val();
 					if((Date.parse(activity.DeleteDate)).valueOf() > (Date.parse(current)).valueOf()) {
@@ -117,8 +154,19 @@
 				});
 			});
 			myFirebaseRef.once("value", function(snapshot) {
-				var current = today_year+"-"+today_month+"-"+(today_date-1);
 				var count = 0;
+				var date = new Date();
+		  		date.setDate(new Date().getDate()-1);
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+				var current = date_year+"-"+date_month+"-"+(date_date);
 	  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 					var activity = snapshot.val();
 					count++;
@@ -142,7 +190,19 @@
 			}else if(status == "scheduled") {
 				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 				getAllStatusNums();
-				var current = today_year+"-"+today_month+"-"+(today_date+1);	
+				var count = 0;
+		  		var date = new Date();
+		  		date.setDate(new Date().getDate()+1);
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+		  		var current = date_year+"-"+date_month+"-"+(date_date);	
 				myFirebaseRef.once("value", function(snapshot) {
 		  			myFirebaseRef.orderByChild("StartDate").startAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
@@ -152,7 +212,19 @@
 			}else if(status == "processing") {
 				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 					getAllStatusNums();
-		  		var current = today_year+"-"+today_month+"-"+(today_date);
+		  		var count = 0;
+				var date = new Date();
+		  		date.setDate(new Date().getDate());
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+		  		var current = date_year+"-"+date_month+"-"+(date_date);
 				myFirebaseRef.once("value", function(snapshot) {
 		  			myFirebaseRef.orderByChild("StartDate").on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
@@ -164,7 +236,19 @@
 			}else if(status == "ended") {
 				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
 				getAllStatusNums();		
-				var current = today_year+"-"+today_month+"-"+(today_date-1);
+				var count = 0;
+				var date = new Date();
+		  		date.setDate(new Date().getDate()-1);
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+				var current = date_year+"-"+date_month+"-"+(date_date);
 				myFirebaseRef.once("value", function(snapshot) {
 		  			myFirebaseRef.orderByChild("EndDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
@@ -175,8 +259,20 @@
 				});
 			}else if(status == "deleted") {
 				document.getElementById("statusChoose").innerHTML = '<ul class="nav nav-tabs"><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'all\');">全部<span class="badge" id="allSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'processing\');">進行中<span class="badge" id="processingSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'scheduled\');">已預定<span class="badge" id="scheduledSpan"></span></a></li><li role="presentation"><a href="javascript:void(0);" onclick="statusChoose(\'ended\');">已結束<span class="badge" id="endedSpan"></span></a></li><li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose(\'deleted\');">已清除<span class="badge" id="deletedSpan"></span></a></li></ul>';
-					getAllStatusNums();
-				var current = today_year+"-"+today_month+"-"+(today_date-1);
+				getAllStatusNums();
+				var count = 0;
+				var date = new Date();
+		  		date.setDate(new Date().getDate()-1);
+				var date_year = date.getFullYear(); //西元年份
+				var date_month = date.getMonth()+1; //一年中的第幾月
+				var date_date = date.getDate(); //一月份中的第幾天
+				if(date_month < 10) {
+					date_month = "0" + date_month;
+				}
+				if(date_date < 10) {
+					date_date = "0" + date_date;
+				}
+				var current = date_year+"-"+date_month+"-"+(date_date);
 				myFirebaseRef.once("value", function(snapshot) {
 		  			myFirebaseRef.orderByChild("DeleteDate").endAt(current).on("child_added", function(snapshot, prevChildKey) {
 						var activity = snapshot.val();
