@@ -13,18 +13,36 @@
 
         <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="256dp"
             android:id="@+id/game_map"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.71"/>
+            />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已到達"
-            android:id="@+id/get"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.14"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="159dp"
+                android:layout_height="66dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/txv"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已到達"
+                android:id="@+id/get"
+                android:layout_gravity="right"
+                android:onClick="setup"
+                />
+        </LinearLayout>
+
     </LinearLayout>
+
+
 
 </FrameLayout>

@@ -230,6 +230,12 @@ public class VendedInfoFragment extends Fragment {
                         !!!在這裡做分享完成後想要做的動作，幫助樂透運行
                          */
 
+
+                        //8/27變動部分
+                        MemberDB memberDB = new MemberDB(getActivity(),getContext());
+                        memberDB.getLottoNum();
+
+
                     }
 
                     @Override
