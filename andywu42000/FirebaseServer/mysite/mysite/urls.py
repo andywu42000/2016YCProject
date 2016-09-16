@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^activity/$', activity),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout),
+    url(r'memberVendor/$', memberVendor),
     #url(r'^accounts/register/$',register),
 ]

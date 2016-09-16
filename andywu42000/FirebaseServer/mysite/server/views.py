@@ -37,7 +37,12 @@ def lovecode(request):
 @login_required                  
 def activity(request):
     return render(request, "activity.html", {
-            })               
+            })          
+
+@login_required                  
+def memberVendor(request):
+    return render(request, "memberVendor.html", {
+            })             
             
 def login(request):
     if request.user.is_authenticated(): 
