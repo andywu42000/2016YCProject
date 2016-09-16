@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}會員攤販審核{% endblock %}
+
+{% block memberButton %}
+	<li class="active"><a href="/memberVendor">會員攤販審核</a></li>
+{% endblock %}
+{% block firebaseLinkButton %}
+	<li><a href="https://console.firebase.google.com/project/push-notification-567ca/notification">推播管理</a></li>
+{% endblock %}
+{% block content %}
+	<div>
+		<div id="statusChoose">
+			<ul class="nav nav-tabs">
+				<li role="presentation" class="active"><a href="javascript:void(0);" onclick="statusChoose('all');">全部<span class="badge" id="allSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('new');">新增攤販<span class="badge" id="newSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('update');">更新攤販<span class="badge" id="updateSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('checked');">已審核<span class="badge" id="checkedSpan"></span></a></li>
+				<li role="presentation"><a href="javascript:void(0);" onclick="statusChoose('unchecked');">未審核<span class="badge" id="uncheckedSpan"></span></a></li>
+			</ul>
+		</div>
+		<br>
+	</div>
+
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">資料列表</h3>
+		</div>
+		<table class="table table-hover" id="myTable">
+			<thead>
+		        <tr>
+		          <th>會員代號</th>
+		          <th>攤販代號</th>
+		          <th>攤販名稱</th>
+		          <th>地址</th>
+		          <th>攤販資訊</th>
+		          <th>攤販種類</th>
+	       		  <th>審核</th>
+		        </tr>
+		    </thead>
+		</table>
+	</div>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		var myFirebaseRef = new Firebase('https://member-vendor.firebaseio.com/');
+
+		getAllStatusNums();
+
+		function getAllTypeNums() {
+			myFirebaseRef.once("value", function(snapshot) {
+		  		var childNum = snapshot.numChildren();
+		  		document.getElementById("allSpan").innerHTML = childNum;
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Check").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+						if (vendor.VendorID == null) {
+							count++;
+							document.getElementById("addSpan").innerHTML = count;
+						}
+				});
+		});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Check").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+						if (vendor.Check == true) {
+							count++;
+							document.getElementById("checkedSpan").innerHTML = count;
+						}
+				});
+			});
+			myFirebaseRef.once("value", function(snapshot) {
+				var count = 0;
+	  			myFirebaseRef.once("value", function(snapshot) {
+		  			myFirebaseRef.orderByChild("Check").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+						if (vendor.Check == false) {
+							count++;
+							document.getElementById("uncheckedSpan").innerHTML = count;
+						}
+				});
+			});
+		}
+
+		myFirebaseRef.once("value", function(snapshot) {
+	  		var childNum = snapshot.numChildren();
+  			myFirebaseRef.orderByChild("Check").limitToLast(10).on("child_added", function(snapshot, prevChildKey) {
+				var vendor = snapshot.val();
+				add_new_data(vendor.MemberID, vendor.VendorID, vendor.Name, vendor.Information.Address, vendor.Information.Introduction, vendor.Types.TypeID, vendor.Check, snapshot.key());
+			});
+		});
+
+		function add_new_data(member, vendor, name, address, introduction, type, check, key) {
+			//先取得目前的row數
+			var num = document.getElementById("myTable").rows.length;
+			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
+			var Tr = document.getElementById("myTable").insertRow(-1);
+			//建立新的td 而Tr.cells.length就是這個tr目前的td數
+			Td = Tr.insertCell(Tr.cells.length);
+			//而這個就是要填入td中的innerHTML	
+			Td.innerHTML=member;
+			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=vendor;
+			//這樣就好囉 記得td數目要一樣 不然會亂掉~
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=name;
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=address;
+			Td = Tr.insertCell(Tr.cells.length);
+			Td.innerHTML=introduction;
+			Td = Tr.insertCell(Tr.cells.length);
+			if (type == 1) {
+				Td.innerHTML="食物";
+			}else if (type == 2) {
+				Td.innerHTML="飲料";
+			}else if (type == 3) {
+				Td.innerHTML="其它";
+			}
+			Td = Tr.insertCell(Tr.cells.length);
+			if(check == true) {
+				Td.innerHTML='<button type="button" class="btn btn-primary" onclick="deleteMember(' + "'" + key + "'" + ')">刪除</button>';
+			}else {
+				Td.innerHTML='<button type="button" class="btn btn-info" onclick="deleteMember(' + "'" + key + "'" + ')">刪除</button>';
+			}
+			
+			//Td.innerHTML='<button type="button" class="btn btn-primary" onclick="updateMember(' + "'" + key + "'" + ')">編輯</button> <button type="button" class="btn btn-danger" onclick="deleteMember(' + "'" + key + "'" + ')">刪除</button>';
+		}
+
+		function suspend(key, suspended) {
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			if(suspended == true) {
+				newFirebaseRef.update({
+					"Suspended": false
+				});
+				window.location.reload();
+			}else{
+				newFirebaseRef.update({
+					"Suspended": true
+				});
+				window.location.reload();
+			}
+		}
+
+		function deleteMember(key) {
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			newFirebaseRef.remove();
+			window.location.reload();
+		}
+
+		/*function updateMember(key) {
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			newFirebaseRef.once("value")
+			  .then(function(snapshot) {
+			    var facebookID = snapshot.child("Facebook_ID").val();
+			    var defaultZone = snapshot.child("Default_Zone").val();
+			    var photo = snapshot.child("Photos").child("Photo_ID").val();
+			    var nickname = snapshot.child("Nickname").val();
+			    var remainingAmount = snapshot.child("Remaining_Amount").val();
+			    document.getElementById("updateCouponArea").innerHTML = '<label>優惠券名稱：<input type="text" id="nameUpdate" value="' + name + '"></label><label>優惠券資訊：<input type="text" id="informationUpdate" value="' + information + '"></label><label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></label><label>價格：<input type="text" id="priceUpdate" value="' + price + '"></label><label>剩餘數量：<input type="text" id="remainingAmountUpdate" value="' + remainingAmount + '"></label><button type="button" class="btn btn-default" onclick="saveUpdatedCoupon(' + "'" + key + "'" + ')">確認編輯</button>';
+			  });
+		}
+
+		function saveUpdatedMember(key){
+			var newFirebaseRef = new Firebase('https://member-139bd.firebaseio.com/' + key);
+			var price = $('#priceUpdate').val();
+			if (price<10) {
+				var type = "平價";
+			}else if (price < 20) {
+				var type = "中等";
+			}else if (price >= 20) {
+				var type = "豪華";
+			}
+			var remainingAmount = parseInt($('#amountAddInput').val());
+			newFirebaseRef.update({
+				"Name": $('#nameUpdate').val(),
+				"Information": $('#informationUpdate').val(),
+				"Photos": {
+					"Photo_ID": $('#photoUpdate').val()
+				},
+				"Type": type,
+				"Price": price,
+				"Remaining_Amount": $('#remainingAmountUpdate').val()
+			});
+			window.location.reload();
+		}*/
+	</script>
+{% endblock %}
