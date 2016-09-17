@@ -162,7 +162,7 @@ public class AddVendorFragment extends Fragment{
                     member_vendor.put("Member_ID",Member_ID[0]);
                     member_vendor.put("Vendor_ID","");
                     member_vendor.put("Name",name);
-                    member_vendor.put("Check",f);
+                    member_vendor.put("Check","NO");
                     member_vendor.put("Award",f);
                     inner_member_vendor.put("Address",address);
                     inner_member_vendor.put("Introduction",info);
