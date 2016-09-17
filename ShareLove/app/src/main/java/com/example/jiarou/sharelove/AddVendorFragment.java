@@ -187,16 +187,6 @@ public class AddVendorFragment extends Fragment{
 
 
 
-
-
-
-
-
-
-
-
-
-
         return view;
     }
 

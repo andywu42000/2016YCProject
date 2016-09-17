@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -20,7 +21,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +77,51 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
 
 
 
+    public void checkDate(){
+
+
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+        Date current = new Date();
+        String c_time = sdformat.format(current);
+        Date date1 = null;
+        Date date2 = null;
+        int i =0;
+
+        for(int d=0 ; d<couponkeyList.size() ; d++){
+
+
+            try {
+                date1 = sdformat.parse(couponDueDateList.get(d));
+                date2 = sdformat.parse(c_time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+         if (date1.compareTo(date2)<0){
+
+             i++;
+             final Firebase member_db = new Firebase(MEMBER_DB_URL);
+             member_db.child(member_ID).child("Owned_Coupons").child(couponkeyList.get(d)).removeValue();
+             couponkeyList.remove(d);
+             couponIDList.remove(d);
+             couponInfoList.remove(d);
+             couponDueDateList.remove(d);
+             Toast.makeText(getContext(), "您的部分優惠券已過期，系統已刪除。", Toast.LENGTH_LONG).show();
+
+
+         }else {
+
+
+
+         }
+
+
+        }
+    }
+
+
+
     public void connectToMemberFirebase() {
         Firebase.setAndroidContext(this.getActivity());
         final Firebase member_db = new Firebase(MEMBER_DB_URL);
@@ -96,17 +145,17 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
 
                         for (Map.Entry<String, Map<String, String>> entry : id.entrySet()) {
                             String key = entry.getKey();
-
                             String coupon_id = id.get(key).get("Coupon_ID");
                             String due_date = id.get(key).get("Due_Date");
                             String coupon_info = id.get(key).get("Information");
 
-                            couponkeyList.add(key);
-                            couponIDList.add(coupon_id);
-                            couponInfoList.add(coupon_info);
-                            couponDueDateList.add(due_date);
-                            member_ID = dataSnapshot.getKey();
-                            getCouponNameandPic(coupon_id);
+                                    couponkeyList.add(key);
+                                    couponIDList.add(coupon_id);
+                                    couponInfoList.add(coupon_info);
+                                    couponDueDateList.add(due_date);
+                                    member_ID = dataSnapshot.getKey();
+                                    checkDate();
+                                    getCouponNameandPic(coupon_id);
 
                         }
                     }
@@ -243,8 +292,6 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
         public long getItemId(int position) {
             return position;
         }
-
-
 
 
         public void remove(int position){
