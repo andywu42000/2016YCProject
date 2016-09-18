@@ -86,6 +86,14 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     @Override
     public void Start_game() {
+        final ChanglleFragment changlleFragment =
+                ChanglleFragment.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.game_root, changlleFragment, "changenge")
+                .addToBackStack(null)
+                .commit();
+
 
     }
 

@@ -99,8 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="中獎"
-                android:id="@+id/before_num5"
+                android:id="@+id/check_y_n"
                 android:layout_marginTop="65dp"
                 android:layout_marginLeft="50dp" />
 
@@ -115,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="上期中獎號碼"
+                android:text="上期開獎號碼"
                 android:layout_marginLeft="36dp"
                 android:layout_marginTop="64dp" />
 
@@ -123,8 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="12345"
-                android:id="@+id/textView14"
+                android:text="第一期獎號尚未開"
+                android:id="@+id/winning_num"
                 android:layout_marginLeft="36dp"
                 android:layout_marginTop="64dp" />
         </LinearLayout>

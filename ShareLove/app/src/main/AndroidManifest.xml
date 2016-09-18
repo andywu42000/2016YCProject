@@ -38,7 +38,7 @@
             android:value="@string/google_maps_key"/>
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".IndexActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -82,7 +82,7 @@
         </activity>
         <activity android:name=".Test04Activity">
         </activity>
-        <activity android:name=".IndexActivity">
+        <activity android:name=".MapsActivity">
         </activity>
         <activity android:name=".Login"></activity>
         <service
