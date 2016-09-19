@@ -28,11 +28,16 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Peter on 2016/8/9.
  */
 public class VendedInfoFragment extends Fragment {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
+    final static String DB_MEMBER_URL = "https://member-139bd.firebaseio.com/";
+
     String imgurURL = "http://i.imgur.com/";
 
     private static final String ARGUMENT_TITLE = "VendorTitle";
@@ -56,6 +61,8 @@ public class VendedInfoFragment extends Fragment {
 
     Bitmap bitmap;
     String forShareUse;
+    Long counting ;
+    Long mathth ;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -121,6 +128,8 @@ public class VendedInfoFragment extends Fragment {
         final TextView storyTextView = (TextView)view.findViewById(R.id.storyTextView);
 
         final ImageView fbShare = (ImageView)view.findViewById(R.id.fbShareImageView);
+        final ImageView collect = (ImageView)view.findViewById(R.id.imageView3);
+        final TextView count = (TextView)view.findViewById(R.id.textView12);
         fbShare.bringToFront();
 
         final Bundle args = getArguments();
@@ -146,10 +155,12 @@ public class VendedInfoFragment extends Fragment {
         String mark = args.getString(ARGUMENT_TITLE);
 
         Query focusVendor2 = vendor2.orderByChild("Information/Name").equalTo(mark);
+        final String[] key = {""};
 
         focusVendor2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                key[0] = dataSnapshot.getKey();
 
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
@@ -183,6 +194,7 @@ public class VendedInfoFragment extends Fragment {
                 String sun = sunOpen + "~" + sunClose;
                 String address = (String) dataSnapshot.child("Location").child("Address").getValue();
                 String story = (String) dataSnapshot.child("Information").child("Introduction").getValue();
+                counting = (Long)dataSnapshot.child("Popularity").getValue();
 
                 phoneTextView.setText(phone);
                 remarkTextView.setText(remark);
@@ -195,6 +207,8 @@ public class VendedInfoFragment extends Fragment {
                 sunTextView.setText(sun);
                 addressTextView.setText(address);
                 storyTextView.setText(story);
+                String countingS = counting.toString();
+                count.setText(countingS);
 
             }
 
@@ -230,6 +244,12 @@ public class VendedInfoFragment extends Fragment {
                         !!!在這裡做分享完成後想要做的動作，幫助樂透運行
                          */
 
+
+                        //8/27變動部分
+                        MemberDB memberDB = new MemberDB(getActivity(), getContext());
+                        memberDB.getLottoNum();
+
+
                     }
 
                     @Override
@@ -243,7 +263,7 @@ public class VendedInfoFragment extends Fragment {
                     }
                 });
 
-                if(ShareDialog.canShow(SharePhotoContent.class)){
+                if (ShareDialog.canShow(SharePhotoContent.class)) {
                     //Bitmap image = getBitmap(forShareUse);
 
                     ShareLinkContent content = new ShareLinkContent.Builder()
@@ -259,9 +279,72 @@ public class VendedInfoFragment extends Fragment {
 
                     shareDialog.show(content);
 
-                }else {
+                } else {
                     Toast.makeText(getContext(), "QQ", Toast.LENGTH_LONG).show();
                 }
+
+            }
+        });
+
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] key2 = {""};
+                GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
+                String userId =globalVariable.getUserId();
+                //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
+
+                final Firebase member = new Firebase(DB_MEMBER_URL);
+                Query  findMember = member.orderByChild("Facebook_ID").equalTo(userId);
+                findMember.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        key2[0] = dataSnapshot.getKey();
+                        //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
+                        final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
+
+                        //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
+
+                        //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
+                        //globalVariable2.setCollectedVendor(key[0]);
+
+                        Map<String, Object> favVendor = new HashMap<String, Object>();
+                        favVendor.put("Vendor_ID", key[0]);
+                        member3.child("Favorite_Vendors").push().setValue(favVendor);
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+                final Firebase collection = new Firebase(DB_URL + "/" + key[0]);
+                mathth = counting + 1L;
+                collection.child("Popularity").setValue(mathth);
+                String mathS = mathth.toString();
+                count.setText(mathS);
+
+
+
+
+
 
             }
         });

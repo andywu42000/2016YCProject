@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Created by chiayi on 16/8/17.
  */
-public class CollectStoreMainActivity extends AppCompatActivity {
+public class CollectStoreMainActivity extends AppCompatActivity  implements CollectStoreFragment.OnFocusSelected{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +18,16 @@ public class CollectStoreMainActivity extends AppCompatActivity {
                     .add(R.id.root_layout, CollectStoreFragment.newInstance(), "CollectStore")
                     .commit();
         }
+    }
+
+    @Override
+    public void OnFocusSelected(String vendorTitle) {
+        final com.example.peter.focus.VendedInfoFragment infoFragment =
+                com.example.peter.focus.VendedInfoFragment.newInstance(vendorTitle);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.root_layout, infoFragment, "VendorInfo")
+                .addToBackStack(null)
+                .commit();
     }
 }

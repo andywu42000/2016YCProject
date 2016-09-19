@@ -3,24 +3,28 @@ package com.example.jiarou.sharelove;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.peter.focus.*;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GameFragment.OnFragmentInteractionListener} interface
+ *
  * to handle interaction events.
  * Use the {@link GameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class GameFragment extends Fragment implements View.OnClickListener{
+    private OpenGame mListener;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,7 +35,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+
 
     public GameFragment() {
         // Required empty public constructor
@@ -41,16 +45,14 @@ public class GameFragment extends Fragment implements View.OnClickListener{
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment GameFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GameFragment newInstance(String param1, String param2) {
+    public static GameFragment newInstance() {
         GameFragment fragment = new GameFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +61,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -70,7 +71,35 @@ public class GameFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         final View view =inflater.inflate(R.layout.fragment_game, container, false);
 
-        generate_btn= (Button)  getActivity().findViewById(R.id.general_btn);
+        generate_btn= (Button)  view.findViewById(R.id.general_btn);
+        generate_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.OpenGame();
+
+
+
+/**
+
+                final ChanglleFragment changlleFragment =
+                        ChanglleFragment.newInstance();
+                        getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.challenge_root, changlleFragment, "changenge")
+                        .addToBackStack(null)
+                        .commit();
+
+                ChanglleFragment changlleFragment= new ChanglleFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.challenge_root, changlleFragment, "changenge");
+                transaction.addToBackStack(null);
+                transaction.commit();
+ **/
+            }
+        });
+
+
+        /**
         generate_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,9 +110,9 @@ public class GameFragment extends Fragment implements View.OnClickListener{
               /**  FragmentManager fragmentMgr = getFragmentManager();
                 FragmentTransaction fragmentTrans = fragmentMgr.beginTransaction();
                 ChanglleFragment changlleFragment=  new ChanglleFragment();
-                fragmentTrans.replace(R.id.c_root, changlleFragment, "changenge");
+                fragmentTrans.replace(Rid.c_root, changlleFragment, "changenge");
                 fragmentTrans.commit();*/
-
+/**
                 switch (v.getId()) {
                     case R.id.general_btn:
                         FragmentManager fm = getFragmentManager();
@@ -98,6 +127,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
 
             }
         });
+        **/
 
 
 
@@ -106,23 +136,24 @@ public class GameFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        if(context instanceof OpenGame){
+            mListener = (OpenGame)context;
+        }else{
+            throw new ClassCastException(context.toString() + "must implement OpenGame");
         }
     }
+
+    public interface OpenGame{
+        void OpenGame();
+    }
+
+
+
 
     @Override
     public void onDetach() {
@@ -145,8 +176,5 @@ public class GameFragment extends Fragment implements View.OnClickListener{
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

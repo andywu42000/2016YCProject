@@ -1,14 +1,13 @@
 package com.example.jiarou.sharelove;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.DownloadListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -145,7 +144,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), LotteryMainActivity.class);
+                intent.setClass(getActivity(), CollectStoreMainActivity.class);
                 startActivity(intent);
 
             }
@@ -170,8 +169,8 @@ public class UserFragment extends Fragment {
                 String username= (String)dataSnapshot.child("Nickname").getValue();
                 user_name.setText(username);
 
-                String lovecode = (String)dataSnapshot.child("Owned_Points").getValue().toString();
-                love.setText(lovecode);
+//                String lovecode = (String)dataSnapshot.child("Owned_Points").getValue().toString();
+//                love.setText(lovecode);
                 //大頭照取的地方
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";

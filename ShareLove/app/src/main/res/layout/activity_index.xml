@@ -12,14 +12,15 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="1"
+        android:layout_alignParentEnd="true">
 
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="375dp"
+            android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:id="@+id/venderlist">
         </FrameLayout>

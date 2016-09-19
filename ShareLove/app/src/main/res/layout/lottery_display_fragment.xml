@@ -36,25 +36,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="0"
                 android:id="@+id/current_num5"
                 android:layout_marginTop="65dp"
-                android:layout_marginLeft="50dp" />
+                android:layout_marginLeft="50dp"
+                android:text="萬" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="1"
                 android:id="@+id/current_num4"
                 android:layout_marginTop="65dp"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:text="千" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="2"
+                android:text="百"
                 android:id="@+id/current_num3"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="65dp" />
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="3"
+                android:text="十"
                 android:id="@+id/current_num2"
                 android:layout_marginTop="65dp"
                 android:layout_marginLeft="10dp" />
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="4"
+                android:text="個"
                 android:id="@+id/current_num1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="65dp" />
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="上期搜集"
+                android:text="上期是否中獎"
                 android:layout_marginTop="60dp"
                 android:layout_below="@+id/textView"
                 android:layout_alignLeft="@+id/textView"
@@ -99,46 +99,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="0"
-                android:id="@+id/before_num5"
+                android:id="@+id/check_y_n"
                 android:layout_marginTop="65dp"
                 android:layout_marginLeft="50dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="1"
-                android:id="@+id/before_num4"
-                android:layout_marginTop="65dp"
-                android:layout_marginLeft="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="2"
-                android:id="@+id/before_num3"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="65dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="3"
-                android:id="@+id/before_num2"
-                android:layout_marginTop="65dp"
-                android:layout_marginLeft="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="4"
-                android:id="@+id/before_num1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="65dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -150,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="上期中獎號碼"
+                android:text="上期開獎號碼"
                 android:layout_marginLeft="36dp"
                 android:layout_marginTop="64dp" />
 
@@ -158,8 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="12345"
-                android:id="@+id/textView14"
+                android:text="第一期獎號尚未開"
+                android:id="@+id/winning_num"
                 android:layout_marginLeft="36dp"
                 android:layout_marginTop="64dp" />
         </LinearLayout>
@@ -181,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="兌獎"
-                android:id="@+id/button"
+                android:id="@+id/check_btn"
                 android:layout_marginTop="20dp" />
         </LinearLayout>
 

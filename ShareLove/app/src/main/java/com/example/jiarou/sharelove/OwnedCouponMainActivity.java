@@ -12,7 +12,7 @@ public class OwnedCouponMainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.root_layout, OwnedCouponFragment.newInstance(), "LotteryDisplay")
+                    .add(R.id.root_layout, OwnedCouponFragment.newInstance(), "OwnedCoupon")
                     .commit();
         }
     }
