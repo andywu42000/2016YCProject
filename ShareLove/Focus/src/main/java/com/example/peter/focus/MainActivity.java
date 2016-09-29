@@ -5,7 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity implements FocusFragment.OnFocusSelected{
+public class MainActivity extends AppCompatActivity implements FocusFragment.OnFocusSelected
+        , VendedInfoFragment.OnCommentSelected{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,22 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
     }
 
     @Override
+    public void onCommentSelected(String vendorTitle) {
+        final CommentFragment commentFragment = CommentFragment.newInstance(vendorTitle);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.focus_root, commentFragment, "Comment")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.focus_root);
         fragment.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }

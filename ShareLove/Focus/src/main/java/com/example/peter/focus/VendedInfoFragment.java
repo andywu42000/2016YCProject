@@ -1,6 +1,7 @@
 package com.example.peter.focus;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -55,6 +56,7 @@ public class VendedInfoFragment extends Fragment {
     private static final String ARGUMENT_ADDRESS = "VendorAddress";
     private static final String ARGUMENT_STORY = "VendorStory";
     */
+    private OnCommentSelected mListener;
 
     CallbackManager callbackManager;
     ShareDialog shareDialog;
@@ -106,6 +108,16 @@ public class VendedInfoFragment extends Fragment {
 
     }
 
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(context instanceof OnCommentSelected){
+            mListener = (OnCommentSelected)context;
+        }else{
+            throw new ClassCastException(context.toString() + "must implement OnCommentSelected");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -130,6 +142,7 @@ public class VendedInfoFragment extends Fragment {
         final ImageView fbShare = (ImageView)view.findViewById(R.id.fbShareImageView);
         final ImageView collect = (ImageView)view.findViewById(R.id.imageView3);
         final TextView count = (TextView)view.findViewById(R.id.textView12);
+        final ImageView comment = (ImageView)view.findViewById(R.id.imageView2);
         fbShare.bringToFront();
 
         final Bundle args = getArguments();
@@ -349,7 +362,18 @@ public class VendedInfoFragment extends Fragment {
             }
         });
 
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCommentSelected(args.getString(ARGUMENT_TITLE));
+            }
+        });
+
         return view;
+    }
+
+    public interface OnCommentSelected{
+        void onCommentSelected(String vendorTitle);
     }
 
     /*
