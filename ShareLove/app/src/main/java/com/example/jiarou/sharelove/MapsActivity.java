@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.peter.focus.GlobalVariable;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
@@ -70,6 +71,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.setClass(MapsActivity.this, Login.class);
             startActivity(intent);
         }else{
+          GlobalVariable globalVariable = (GlobalVariable) getApplicationContext();
+          globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
             textView21.setText("登出");
             textView21.setOnClickListener(new View.OnClickListener() {
                 @Override

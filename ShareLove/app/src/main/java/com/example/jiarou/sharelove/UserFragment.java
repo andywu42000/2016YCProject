@@ -9,14 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.example.chiayi.myapplication.CouponMainActivity;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 
 /**
@@ -30,10 +34,13 @@ import com.firebase.client.FirebaseError;
 public class UserFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     String imgurURL = "http://i.imgur.com/";
-    Button coupon_btn, lottery_btn, owned_coupon_btn, add_vendor_btn, collect_store_btn;
+    Long facebookID = 111111111111111l; //到時候應該是可以透過什麼管道取得的
+    Button coupon_btn, lottery_btn, owned_coupon_btn, add_vendor_btn, collect_store_btn, change_name, finish_name;
+    final Firebase user_ref = new Firebase("https://member-139bd.firebaseio.com/");
 
 
     // TODO: Rename and change types of parameters
@@ -88,6 +95,7 @@ public class UserFragment extends Fragment {
         // Inflate the layout for this fragment
 
         final View view = inflater.inflate(R.layout.fragment_user, container, false);
+
         //跳到Ａctivity的按鈕
         coupon_btn=(Button)view.findViewById(R.id.coupon_btn);
         coupon_btn.setOnClickListener(new View.OnClickListener() {
@@ -153,31 +161,76 @@ public class UserFragment extends Fragment {
 
         //連結ＸＭＬ文字跟圖片
         final TextView user_name = (TextView)view.findViewById(R.id.name);
-        final TextView love= (TextView)view.findViewById(R.id.lovecode);
+        final TextView owned_point= (TextView)view.findViewById(R.id.owned_point);
         final ImageView photo= (ImageView)view.findViewById(R.id.photo);
        //firebase 取資料
         Firebase.setAndroidContext(this.getActivity());
-        final Firebase user_ref = new Firebase("https://member-139bd.firebaseio.com/");
+
         /*之後要加這段半別是哪一個使用者*/
-        //   Query focusVendor = vendor2.orderByChild("Information/Name").equalTo(mark);
+        //  Query focusVendor = vendor2.orderByChild("Information/Name").equalTo(mark);
+//        /* focusVendor.*/ChildEventListener childEventListener = user_ref.addChildEventListener(new ChildEventListener()
 
-        /* focusVendor.*/ChildEventListener childEventListener = user_ref.addChildEventListener(new ChildEventListener() {
-
-
+        Query query = user_ref.orderByChild("Facebook_ID").equalTo(facebookID);
+        query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String username= (String)dataSnapshot.child("Nickname").getValue();
-                user_name.setText(username);
 
-//                String lovecode = (String)dataSnapshot.child("Owned_Points").getValue().toString();
-//                love.setText(lovecode);
+                String username= (String)dataSnapshot.child("Nickname").getValue();
+                Long owned_points = (Long)dataSnapshot.child("Owned_Points").getValue();
+                final String key = (String)dataSnapshot.getKey();
+                user_name.setText(username);
+                owned_point.setText(String.valueOf(owned_points));
+
+
+
+                //Change Nickname
+                change_name = (Button) view.findViewById(R.id.change_name_btn);
+                change_name.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.my_switcher1);
+                        switcher.showNext();
+                        //RelativeLayout relativeLayout = (RelativeLayout) switcher.findViewById(R.id.relative1);
+                    }
+                });
+
+
+                //Finish Changing
+                finish_name = (Button) view.findViewById(R.id.finish_name_btn);
+                finish_name.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.my_switcher1);
+
+                        EditText edit_name = (EditText) view.findViewById(R.id.hidden_edit_view);
+                        String name = edit_name.getText().toString();
+
+                        if (name.isEmpty()){
+
+                            Toast.makeText(getContext(),"不可為空白", Toast.LENGTH_LONG).show();
+
+
+                        }else{
+
+                            user_ref.child(key).child("Nickname").setValue(name);
+                            user_name.setText(name);
+                            switcher.showPrevious();
+                            Toast.makeText(getContext(), "更新成功", Toast.LENGTH_LONG).show();
+
+                        }
+
+
+
+                    }
+                });
+
+
+
                 //大頭照取的地方
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
                 DownloadImageTask downloadImage = new DownloadImageTask(photo);
                 downloadImage.execute(pic);
-
-
 
             }
 
@@ -200,7 +253,10 @@ public class UserFragment extends Fragment {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        })   ;
+
+
+
 
             return  view;
 

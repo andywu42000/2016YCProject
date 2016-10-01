@@ -8,7 +8,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center_horizontal|top"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,22 +44,17 @@
             android:layout_below="@+id/textView19"
             android:layout_alignEnd="@+id/spinner5"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="選擇想要的種類"
-            android:id="@+id/textView20"
-            android:layout_below="@+id/spinner6"
-            android:layout_centerHorizontal="true"/>
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner7"
-            android:layout_below="@+id/textView20"
-            android:layout_toStartOf="@+id/textView20"
-            android:layout_alignEnd="@+id/textView20"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:id="@+id/check"
+            android:layout_weight="0.52"
+            android:clickable="false"
+            android:choiceMode="singleChoice"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:touchscreenBlocksFocus="false"
+            android:contextClickable="false"/>
 
         <Button
             android:layout_width="wrap_content"

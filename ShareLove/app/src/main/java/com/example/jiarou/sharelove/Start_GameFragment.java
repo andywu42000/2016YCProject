@@ -4,17 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.*;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +25,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Arrays;
 
 
 /**
@@ -50,7 +55,15 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     public  static  final int LOCATION_REQUEST_CODE=1;
     LocationManager mgr;
     TextView txv;
-    Button get;
+    Button get,open;
+    String get_location;
+    String shop; //店家地址
+    double Latitude=24.9849998; //店家緯度
+    double Longitude=121.5761281; //店家經度
+    double distance; //距離
+    double myla=24.9849998;  //我的緯度
+    double mylo=121.5761281;  //我的經度
+
 
 
     public Start_GameFragment() {
@@ -76,9 +89,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
+        Bundle bundle = getArguments();
+        get_location=bundle.getString("location");
     }
 
     @Override
@@ -86,6 +98,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_start_game, container, false);
+
+        mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
 
         //fragment加入地圖頁面
@@ -104,14 +118,37 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
         txv = (TextView) view.findViewById(R.id.txv);
 
-        mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        open = (Button) view.findViewById(R.id.open);
+        open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                startActivity(it);
+
+            }
+        });
 
         get = (Button) view.findViewById(R.id.get);
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                startActivity(it);
+            // Bundle bundle = getArguments();
+            // get_location=bundle.getString("location");
+
+
+               distance= getDistanceMeter(Latitude, Longitude, myla, mylo);
+                if (distance<=50){
+
+
+                    mListener.Start_game();
+                }else {
+                   Toast.makeText(getActivity(),"必須距離50公尺才算到達喔！", Toast.LENGTH_LONG).show();
+                }
+                Log.i("location", "location" +distance);
+               // Log.d("location", "location" + get_location);
+
+
 
             }
         });
@@ -185,6 +222,14 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
     }
 
+    private  double getDistanceMeter(double lat1,double lon1, double lat2 , double lon2) {
+        float[] results= new float[1];
+        Location.distanceBetween(lat1, lon1, lat2, lon2, results);
+
+        return  results[0];
+
+
+    }
 
     @Override
     public void onPause() {
@@ -234,9 +279,11 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         str+= String.format("\n緯度:%.5f\n經度:%.5f",
                 location.getLatitude(),
                 location.getLongitude());
+       // myla=location.getLatitude();
+      //  mylo=location.getLongitude();
+
         txv.setText(str);
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 
 

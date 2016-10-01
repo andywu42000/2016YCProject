@@ -61,7 +61,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     String zip_areas;
     String zip_number;
-    Button search;
+    Button search,home,game,focus,code,my;
     TextView noshop;
     String shop_list;
     private GoogleMap mMap;
@@ -123,6 +123,63 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        home =(Button) view.findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), IndexActivity.class);
+
+                startActivityForResult(intent,2);
+
+            }
+
+
+        });
+
+        game =(Button) view.findViewById(R.id.game);
+        game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), GameActivity.class);
+
+                startActivityForResult(intent, 2);
+
+            }
+        });
+       focus =(Button) view.findViewById(R.id.focus);
+        focus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), com.example.peter.focus.MainActivity.class);
+
+                startActivityForResult(intent, 2);
+
+            }
+        });
+      code =(Button) view.findViewById(R.id.code);
+        code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), com.example.chiayi.lovecode.MainActivity.class);
+                startActivityForResult(intent, 2);
+
+            }
+        });
+       my =(Button) view.findViewById(R.id.my);
+        my.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), User_Activity.class);
+                startActivityForResult(intent,2);
+
+            }
+        });
+
 
         //fragment加入地圖頁面
         mapView = (MapView) view.findViewById(R.id.map1);
@@ -136,7 +193,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
         mMap.addMarker(new MarkerOptions().position(nccu).title("Marker in NCCU"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nccu));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
+        Firebase.setAndroidContext(getActivity());
         final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
         ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
 
@@ -185,6 +242,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         list = (ListView) view.findViewById(R.id.venderlist_view);
         connectToFirebase();
+
 
         return view;
 
@@ -377,6 +435,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                     noshop = (TextView) getView().findViewById(R.id.noshop);
                     noshop.setText("尚無店家");
                 }
+
 
                 zip_number =zip_areas.substring(1,4);
                 String  address= "台灣";
