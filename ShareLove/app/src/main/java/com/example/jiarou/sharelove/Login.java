@@ -1,14 +1,22 @@
 package com.example.jiarou.sharelove;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.peter.focus.GlobalVariable;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.DataSnapshot;
@@ -16,6 +24,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +35,14 @@ import java.util.Map;
  */
 public class Login extends AppCompatActivity{
     final static String DB_URL = "https://member-139bd.firebaseio.com/";
+
+    /*
+    final String[] userId = {""};
+    final String[] userName = {""};
+    final String[] userPic = {""};
+    final String[] userLocale = {""};
+    final String[] userBirth = {""};
+    */
 
     CallbackManager callbackManager;
 
@@ -43,18 +61,26 @@ public class Login extends AppCompatActivity{
 
         final LoginButton loginButton = (LoginButton)findViewById(R.id.loginButton);
 
+        loginButton.setReadPermissions("public_profile", "user_birthday");
+
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 final Firebase member = new Firebase(DB_URL);
+
+
 
                 Query member2 = member.orderByChild("Facebook_ID").equalTo(loginResult.getAccessToken().getUserId());
 
                 member2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
+
+
+
+                        if (dataSnapshot.exists()) {
                             GlobalVariable globalVariable = (GlobalVariable) getApplicationContext();
+                            //globalVariable.setUserId(loginResult.getAccessToken().getUserId());
                             globalVariable.setUserId(loginResult.getAccessToken().getUserId());
 
                             //成功登入，跳轉至地圖頁面
@@ -63,32 +89,77 @@ public class Login extends AppCompatActivity{
                             intent.setClass(Login.this, MapsActivity.class);
                             startActivity(intent);
                         }else{
-                            Map<String, Object> newMember = new HashMap<String, Object>();
-                            Map<String, String> favVendor = new HashMap<String, String>();
-                            favVendor.put("Vendor_ID", "");
+                            final View item = LayoutInflater.from(Login.this).inflate(R.layout.login_dialog, null);
+                            new AlertDialog.Builder(Login.this)
+                                    .setTitle("請輸入所在郵遞區號(三碼)")
+                                    .setView(item)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            EditText editText = (EditText)item.findViewById(R.id.editText4);
+                                            final String zip = editText.getText().toString();
+                                            Long longZip = Long.parseLong(zip, 10);
+                                            GlobalVariable globalVariable4 = (GlobalVariable)getApplicationContext();
+                                            globalVariable4.setZip(longZip);
 
-                            newMember.put("Birthday", "");
-                            newMember.put("Default_Zone", null);
-                            newMember.put("Facebook_ID", loginResult.getAccessToken().getUserId());
-                            newMember.put("Favorite_Vendors", favVendor);
-                            newMember.put("Lottery_Numbers", null);
-                            newMember.put("Nickname", "");
-                            newMember.put("Owned_Coupons", null);
-                            newMember.put("Owned_Points", 0);
-                            newMember.put("Photos", null);
-                            newMember.put("Share_Times", 0);
-                            newMember.put("Suspended", false);
+                                            GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken()
+                                                    , new GraphRequest.GraphJSONObjectCallback(){
 
-                            member.push().setValue(newMember);
+                                                @Override
+                                                public void onCompleted(JSONObject object, GraphResponse response) {
 
-                            GlobalVariable globalVariable = (GlobalVariable) getApplicationContext();
-                            globalVariable.setUserId(loginResult.getAccessToken().getUserId());
+                                                    String userId = object.optString("id");
+                                                    Long userLongId = Long.parseLong(userId, 10);
+                                                    String userName = object.optString("name");
+                                                    String userPic = object.optString("picture/data/url");
+                                                    String userLocale = object.optString("locale");
+                                                    String userBirth = object.optString("birthday");
 
-                            //成功登入，跳轉至地圖頁面
-                            Intent intent;
-                            intent = new Intent();
-                            intent.setClass(Login.this, MapsActivity.class);
-                            startActivity(intent);
+                                                    GlobalVariable globalVariable5 = (GlobalVariable)getApplicationContext();
+                                                    Long zip2 = globalVariable5.getZip();
+
+                                                    Map<String, Object> newMember = new HashMap<String, Object>();
+                                                    //Map<String, String> favVendor = new HashMap<String, String>();
+                                                    //favVendor.put("Vendor_ID", "");
+                                                    newMember.put("Birthday", userBirth);
+                                                    newMember.put("Default_Zone", zip2);
+                                                    newMember.put("Facebook_ID", userLongId);
+                                                    //newMember.put("Facebook_ID", loginResult.getAccessToken().getUserId());
+                                                    newMember.put("Favorite_Vendors", "");
+                                                    newMember.put("Lottery_Numbers", "");
+                                                    newMember.put("Nickname", userName);
+                                                    newMember.put("Owned_Coupons", "");
+                                                    newMember.put("Owned_Points", 0);
+                                                    Map<String, String> photo = new HashMap<String, String>();
+                                                    photo.put("Photo_ID", userId);
+                                                    newMember.put("Photos", photo);
+                                                    newMember.put("Share_Times", 0);
+                                                    newMember.put("Suspended", false);
+
+                                                    member.push().setValue(newMember);
+
+                                                    GlobalVariable globalVariable = (GlobalVariable) getApplicationContext();
+                                                    //globalVariable.setUserId(loginResult.getAccessToken().getUserId());
+                                                    globalVariable.setUserId(userId);
+
+                                                    Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+
+                                            Bundle parameters = new Bundle();
+                                            parameters.putString("fields", "id,name,picture,locale,birthday");
+                                            request.setParameters(parameters);
+                                            request.executeAsync();
+
+                                            //成功登入，跳轉至地圖頁面
+                                            Intent intent;
+                                            intent = new Intent();
+                                            intent.setClass(Login.this, MapsActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+
+
                         }
                     }
 
@@ -97,26 +168,9 @@ public class Login extends AppCompatActivity{
 
                     }
                 });
-                Map<String, Object> newMember = new HashMap<String, Object>();
-                newMember.put("Birthday", "");
-                newMember.put("Default_Zone", null);
-                newMember.put("Facebook_ID", loginResult.getAccessToken().getUserId());
-                newMember.put("Favorite_Vendors", null);
-                newMember.put("Lottery_Numbers", null);
-                newMember.put("Nickname", "");
-                newMember.put("Owned_Coupons", null);
-                newMember.put("Owned_Points", 0);
-                newMember.put("Photos", null);
-                newMember.put("Share_Times", 0);
-                newMember.put("Suspended", false);
 
-                member.push().setValue(newMember);
 
-                //成功登入，跳轉至地圖頁面
-                Intent intent;
-                intent = new Intent();
-                intent.setClass(Login.this, MapsActivity.class);
-                startActivity(intent);
+
             }
 
             @Override

@@ -145,7 +145,7 @@
                     android:layout_toStartOf="@+id/imageView" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="336dp"
                     android:layout_height="match_parent"
                     android:id="@+id/textView12"
                     android:layout_alignLeft="@+id/textView11"

@@ -25,6 +25,7 @@ import java.util.ArrayList;
  */
 public class FocusFragment extends Fragment {
 
+
     ListView focusListView;
 
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
@@ -87,9 +88,7 @@ public class FocusFragment extends Fragment {
 
     public void connectToFirebase(){
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList/*,
-                vendorPhoneList, timeRemarkList, monTimeList, tueTimeList, wedTimeList, thurTimeList, friTimeList,
-                satTimeList, sunTimeList, vendorAddressList, vendorStoryList*/);
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList);
 
         Firebase.setAndroidContext(this.getActivity());
 
@@ -199,7 +198,7 @@ public class FocusFragment extends Fragment {
                              String satTime, String sunTime, String vendorAddress, String vendorStory*/);
     }
 
-    public class CustomAdapter extends BaseAdapter{
+    public class CustomAdapter extends BaseAdapter {
 
         Context c;
 

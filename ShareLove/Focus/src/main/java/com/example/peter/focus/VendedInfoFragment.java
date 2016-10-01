@@ -38,7 +38,6 @@ import java.util.Map;
 public class VendedInfoFragment extends Fragment {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     final static String DB_MEMBER_URL = "https://member-139bd.firebaseio.com/";
-
     String imgurURL = "http://i.imgur.com/";
 
     private static final String ARGUMENT_TITLE = "VendorTitle";
@@ -56,6 +55,7 @@ public class VendedInfoFragment extends Fragment {
     private static final String ARGUMENT_ADDRESS = "VendorAddress";
     private static final String ARGUMENT_STORY = "VendorStory";
     */
+
     private OnCommentSelected mListener;
 
     CallbackManager callbackManager;
@@ -63,6 +63,8 @@ public class VendedInfoFragment extends Fragment {
 
     Bitmap bitmap;
     String forShareUse;
+
+    //String key2 = "-KPH9T4n7OuJQcVj_u4B";
     Long counting ;
     Long mathth ;
 
@@ -107,7 +109,6 @@ public class VendedInfoFragment extends Fragment {
     public VendedInfoFragment(){
 
     }
-
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
@@ -174,6 +175,7 @@ public class VendedInfoFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 key[0] = dataSnapshot.getKey();
+                //Toast.makeText(getContext(), key[0], Toast.LENGTH_LONG).show();
 
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
@@ -252,7 +254,7 @@ public class VendedInfoFragment extends Fragment {
                 shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
                     @Override
                     public void onSuccess(Sharer.Result result) {
-                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+
                         /*
                         !!!在這裡做分享完成後想要做的動作，幫助樂透運行
                          */
@@ -306,9 +308,10 @@ public class VendedInfoFragment extends Fragment {
                 GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
                 String userId =globalVariable.getUserId();
                 //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
+                Long userLongId = Long.parseLong(userId, 10);
 
                 final Firebase member = new Firebase(DB_MEMBER_URL);
-                Query  findMember = member.orderByChild("Facebook_ID").equalTo(userId);
+                Query  findMember = member.orderByChild("Facebook_ID").equalTo(userLongId);
                 findMember.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {

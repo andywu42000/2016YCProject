@@ -35,28 +35,81 @@
                     android:layout_height="62dp"
                     android:weightSum="1"
                   >
+                    
+                    <ViewSwitcher
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/my_switcher1">
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/relative1">
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="Nickname"
+                                android:id="@+id/name"
+                                android:layout_marginLeft="10dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true" />
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="修改"
+                                android:id="@+id/change_name_btn"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/relative2">
+                            <EditText
+                                android:id="@+id/hidden_edit_view"
+                                android:hint="輸入新暱稱"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true">
+                            </EditText>
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="完成"
+                                android:id="@+id/finish_name_btn"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true"/>
+                        </RelativeLayout>
+                    </ViewSwitcher>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Large Text"
-                        android:id="@+id/name"
-                        android:layout_weight="1.30"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="修改"
-                        android:id="@+id/button10"/>
-                </LinearLayout>
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="愛心點數:"
+                        android:id="@+id/textView24"
+                        android:layout_marginLeft="10dp" />
 
-                <TextView
-                    android:layout_width="195dp"
-                    android:layout_height="36dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="lovecode"
-                    android:id="@+id/lovecode"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="lovepoint"
+                        android:id="@+id/owned_point"
+                        android:layout_marginLeft="10dp" />
+
+                </LinearLayout>
 
                 <Button
                     android:layout_width="match_parent"

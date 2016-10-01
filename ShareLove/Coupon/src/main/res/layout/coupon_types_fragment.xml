@@ -58,21 +58,21 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0-20點"
+                android:text="0-9點"
                 android:id="@+id/button"
                 android:layout_weight="1" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="21-40點"
+                android:text="10-19點"
                 android:id="@+id/button2"
                 android:layout_weight="1" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="41-60點"
+                android:text="> 20點"
                 android:id="@+id/button3"
                 android:layout_weight="1" />
         </LinearLayout>
