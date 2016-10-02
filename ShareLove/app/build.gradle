@@ -42,9 +42,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.0.0'
     compile 'com.firebase:firebase-client-android:2.5.2'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.15.0'
     compile 'com.google.firebase:firebase-core:9.0.0'
-    compile project(':Coupon')
     compile project(':LoveCode')
     compile project(':Focus')
 }

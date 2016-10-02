@@ -52,7 +52,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="com.example.chiayi.myapplication.CouponMainActivity"
+            android:name=".CouponMainActivity"
             android:label="優惠券">
         </activity>
         <activity

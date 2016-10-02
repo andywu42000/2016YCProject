@@ -1,6 +1,7 @@
 package com.example.peter.focus;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,11 +29,15 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Peter on 2016/8/9.
  */
 public class VendedInfoFragment extends Fragment {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
+    final static String DB_MEMBER_URL = "https://member-139bd.firebaseio.com/";
     String imgurURL = "http://i.imgur.com/";
 
     private static final String ARGUMENT_TITLE = "VendorTitle";
@@ -51,11 +56,18 @@ public class VendedInfoFragment extends Fragment {
     private static final String ARGUMENT_STORY = "VendorStory";
     */
 
+    private OnCommentSelected mListener;
+    private OnNavigationSelected mListener2;
+
     CallbackManager callbackManager;
     ShareDialog shareDialog;
 
     Bitmap bitmap;
     String forShareUse;
+
+    //String key2 = "-KPH9T4n7OuJQcVj_u4B";
+    Long counting ;
+    Long mathth ;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -98,6 +110,20 @@ public class VendedInfoFragment extends Fragment {
     public VendedInfoFragment(){
 
     }
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(context instanceof OnCommentSelected){
+            mListener = (OnCommentSelected)context;
+        }else{
+            throw new ClassCastException(context.toString() + "must implement OnCommentSelected");
+        }
+        if(context instanceof OnNavigationSelected){
+            mListener2 = (OnNavigationSelected)context;
+        }else{
+            throw new ClassCastException(context.toString() + "must implement OnNavigationSelected");
+        }
+    }
 
     @Nullable
     @Override
@@ -121,6 +147,10 @@ public class VendedInfoFragment extends Fragment {
         final TextView storyTextView = (TextView)view.findViewById(R.id.storyTextView);
 
         final ImageView fbShare = (ImageView)view.findViewById(R.id.fbShareImageView);
+        final ImageView collect = (ImageView)view.findViewById(R.id.imageView3);
+        final TextView count = (TextView)view.findViewById(R.id.textView12);
+        final ImageView comment = (ImageView)view.findViewById(R.id.imageView2);
+        final ImageView navigation = (ImageView)view.findViewById(R.id.imageView4);
         fbShare.bringToFront();
 
         final Bundle args = getArguments();
@@ -146,10 +176,13 @@ public class VendedInfoFragment extends Fragment {
         String mark = args.getString(ARGUMENT_TITLE);
 
         Query focusVendor2 = vendor2.orderByChild("Information/Name").equalTo(mark);
+        final String[] key = {""};
 
         focusVendor2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                key[0] = dataSnapshot.getKey();
+                //Toast.makeText(getContext(), key[0], Toast.LENGTH_LONG).show();
 
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
@@ -183,6 +216,7 @@ public class VendedInfoFragment extends Fragment {
                 String sun = sunOpen + "~" + sunClose;
                 String address = (String) dataSnapshot.child("Location").child("Address").getValue();
                 String story = (String) dataSnapshot.child("Information").child("Introduction").getValue();
+                counting = (Long)dataSnapshot.child("Popularity").getValue();
 
                 phoneTextView.setText(phone);
                 remarkTextView.setText(remark);
@@ -195,6 +229,8 @@ public class VendedInfoFragment extends Fragment {
                 sunTextView.setText(sun);
                 addressTextView.setText(address);
                 storyTextView.setText(story);
+                String countingS = counting.toString();
+                count.setText(countingS);
 
             }
 
@@ -225,14 +261,14 @@ public class VendedInfoFragment extends Fragment {
                 shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
                     @Override
                     public void onSuccess(Sharer.Result result) {
-                        Toast.makeText(getContext(), "success", Toast.LENGTH_LONG).show();
+
                         /*
                         !!!在這裡做分享完成後想要做的動作，幫助樂透運行
                          */
 
 
                         //8/27變動部分
-                        MemberDB memberDB = new MemberDB(getActivity(),getContext());
+                        MemberDB memberDB = new MemberDB(getActivity(), getContext());
                         memberDB.getLottoNum();
 
 
@@ -249,7 +285,7 @@ public class VendedInfoFragment extends Fragment {
                     }
                 });
 
-                if(ShareDialog.canShow(SharePhotoContent.class)){
+                if (ShareDialog.canShow(SharePhotoContent.class)) {
                     //Bitmap image = getBitmap(forShareUse);
 
                     ShareLinkContent content = new ShareLinkContent.Builder()
@@ -265,14 +301,100 @@ public class VendedInfoFragment extends Fragment {
 
                     shareDialog.show(content);
 
-                }else {
+                } else {
                     Toast.makeText(getContext(), "QQ", Toast.LENGTH_LONG).show();
                 }
 
             }
         });
 
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] key2 = {""};
+                GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
+                String userId =globalVariable.getUserId();
+                //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
+                Long userLongId = Long.parseLong(userId, 10);
+
+                final Firebase member = new Firebase(DB_MEMBER_URL);
+                Query  findMember = member.orderByChild("Facebook_ID").equalTo(userLongId);
+                findMember.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        key2[0] = dataSnapshot.getKey();
+                        //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
+                        final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
+
+                        //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
+
+                        //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
+                        //globalVariable2.setCollectedVendor(key[0]);
+
+                        Map<String, Object> favVendor = new HashMap<String, Object>();
+                        favVendor.put("Vendor_ID", key[0]);
+                        member3.child("Favorite_Vendors").push().setValue(favVendor);
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+                final Firebase collection = new Firebase(DB_URL + "/" + key[0]);
+                mathth = counting + 1L;
+                collection.child("Popularity").setValue(mathth);
+                String mathS = mathth.toString();
+                count.setText(mathS);
+
+
+
+
+
+
+            }
+        });
+
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCommentSelected(args.getString(ARGUMENT_TITLE));
+            }
+        });
+
+        navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener2.onNavigationSelected(args.getString(ARGUMENT_TITLE));
+            }
+        });
+
         return view;
+    }
+
+    public interface OnCommentSelected{
+        void onCommentSelected(String vendorTitle);
+    }
+
+    public interface OnNavigationSelected{
+        void onNavigationSelected(String vendorTitle);
     }
 
     /*

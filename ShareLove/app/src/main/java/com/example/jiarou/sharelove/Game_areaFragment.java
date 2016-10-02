@@ -142,14 +142,15 @@ public class Game_areaFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+           if(get_location==null) {
+               Toast.makeText(getActivity(), "尚未選取地址", Toast.LENGTH_LONG).show();
 
-               mListener.Choose_area();
+           }else {
+               Log.d("location", "location" + get_location);
+               mListener.Choose_area(get_location);
 
-
-                Log.d("location", "location" + get_location);
-
-
-            }
+           }
+           }
         });
 
 
@@ -164,7 +165,8 @@ public class Game_areaFragment extends Fragment {
 
         Firebase.setAndroidContext(this.getActivity());
         final Firebase vendor = new Firebase(DB_URL);
-        vendor.addChildEventListener(new ChildEventListener() {
+        Query gameQuery = vendor.orderByChild("Game").equalTo(true);
+        gameQuery.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -379,13 +381,13 @@ public class Game_areaFragment extends Fragment {
 
     };
 
-
+/**
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.Choose_area();
         }
-    }
+    }**/
 
     @Override
     public void onAttach(Context context) {
@@ -417,7 +419,7 @@ public class Game_areaFragment extends Fragment {
      */
     public interface Choose_area {
         // TODO: Update argument type and name
-        void Choose_area();
+        void Choose_area(String data);
 
 
     }

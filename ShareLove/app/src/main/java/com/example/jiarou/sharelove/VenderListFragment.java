@@ -1,53 +1,41 @@
 package com.example.jiarou.sharelove;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.location.Address;
 
-import com.example.chiayi.myapplication.CouponMainActivity;
-import com.example.peter.focus.*;
+import com.example.peter.focus.GlobalVariable;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Locale;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 
@@ -63,6 +51,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     String zip_number;
     Button search,home,game,focus,code,my;
     TextView noshop;
+    TextView logout;
     String shop_list;
     private GoogleMap mMap;
     // TODO: Rename and change types of parameters
@@ -71,7 +60,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     private OnFragmentInteractionListener mListener;
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        super.onCreate(savedInstanceState);
+    }
 
 
     public static  VenderListFragment newInstance(){
@@ -109,6 +102,25 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         String get_area=getArguments().getString(zip_areas);
 
+        logout = (TextView)view.findViewById(R.id.logoutTextView);
+
+        if(AccessToken.getCurrentAccessToken() == null){
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), Login.class);
+            startActivity(intent);
+        }else{
+            GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+            globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+            logout.setText("登出");
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(), Login.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
 
         search =(Button) view.findViewById(R.id.search01);
@@ -410,6 +422,44 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
         void onFocusSelected(String vendorTitle);
+    }
+
+    public void getNavigation(String vendorTitle){
+        String navigation = vendorTitle;
+        final Firebase navigate = new Firebase(DB_URL);
+        Query navigates = navigate.orderByChild("Information/Name").equalTo(navigation);
+
+        navigates.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Double navLatitude = (Double)dataSnapshot.child("Location/Latitude").getValue();
+                Double navLongitude = (Double)dataSnapshot.child("Location/Longitude").getValue();
+
+                final LatLng navImp = new LatLng(navLatitude, navLongitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(navImp));
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
       //fragment連接saerchactivity

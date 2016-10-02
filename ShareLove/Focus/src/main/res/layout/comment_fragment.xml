@@ -3,19 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:singleLine="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="您收藏的店家"
-        android:id="@+id/textView"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp" />
+        android:text="留言"
+        android:id="@+id/textView13"
+        android:textSize="36dp"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/collectListView"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />
+        android:id="@+id/commentListView" />
 </LinearLayout>

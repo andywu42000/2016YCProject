@@ -14,8 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class GameActivity extends AppCompatActivity  implements GameFragment.OpenGame,ChanglleFragment.OnFragmentInteractionListener,Game_areaFragment.Choose_area,Start_GameFragment.Start_game,LocationListener {
-
+public class GameActivity extends AppCompatActivity  implements GameFragment.OpenGame,ChanglleFragment.OnFragmentInteractionListener,Game_areaFragment.Choose_area,Start_GameFragment.Start_game,LocationListener,ChanglleFragment.delete{
+    String get_number;
+    String get_check;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
         final ChanglleFragment changlleFragment =
                 ChanglleFragment.newInstance();
+
                  getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.game_root, changlleFragment, "changenge")
@@ -56,9 +58,12 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     }
 
     @Override
-    public void onFragmentInteraction() {
+    public void onFragmentInteraction(String number) {
         final Game_areaFragment game_areaFragment =
                 Game_areaFragment.newInstance();
+                get_number = number;
+
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.game_root,game_areaFragment, "game_areaFragment")
@@ -70,9 +75,13 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     }
 
     @Override
-    public void Choose_area() {
+    public void Choose_area(String data) {
         final Start_GameFragment start_gameFragment =
                 Start_GameFragment.newInstance();
+        Bundle bundle =new Bundle();
+        bundle.putString("address",data);
+        bundle.putString("number",get_number);
+        start_gameFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.game_root, start_gameFragment, " start_gameFragment")
@@ -85,9 +94,15 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
 
     @Override
-    public void Start_game() {
+    public void Start_game(String check) {
         final ChanglleFragment changlleFragment =
                 ChanglleFragment.newInstance();
+               get_check=check;
+        Bundle bundle =new Bundle();
+        bundle.putString("check",get_check);
+
+        changlleFragment.setArguments(bundle);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.game_root, changlleFragment, "changenge")
@@ -96,6 +111,20 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
 
     }
+    @Override
+    public void delete() {
+       final GameFragment  gameFragment =GameFragment.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.game_root, GameFragment.newInstance(), "game")
+                .addToBackStack(null)
+                .commit();
+
+
+
+
+    }
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -116,4 +145,6 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     public void onProviderDisabled(String provider) {
 
     }
+
+
 }

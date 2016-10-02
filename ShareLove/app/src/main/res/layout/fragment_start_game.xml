@@ -15,7 +15,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="開啟導航"
+            android:text="開啟GPS"
             android:id="@+id/open"
             android:layout_gravity="right"/>
 
@@ -28,34 +28,35 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="103dp"
             android:weightSum="1">
-
-            <TextView
-                android:layout_width="159dp"
-                android:layout_height="66dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:id="@+id/txv"
-                android:layout_gravity="center_vertical"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="地址"
+                android:text="可點地圖上的標記，然後開啟導航喔！"
                 android:id="@+id/txt"
                 android:layout_weight="0.86"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已到達"
-                android:id="@+id/get"
-                android:layout_gravity="center_vertical"
-                android:onClick="setup"
-                />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/txv"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已到達"
+            android:id="@+id/get"
+            android:layout_gravity="center_horizontal"
+            android:onClick="setup"
+            />
 
     </LinearLayout>
 
