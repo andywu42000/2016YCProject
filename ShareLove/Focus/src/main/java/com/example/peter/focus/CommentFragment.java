@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ public class CommentFragment extends Fragment {
 
     ListView commentListView;
 
-    //final static ArrayList<String> memberPicList = new ArrayList<>();
+    final static ArrayList<String> memberPicList = new ArrayList<>();
     final static ArrayList<String> memberNameList = new ArrayList<>();
     final static ArrayList<String> memberCommentList = new ArrayList<>();
     final static ArrayList<String> memberDateList = new ArrayList<>();
@@ -83,7 +84,9 @@ public class CommentFragment extends Fragment {
                     GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
                     String userId =globalVariable.getUserId();
 
-                    Query memberKey = findMemberId.orderByChild("Facebook_ID").equalTo(userId);
+                    Long userLongId = Long.parseLong(userId, 10);
+
+                    Query memberKey = findMemberId.orderByChild("Facebook_ID").equalTo(userLongId);
 
                     memberKey.addChildEventListener(new ChildEventListener() {
                         @Override
@@ -98,7 +101,9 @@ public class CommentFragment extends Fragment {
                             Date mDate = new Date();
                             Integer month = mDate.getMonth() + 1;
                             String monthth = month.toString();
-                            final String date = mDate.getYear() + "/" + monthth + "/" + mDate.getDay() + " " + mDate.getHours() + ":" + mDate.getMinutes();
+                            Integer year = mDate.getYear() + 1900;
+                            String yearar = year.toString();
+                            final String date = yearar + "/" + monthth + "/" + mDate.getDay() + " " + mDate.getHours() + ":" + mDate.getMinutes();
 
 
                             writeVendorComment.addChildEventListener(new ChildEventListener() {
@@ -194,7 +199,9 @@ public class CommentFragment extends Fragment {
                     GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
                     String userId = globalVariable.getUserId();
 
-                    Query memberKey = findMemberId.orderByChild("Facebook_ID").equalTo(userId);
+                    Long userLongId = Long.parseLong(userId, 10);
+
+                    Query memberKey = findMemberId.orderByChild("Facebook_ID").equalTo(userLongId);
 
                     memberKey.addChildEventListener(new ChildEventListener() {
                         @Override
@@ -209,7 +216,9 @@ public class CommentFragment extends Fragment {
                             Date mDate = new Date();
                             Integer month = mDate.getMonth() + 1;
                             String monthth = month.toString();
-                            final String date = mDate.getYear() + "/" + monthth + "/" + mDate.getDay() + " " + mDate.getHours() + ":" + mDate.getMinutes();
+                            Integer year = mDate.getYear() + 1900;
+                            String yearar = year.toString();
+                            final String date = yearar + "/" + monthth + "/" + mDate.getDay() + " " + mDate.getHours() + ":" + mDate.getMinutes();
 
 
                             writeVendorComment.addChildEventListener(new ChildEventListener() {
@@ -294,7 +303,7 @@ public class CommentFragment extends Fragment {
             }
         });
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), memberNameList
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), memberPicList, memberNameList
                 , memberCommentList, memberDateList);
 
         final Firebase commentFirebase = new Firebase(DB_VENDOR_URL);
@@ -321,11 +330,11 @@ public class CommentFragment extends Fragment {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 String name = (String) dataSnapshot.child("Nickname").getValue();
-                            /*
-                            String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
-                            String pic = imgurURL + picId + ".jpg";
-                            memberPicList.add(pic)
-                            */
+
+                                String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
+                                String pic = "https://graph.facebook.com/" + picId + "/picture?type=normal";
+                                memberPicList.add(pic);
+
                                 memberNameList.add(name);
 
                                 commentListView.setAdapter(adapter);
@@ -362,6 +371,7 @@ public class CommentFragment extends Fragment {
                 memberNameList.clear();
                 memberDateList.clear();
                 memberCommentList.clear();
+                memberPicList.clear();
 
                 if(dataSnapshot.child("Comments").exists()) {
                     for (DataSnapshot exDataSnapshot : dataSnapshot.child("Comments").getChildren()) {
@@ -380,12 +390,12 @@ public class CommentFragment extends Fragment {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 String name = (String) dataSnapshot.child("Nickname").getValue();
-                                /*
 
-                            String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
-                            String pic = imgurURL + picId + ".jpg";
-                            memberPicList.add(pic);
-                            */
+
+                                String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
+                                String pic = "https://graph.facebook.com/" + picId + "/picture?type=small";
+                                memberPicList.add(pic);
+
 
                                 memberNameList.add(name);
 
@@ -441,6 +451,7 @@ public class CommentFragment extends Fragment {
         memberNameList.clear();
         memberDateList.clear();
         memberCommentList.clear();
+        memberPicList.clear();
 
 
         return view;
@@ -452,15 +463,15 @@ public class CommentFragment extends Fragment {
     public class CustomAdapter extends BaseAdapter {
 
         Context c;
-        //ArrayList<String> memberPic;
+        ArrayList<String> memberPic;
         ArrayList<String> memberName;
         ArrayList<String> memberComment;
         ArrayList<String> memberDate;
 
-        public CustomAdapter(Context context/*, ArrayList<String> memberPic*/, ArrayList<String> memberName
+        public CustomAdapter(Context context, ArrayList<String> memberPic, ArrayList<String> memberName
                 , ArrayList<String> memberComment, ArrayList<String> memberDate){
             c = context;
-            //this.memberPic = memberPic;
+            this.memberPic = memberPic;
             this.memberName = memberName;
             this.memberComment = memberComment;
             this.memberDate = memberDate;
@@ -488,16 +499,16 @@ public class CommentFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             list = inflater.inflate(R.layout.comment_listview, null);
 
-            //ImageView memberImageView = (ImageView)list.findViewById(R.id.memberImageView);
+            ImageView memberImageView = (ImageView)list.findViewById(R.id.memberImageView);
             TextView nameTextView = (TextView)list.findViewById(R.id.nameTextView);
             TextView commentTextView = (TextView)list.findViewById(R.id.commentTextView);
             TextView dateTextView = (TextView)list.findViewById(R.id.dateTextView);
 
-            /*
+
             final String pic = memberPic.get(position);
-            DownloadImageTask downloadImageTask = new DownloadImageTask(memberImageView);
-            downloadImageTask.execute(pic);
-            */
+            DownloadHttpsImageTask downloadHttpsImageTask = new DownloadHttpsImageTask(memberImageView);
+            downloadHttpsImageTask.execute(pic);
+
 
             final String name = memberName.get(position);
             nameTextView.setText(name);

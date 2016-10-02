@@ -26,10 +26,14 @@ import java.util.ArrayList;
  */
 public class CollectStoreFragment extends Fragment {
 
+
     ListView collectVendorList;
 
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
     final static ArrayList<String> vendorPicList = new ArrayList<>();
+    final static ArrayList<String> vendorKeyList = new ArrayList<>();
+
+    final String[] key = {""};
 
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     final static String DB_MEMBER_URL = "https://member-139bd.firebaseio.com/";
@@ -39,9 +43,7 @@ public class CollectStoreFragment extends Fragment {
     private OnFocusSelected mListener;
 
 
-
     public static CollectStoreFragment newInstance(){
-
         Bundle args = new Bundle();
 
         CollectStoreFragment collectStoreFragment = new CollectStoreFragment();
@@ -67,7 +69,6 @@ public class CollectStoreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.collect_store_fragment,container,false);
         Firebase.setAndroidContext(this.getActivity());
         collectVendorList = (ListView)view.findViewById(R.id.collectListView);
@@ -78,7 +79,8 @@ public class CollectStoreFragment extends Fragment {
         String userId =globalVariable.getUserId();
 
         final Firebase member = new Firebase(DB_MEMBER_URL);
-        Query findMember = member.orderByChild("Facebook_ID").equalTo(userId);
+        Long userLongId = Long.parseLong(userId, 10);
+        Query findMember = member.orderByChild("Facebook_ID").equalTo(userLongId);
         findMember.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -89,8 +91,8 @@ public class CollectStoreFragment extends Fragment {
                     vendor2.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            String title = (String) dataSnapshot.child("Information/Name").getValue();
-                            String picId = (String) dataSnapshot.child("Photos/Photo_ID").getValue();
+                            String title = (String)dataSnapshot.child("Information/Name").getValue();
+                            String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
 
                             String pic = imgurURL + picId + ".jpg";
                             vendorPicList.add(pic);
@@ -146,14 +148,19 @@ public class CollectStoreFragment extends Fragment {
 
         vendorPicList.clear();
         vendorTitleList.clear();
+
         return view;
     }
+
+
+
+
 
     public interface OnFocusSelected{
         void OnFocusSelected(String vendorTitle);
     }
 
-    public class CustomAdapter extends BaseAdapter {
+    public class CustomAdapter extends BaseAdapter{
 
         Context c;
         ArrayList<String> vendorTitle;
@@ -208,11 +215,6 @@ public class CollectStoreFragment extends Fragment {
             return list;
         }
     }
-
-
-
-
-
 
 
 

@@ -1,1 +1,1 @@
-include ':LoveCode', ':Coupon', ':Focus', ':app'
+include ':LoveCode', ':Focus', ':app'
