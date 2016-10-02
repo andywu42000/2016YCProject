@@ -52,6 +52,12 @@
 					<option value=3>其它</option>
 				</select>
 			</label>
+			<label><p>*遊戲名單：
+				<select id="gameAddInput">
+					<option value=true>是</option>
+					<option value=false>否</option>
+				</select>
+			</label>
 			<button type="button" onclick="addNewVendor()" class="btn btn-default" id="addNewVendorBtn">新增</button>
 		</div>
 	</div>
@@ -176,7 +182,7 @@
 				myFirebaseRef.once("value", function(snapshot) {
 		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 						var vendor = snapshot.val();
-						add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+						add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 					});
 				});
 			}else if(type == "isFocus") {
@@ -186,7 +192,7 @@
 		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 						var vendor = snapshot.val();
 						if (vendor.Focus == true) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 						}
 					});
 				});
@@ -197,7 +203,7 @@
 		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 						var vendor = snapshot.val();
 						if (vendor.Focus == false) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 						}
 					});
 				});
@@ -208,7 +214,7 @@
 		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 						var vendor = snapshot.val();
 						if (vendor.Popularity <= 20) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 						}
 					});
 				});
@@ -219,7 +225,7 @@
 		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 						var vendor = snapshot.val();
 						if (vendor.Popularity > 20 && vendor.Popularity < 100) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 						}
 					});
 				});
@@ -230,7 +236,7 @@
 		  			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 						var vendor = snapshot.val();
 						if (vendor.Popularity >= 100) {
-							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+							add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 						}
 					});
 				});
@@ -271,6 +277,7 @@
 			var satClose = $('#satCloseAddInput').val();
 			var remark = $('#remarkAddInput').val();
 			var type = parseInt($('#typeAddInput').val());
+			var game = $('#gameAddInput').val();
 			var check = beforeCheck(name, introduction, zip, lati, longi, type, "addAlert");
 			if(check) {
 				var newAddvendor = myFirebaseRef.push({
@@ -324,7 +331,8 @@
 					"Focus": false,
 					"Photos": {
 						"Photo_ID": photo
-					}
+					},
+					"Game": game
 				});
 				$('#nameAddInput').val("");
 				$('#phoneAddInput').val("");
@@ -356,7 +364,7 @@
 	  		var childNum = snapshot.numChildren();
   			myFirebaseRef.orderByChild("Popularity").on("child_added", function(snapshot, prevChildKey) {
 				var vendor = snapshot.val();
-				add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, snapshot.key());
+				add_new_data(vendor.Information.Name, vendor.Information.Phone, vendor.Types.Type_ID, vendor.Location.ZIP, vendor.Location.Latitude, vendor.Location.Longitude, vendor.Photos.Photo_ID, vendor.Popularity, vendor.Focus, vendor.Game, snapshot.key());
 			});
 		});
 
@@ -393,7 +401,7 @@
 			}
 		}*/
 		
-		function add_new_data(name, phone, type, zip, lati, longi, photos, popularity, focus, key) {
+		function add_new_data(name, phone, type, zip, lati, longi, photos, popularity, focus, game, key) {
 			//先取得目前的row數
 			var num = document.getElementById("myTable").rows.length;
 			//建立新的tr 因為是從0開始算 所以目前的row數剛好為目前要增加的第幾個tr
@@ -409,9 +417,14 @@
 				name += ' <span class="label label-success">人氣尚可</span>';
 			}
 			if (focus) {
-				Td.innerHTML=name + ' <span class="label label-success">焦點</span>';
+				name += ' <span class="label label-success">焦點</span>';
 			}else {
-				Td.innerHTML=name + ' <span class="label label-default">非焦點</span>';
+				name += ' <span class="label label-default">非焦點</span>';
+			}
+			if (game) {
+				Td.innerHTML=name + ' <span class="label label-success">遊戲</span>';
+			}else {
+				Td.innerHTML=name;
 			}
 			//這裡也可以用不同的變數來辨別不同的td (我是用同一個比較省事XD)
 			Td = Tr.insertCell(Tr.cells.length);
@@ -479,6 +492,7 @@
 			    var satClose = snapshot.child("Open_Days").child("Sat").child("Close_At").val();
 			    var remark = snapshot.child("Open_Days").child("Remark").val();
 			    var type = snapshot.child("Types").child("Type_ID").val();
+			    var game = snapshot.child("Game").val();
 			    var content = '<font color="red"><h5>*必填</h5></font><label><p>攤販資訊：<p><label>*攤販名稱：<input type="text" id="nameUpdate" value="' + name + '"></input></label><label>攤販電話：<input type="text" id="phoneUpdate" value="' + phone + '"></input></label><label>*攤販介紹：<textarea rows="5" cols="30" id="introductionUpdate">' + introduction + '</textarea></label><label>相片(imgur後7碼，不含.jpg)：<input type="text" id="photoUpdate" value="' + photo + '"></input></label></label><label><p>攤販地點：<p><label>地址：<input type="text" id="addressUpdate" value="' + address + '"></input></label><label>*郵遞區號：<input type="text" id="zipUpdate" value="' + zip + '"></input></label><label>*緯度：<input type="number" id="latiUpdate" placeholder="Float Only" value="' + latitude + '" min="-90" max="90" step="0.0000001"></input></label><label>*經度：<input type="number" id="longiUpdate" placeholder="Float Only" value="' + longitude + '" min="-180" max="180" step="0.0000001"></input></label></label><label><p>營業時間：<p><label>週日：<input type="time" id="sunOpenUpdate" value="' + sunOpen + '">~<input type="time" id="sunCloseUpdate" value="' + sunClose + '"></label><label>週一：<input type="time" id="monOpenUpdate" value="' + monOpen + '">~<input type="time" id="monCloseUpdate" value="' + monClose + '"></label><label>週二：<input type="time" id="tueOpenUpdate" value="' + tueOpen + '">~<input type="time" id="tueCloseUpdate" value="' + tueClose + '"></label><label>週三：<input type="time" id="wedOpenUpdate" value="' + wedOpen + '">~<input type="time" id="wedCloseUpdate" value="' + wedClose + '"></label><label>週四：<input type="time" id="thuOpenUpdate" value="' + thuOpen + '">~<input type="time" id="thuCloseUpdate" value="' + thuClose + '"></label><label>週五：<input type="time" id="friOpenUpdate" value="' + friOpen + '">~<input type="time" id="friCloseUpdate" value="' + friClose + '"></label><label>週六：<input type="time" id="satOpenUpdate" value="' + satOpen + '">~<input type="time" id="satCloseUpdate" value="' + satClose + '"></label><label>備註：<input type="text" id="remarkUpdate" value="' + remark + '"></input></label></label>';
 			if(type == 1) {
 				content += '<label><p>*攤販類型：<select id="typeUpdate"><option value=1 selected="selected">食物</option><option value=2>飲料</option><option value=3>其它</option></select></label>';
@@ -487,7 +501,12 @@
 			}else if(type == 3) {
 				content += '<label><p>*攤販類型：<select id="typeUpdate"><option value=1>食物</option><option value=2>飲料</option><option value=3 selected="selected">其它</option></select></label>';
 			}
-			    document.getElementById("updateVendorArea").innerHTML = content + ' <button type="button" class="btn btn-default" onclick="saveUpdatedVendor(' + "'" + key + "'" + ')">確認編輯</button>';
+			if(game) {
+				content += '<label><p>*攤販類型：<select id="gameUpdate"><option value=true selected="selected">是</option><option value=false>否</option></select></label>';
+			}else {
+				content += '<label><p>*攤販類型：<select id="gameUpdate"><option value=true>是</option><option value=false selected="selected">否</option></select></label>';
+			}
+			document.getElementById("updateVendorArea").innerHTML = content + ' <button type="button" class="btn btn-default" onclick="saveUpdatedVendor(' + "'" + key + "'" + ')">確認編輯</button>';
 			
 			  });
 		}
@@ -518,6 +537,7 @@
 			var satClose = $('#satCloseUpdate').val();
 			var remark = $('#remarkUpdate').val();
 			var type = parseInt($('#typeUpdate').val());
+			var game = $('#gameUpdate').val();
 			var check = beforeCheck(name, introduction, zip, lati, longi, type, "updateAlert");
 			if(check) {
 				newFirebaseRef.update({
@@ -571,7 +591,8 @@
 					"Focus": false,
 					"Photos": {
 						"Photo_ID": photo
-					}
+					},
+					"Game": game
 				});
 				window.location.reload();
 			}
