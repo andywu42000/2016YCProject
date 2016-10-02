@@ -57,6 +57,7 @@ public class VendedInfoFragment extends Fragment {
     */
 
     private OnCommentSelected mListener;
+    private OnNavigationSelected mListener2;
 
     CallbackManager callbackManager;
     ShareDialog shareDialog;
@@ -117,6 +118,11 @@ public class VendedInfoFragment extends Fragment {
         }else{
             throw new ClassCastException(context.toString() + "must implement OnCommentSelected");
         }
+        if(context instanceof OnNavigationSelected){
+            mListener2 = (OnNavigationSelected)context;
+        }else{
+            throw new ClassCastException(context.toString() + "must implement OnNavigationSelected");
+        }
     }
 
     @Nullable
@@ -144,6 +150,7 @@ public class VendedInfoFragment extends Fragment {
         final ImageView collect = (ImageView)view.findViewById(R.id.imageView3);
         final TextView count = (TextView)view.findViewById(R.id.textView12);
         final ImageView comment = (ImageView)view.findViewById(R.id.imageView2);
+        final ImageView navigation = (ImageView)view.findViewById(R.id.imageView4);
         fbShare.bringToFront();
 
         final Bundle args = getArguments();
@@ -372,11 +379,22 @@ public class VendedInfoFragment extends Fragment {
             }
         });
 
+        navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener2.onNavigationSelected(args.getString(ARGUMENT_TITLE));
+            }
+        });
+
         return view;
     }
 
     public interface OnCommentSelected{
         void onCommentSelected(String vendorTitle);
+    }
+
+    public interface OnNavigationSelected{
+        void onNavigationSelected(String vendorTitle);
     }
 
     /*
