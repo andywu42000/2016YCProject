@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.peter.focus.GlobalVariable;
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -59,7 +60,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     private OnFragmentInteractionListener mListener;
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        super.onCreate(savedInstanceState);
+    }
 
 
     public static  VenderListFragment newInstance(){
