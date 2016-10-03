@@ -1,15 +1,18 @@
 package com.example.jiarou.sharelove;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.peter.focus.*;
+import com.example.peter.focus.VendedInfoFragment;
 
 /**
  * Created by chiayi on 16/8/17.
  */
 public class CollectStoreMainActivity extends AppCompatActivity  implements CollectStoreFragment.OnFocusSelected
-        , com.example.peter.focus.VendedInfoFragment.OnCommentSelected{
+        , com.example.peter.focus.VendedInfoFragment.OnCommentSelected, VendedInfoFragment.OnNavigationSelected
+        , VenderListFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,29 @@ public class CollectStoreMainActivity extends AppCompatActivity  implements Coll
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.root_layout, commentFragment, "Comment")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onFocusSelected(String vendorTitle) {
+
+    }
+
+    @Override
+    public void onNavigationSelected(String vendorTitle) {
+        final VenderListFragment venderListFragment = VenderListFragment.newInstance();
+
+        venderListFragment.getNavigation(vendorTitle);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.root_layout, venderListFragment, "Venderlist2")
                 .addToBackStack(null)
                 .commit();
     }

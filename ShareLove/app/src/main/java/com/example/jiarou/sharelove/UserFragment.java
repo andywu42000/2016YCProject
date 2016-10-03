@@ -188,8 +188,12 @@ public class UserFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.my_switcher1);
+                        collect_store_btn.setEnabled(false);
+                        lottery_btn.setEnabled(false);
+                        coupon_btn.setEnabled(false);
+                        owned_coupon_btn.setEnabled(false);
+                        add_vendor_btn.setEnabled(false);
                         switcher.showNext();
-                        //RelativeLayout relativeLayout = (RelativeLayout) switcher.findViewById(R.id.relative1);
                     }
                 });
 
@@ -200,14 +204,13 @@ public class UserFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.my_switcher1);
-
                         EditText edit_name = (EditText) view.findViewById(R.id.hidden_edit_view);
                         String name = edit_name.getText().toString();
 
                         if (name.isEmpty()){
 
-                            Toast.makeText(getContext(),"不可為空白", Toast.LENGTH_LONG).show();
-
+                            switcher.showPrevious();
+                            Toast.makeText(getContext(),"No Change", Toast.LENGTH_LONG).show();
 
                         }else{
 
@@ -218,6 +221,11 @@ public class UserFragment extends Fragment {
 
                         }
 
+                        collect_store_btn.setEnabled(true);
+                        lottery_btn.setEnabled(true);
+                        coupon_btn.setEnabled(true);
+                        owned_coupon_btn.setEnabled(true);
+                        add_vendor_btn.setEnabled(true);
 
 
                     }

@@ -8,6 +8,7 @@ public class LotteryMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_lottery);
         if (savedInstanceState == null) {
             getSupportFragmentManager()

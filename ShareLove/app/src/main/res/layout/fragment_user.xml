@@ -49,7 +49,7 @@
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="Nickname"
+                                android:text="暱稱"
                                 android:id="@+id/name"
                                 android:layout_marginLeft="10dp"
                                 android:layout_centerVertical="true"
@@ -105,7 +105,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="36dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="lovepoint"
                         android:id="@+id/owned_point"
                         android:layout_marginLeft="10dp" />
 

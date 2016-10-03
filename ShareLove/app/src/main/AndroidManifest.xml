@@ -53,22 +53,43 @@
         </activity>
         <activity
             android:name=".CouponMainActivity"
-            android:label="優惠券">
+            android:label="優惠券"
+            android:parentActivityName=".User_Activity">
+
         </activity>
         <activity
             android:name="com.example.chiayi.lovecode.MainActivity"
-            android:label="愛心碼">
+            android:label="愛心碼"
+            android:parentActivityName=".MapsActivity">
         </activity>
-        <activity android:name=".User_Activity">
+        <activity
+            android:name=".User_Activity"
+            android:label="個人頁面"
+            android:parentActivityName=".MapsActivity">
         </activity>
-        <activity android:name=".LotteryMainActivity">
+
+        <activity
+            android:name=".LotteryMainActivity"
+            android:label="樂透"
+            android:parentActivityName=".User_Activity">
         </activity>
-        <activity android:name=".OwnedCouponMainActivity">
+        <activity
+            android:name=".OwnedCouponMainActivity"
+            android:label="我的優惠券"
+            android:parentActivityName=".User_Activity">
         </activity>
-        <activity android:name=".AddVendorMainActivity">
+
+        <activity
+            android:name=".AddVendorMainActivity"
+            android:label="新增攤販資訊"
+            android:parentActivityName=".User_Activity">
         </activity>
-        <activity android:name=".CollectStoreMainActivity">
+
+        <activity
+            android:name=".CollectStoreMainActivity"
+            android:label="收藏店家">
         </activity>
+
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"

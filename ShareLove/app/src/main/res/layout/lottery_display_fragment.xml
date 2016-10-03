@@ -139,14 +139,18 @@
                 android:text="搜尋頁面"
                 android:id="@+id/toSearchPage_btn"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="100dp" />
+                android:layout_marginLeft="100dp"
+                android:visibility="gone" />
+
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="兌獎"
                 android:id="@+id/check_btn"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="150dp" />
+
         </LinearLayout>
 
     </LinearLayout>

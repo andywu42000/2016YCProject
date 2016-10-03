@@ -1,6 +1,7 @@
 package com.example.jiarou.sharelove;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -262,7 +263,11 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
 
     @Override
     public void OwnedCouponClick() {
-        dialog.dismiss();
+
+        final Intent intent = new Intent();
+        intent.setClass(getActivity(),  OwnedCouponMainActivity.class );
+        startActivity(intent);
+
     }
 
     @Override

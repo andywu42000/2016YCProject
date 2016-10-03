@@ -1,7 +1,6 @@
 package com.example.jiarou.sharelove;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -81,15 +80,15 @@ public class LotteryDisplayFragment extends Fragment{
         check_y_n = (TextView) view.findViewById(R.id.check_y_n);
         check_btn = (Button)view.findViewById(R.id.check_btn);
         winning_num = (TextView) view.findViewById(R.id.winning_num);
-        toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
-        toSearchPage_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), SearchActivity.class);
-                getActivity().startActivity(intent);
-            }
-        });
+//        toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
+//        toSearchPage_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Intent intent = new Intent();
+//                intent.setClass(getActivity(), SearchActivity.class);
+//                getActivity().startActivity(intent);
+//            }
+//        });
 
         gameRule_btn.setOnClickListener(new View.OnClickListener() {
             @Override

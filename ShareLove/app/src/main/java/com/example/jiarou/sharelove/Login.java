@@ -86,7 +86,7 @@ public class Login extends AppCompatActivity{
                             //成功登入，跳轉至地圖頁面
                             Intent intent;
                             intent = new Intent();
-                            intent.setClass(Login.this, MapsActivity.class);
+                            intent.setClass(Login.this, IndexActivity.class);
                             startActivity(intent);
                         }else{
                             final View item = LayoutInflater.from(Login.this).inflate(R.layout.login_dialog, null);
@@ -154,7 +154,7 @@ public class Login extends AppCompatActivity{
                                             //成功登入，跳轉至地圖頁面
                                             Intent intent;
                                             intent = new Intent();
-                                            intent.setClass(Login.this, MapsActivity.class);
+                                            intent.setClass(Login.this, IndexActivity.class);
                                             startActivity(intent);
                                         }
                                     }).show();
