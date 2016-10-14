@@ -3,20 +3,33 @@ package com.example.jiarou.sharelove;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.peter.focus.CommentFragment;
 import com.example.peter.focus.VendedInfoFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-public class IndexActivity extends FragmentActivity implements OnMapReadyCallback
+
+public class IndexActivity extends AppCompatActivity implements OnMapReadyCallback
         , VenderListFragment.OnFragmentInteractionListener, VendedInfoFragment.OnCommentSelected, VendedInfoFragment.OnNavigationSelected {
 
     String zip_areas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
+
+
+
+
+
+
+
+
 
 
         if(savedInstanceState == null){
@@ -28,6 +41,9 @@ public class IndexActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
     }
+
+
+
 
     @Override
     public void onFocusSelected(String vendorTitle) {

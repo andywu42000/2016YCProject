@@ -76,6 +76,15 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     @Override
     public void Choose_area(String data) {
+        final android.support.v4.app.FragmentManager fragmentManager =
+              getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.game_root);
+        fragmentTransaction.remove(fragment);
+
+        fragmentTransaction.commit();
+
+
         final Start_GameFragment start_gameFragment =
                 Start_GameFragment.newInstance();
         Bundle bundle =new Bundle();
@@ -84,7 +93,7 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
         start_gameFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.game_root, start_gameFragment, " start_gameFragment")
+                .add(R.id.game_root, start_gameFragment, " start_gameFragment")
                 .addToBackStack(null)
                 .commit();
 

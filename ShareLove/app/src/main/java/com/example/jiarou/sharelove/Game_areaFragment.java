@@ -1,8 +1,10 @@
 package com.example.jiarou.sharelove;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -146,8 +148,27 @@ public class Game_areaFragment extends Fragment {
                Toast.makeText(getActivity(), "尚未選取地址", Toast.LENGTH_LONG).show();
 
            }else {
-               Log.d("location", "location" + get_location);
-               mListener.Choose_area(get_location);
+
+               AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
+               bdr.setMessage("確認後就無法返回重新選擇囉！");
+               bdr.setTitle("提醒");
+               bdr.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+                       mListener.Choose_area(get_location);
+
+
+                   }
+               });
+               bdr.setNegativeButton("返回", null);
+               bdr.show();
+
+
+
+
+
+
 
            }
            }
