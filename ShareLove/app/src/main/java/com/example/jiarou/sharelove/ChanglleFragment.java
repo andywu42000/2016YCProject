@@ -19,6 +19,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -40,8 +45,9 @@ public class ChanglleFragment extends Fragment {
     private String mParam2;
     Button c1,c2,c3,c4,over_btn;
     String get_check,number;
+    String get_number;
     Long point;
-   Long points;
+    Long points;
     String memberKey;
 
 
@@ -91,7 +97,17 @@ public class ChanglleFragment extends Fragment {
         c4 = (Button) view.findViewById(R.id.c4);
         over_btn= (Button) view.findViewById(R.id.over_btn);
         //第二格
-        if(get_check=="1") {
+        final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        Query memberQuery = FirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+              final  String memberKey01 = dataSnapshot.getKey();
+                get_number = (String)dataSnapshot.child("times").getValue();
+                Log.d("d", "d" + get_number);
+
+        if(Objects.equals(get_number, "two")) {
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -136,7 +152,7 @@ public class ChanglleFragment extends Fragment {
 
                 }
             });
-        }else if(get_check=="2") {
+        }else if(Objects.equals(get_number, "three")) {
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -180,7 +196,7 @@ public class ChanglleFragment extends Fragment {
 
                 }
             });
-        }else  if(get_check=="3") {
+        }else  if(Objects.equals(get_number, "four")) {
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -223,7 +239,7 @@ public class ChanglleFragment extends Fragment {
 
                 }
             });
-        }else  if(get_check=="4"){
+        }else  if(Objects.equals(get_number, "done")){
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -268,9 +284,18 @@ public class ChanglleFragment extends Fragment {
                     bdr.setPositiveButton("領取", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            final Intent intent = new Intent();
-                            intent.setClass(getActivity(),IndexActivity.class);
-                            startActivity(intent);
+
+                            getActivity().finish();
+
+
+                            FirebaseRef.child(memberKey01).child("done").setValue("無");
+                            FirebaseRef.child(memberKey01).child("two").setValue("無");
+                            FirebaseRef.child(memberKey01).child("three").setValue("無");
+                            FirebaseRef.child(memberKey01).child("four").setValue("無");
+
+                            FirebaseRef.child(memberKey01).child("times").setValue("one");
+
+
 
 
 
@@ -328,7 +353,20 @@ public class ChanglleFragment extends Fragment {
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onFragmentInteraction("1");
+                   mListener.onFragmentInteraction("1");
+/***
+                    final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+                    Map mParent = new HashMap();
+                    mParent.put("one", "台北市文山區指南路二段64號");
+                    mParent.put("two", "台北市文山區指南路二段64號");
+                    mParent.put("three", "台北市文山區指南路二段64號");
+                    mParent.put("four", "嘉義市東區宣信街226號");
+                    mParent.put("times", "one");
+
+                    myFirebaseRef.push().setValue(mParent);
+
+
+**/
 
                 }
             });
@@ -372,6 +410,29 @@ public class ChanglleFragment extends Fragment {
         }
 
 
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
 
 
 
@@ -379,7 +440,16 @@ public class ChanglleFragment extends Fragment {
 
         return  view;
     }
-/**
+
+    private   void  firebase_number(){
+
+
+
+
+    }
+
+
+    /**
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

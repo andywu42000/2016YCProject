@@ -144,6 +144,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
                 startActivityForResult(intent,2);
 
+
             }
 
 

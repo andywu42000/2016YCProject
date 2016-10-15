@@ -131,6 +131,7 @@ public class Game_areaFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 get_location = (String) list.getItemAtPosition(position);
+                put_now_location(get_location);
 
 
                 Log.d("location", "location" + get_location);
@@ -157,12 +158,53 @@ public class Game_areaFragment extends Fragment {
                    public void onClick(DialogInterface dialog, int which) {
 
                        mListener.Choose_area(get_location);
+                       put_now_location(get_location);
+                       final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+                       // Map<String, Object> used_shop= new HashMap<String, Object>();
+                       // used_shop.put("used",location);
+                       Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+                       memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+                           @Override
+                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                               String memberKey = dataSnapshot.getKey();
+                               myFirebaseRef.child(memberKey).child("condition").setValue("true");
+
+
+
+                           }
+
+                           @Override
+                           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                           }
+
+                           @Override
+                           public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                           }
+
+                           @Override
+                           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                           }
+
+                           @Override
+                           public void onCancelled(FirebaseError firebaseError) {
+
+                           }
+                       });
+
+
+
 
 
                    }
                });
                bdr.setNegativeButton("返回", null);
                bdr.show();
+
 
 
 
@@ -402,7 +444,52 @@ public class Game_areaFragment extends Fragment {
 
     };
 
-/**
+
+
+    private   void  put_now_location(final String location){
+        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        // Map<String, Object> used_shop= new HashMap<String, Object>();
+        // used_shop.put("used",location);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String memberKey = dataSnapshot.getKey();
+
+                myFirebaseRef.child(memberKey).child("now").setValue(location);
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
+
+    /**
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
