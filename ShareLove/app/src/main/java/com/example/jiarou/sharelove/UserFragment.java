@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,8 +47,9 @@ public class UserFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     String imgurURL = "http://i.imgur.com/";
-    Long facebookID = 111111111111111l; //到時候應該是可以透過什麼管道取得的
-    Button coupon_btn, lottery_btn, owned_coupon_btn, add_vendor_btn, collect_store_btn, change_name, finish_name;
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
+    Button collect_store_btn, change_name, finish_name;
     final Firebase user_ref = new Firebase("https://member-139bd.firebaseio.com/");
 
     //Oct 14 update
@@ -256,8 +259,8 @@ public class UserFragment extends Fragment {
 
                 //大頭照取的地方
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
-                String pic = imgurURL + picId + ".jpg";
-                DownloadImageTask downloadImage = new DownloadImageTask(photo);
+                String pic = "https://graph.facebook.com/" + picId + "/picture?type=normal";
+                DownloadHttpsImageTask downloadImage = new DownloadHttpsImageTask(photo);
                 downloadImage.execute(pic);
 
             }

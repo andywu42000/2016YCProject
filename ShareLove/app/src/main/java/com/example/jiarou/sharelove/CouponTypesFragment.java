@@ -21,6 +21,7 @@ import com.firebase.client.Query;
 
 import java.util.ArrayList;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -43,6 +44,8 @@ public class CouponTypesFragment extends Fragment{
     final static String Coupn_DB_URL ="https://coupon-da649.firebaseio.com/";
     final static String MEMBER_DB_URL = "https://member-139bd.firebaseio.com/";
     String imgurURL = "http://i.imgur.com/";
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     private OnCouponSelected mListener;
 
 
@@ -155,7 +158,7 @@ public class CouponTypesFragment extends Fragment{
         Firebase.setAndroidContext(this.getActivity());
         final Firebase memberRef = new Firebase(MEMBER_DB_URL);
 
-        Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(facebookID);
         memberQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

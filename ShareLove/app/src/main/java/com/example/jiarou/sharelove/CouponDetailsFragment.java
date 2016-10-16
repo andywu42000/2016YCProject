@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by chiayi on 16/7/29.
  */
@@ -34,6 +36,8 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
     final static String MEMBER_DB_URL = "https://member-139bd.firebaseio.com/";
     final Firebase memberRef = new Firebase(MEMBER_DB_URL);
     final Firebase couponRef = new Firebase("https://coupon-da649.firebaseio.com/");
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     TextView amountTextView;
     BuyItDialogFragment dialog = new BuyItDialogFragment();
     FinishDialogFragment f_dialog = new FinishDialogFragment();
@@ -42,6 +46,7 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
     Long coupon_amount = null;
     String key; //Coupon_ID
     String info; //使用者購買的優惠券的info 用來更新資料庫的
+    String member_key;
 
 
 
@@ -112,11 +117,12 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
     public void RetrieveMemberData(Firebase memberRef){
 
         Firebase.setAndroidContext(this.getActivity());
-        Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(facebookID);
         memberQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Long owned_point = (Long) dataSnapshot.child("Owned_Points").getValue();
+                member_key = dataSnapshot.getKey();
                 owned_points = owned_point;
             }
 
@@ -210,13 +216,13 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
         String time = formatter.format(tdt);
 
         //要再查一下如何知道他的ID?
-        memberRef.child("-KPH9T4n7OuJQcVj_u4B").child("Owned_Points").setValue(owned_points);
+        memberRef.child(member_key).child("Owned_Points").setValue(owned_points);
         Map <String,String> My_Coupon = new HashMap<String,String>();
         My_Coupon.put("Coupon_ID",key);
         My_Coupon.put("Due_Date",time);
         My_Coupon.put("Information",info);
 
-        memberRef.child("-KPH9T4n7OuJQcVj_u4B").child("Owned_Coupons").push().setValue(My_Coupon);
+        memberRef.child(member_key).child("Owned_Coupons").push().setValue(My_Coupon);
 
 
         //memberRef.child("-KPH9T4n7OuJQcVj_u4B").child("Owned_Coupons").child(key).child("Information").setValue(info);
