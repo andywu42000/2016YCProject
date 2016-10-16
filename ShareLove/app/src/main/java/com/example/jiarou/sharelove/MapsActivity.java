@@ -16,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.peter.focus.GlobalVariable;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
@@ -131,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(MapsActivity.this, com.example.peter.focus.MainActivity.class);
+                intent.setClass(MapsActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

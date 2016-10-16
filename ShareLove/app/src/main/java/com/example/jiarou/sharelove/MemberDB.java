@@ -1,9 +1,7 @@
-package com.example.peter.focus;
+package com.example.jiarou.sharelove;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;

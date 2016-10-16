@@ -28,6 +28,9 @@
     <string name="title_activity_test">TestActivity</string>
 
     <string name="facebook_app_id">1266123886739578</string>
+    <string name="logout">logout</string>
+    <string name="登出">logout1</string>
+    <string name="logout01">登出</string>
 
 
 </resources>

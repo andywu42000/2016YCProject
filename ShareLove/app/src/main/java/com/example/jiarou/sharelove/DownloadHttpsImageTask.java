@@ -1,4 +1,4 @@
-package com.example.peter.focus;
+package com.example.jiarou.sharelove;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

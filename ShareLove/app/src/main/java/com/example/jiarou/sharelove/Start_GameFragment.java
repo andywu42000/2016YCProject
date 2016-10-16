@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -26,7 +32,13 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -58,11 +70,15 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     Button get,open;
     String get_location;
     String shop; //店家地址
-    double Latitude=24.9849998; //店家緯度
-    double Longitude=121.5761281; //店家經度
+    double Latitude; //店家緯度
+    double Longitude; //店家經度
     double distance; //距離
     double myla=24.9849998;  //我的緯度
     double mylo=121.5761281;  //我的經度
+    double idis;
+    LatLng nccu;
+    String number;
+    String check_where,test;
 
 
 
@@ -83,6 +99,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -90,7 +107,13 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        get_location=bundle.getString("location");
+        number = bundle.getString("number");
+
+           get_location = bundle.getString("address");
+           // test = bundle.getString("123");
+
+
+
     }
 
     @Override
@@ -111,10 +134,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
 
         mMap = mapView.getMap();
-        LatLng nccu = new LatLng(24.9849998, 121.5761281);
-        mMap.addMarker(new MarkerOptions().position(nccu).title("Marker in NCCU"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(nccu));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+
+
 
         txv = (TextView) view.findViewById(R.id.txv);
 
@@ -123,8 +144,11 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                startActivity(it);
+                get_now();
+                Log.d("test01", "test01" + check_where);
+
+               // Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+               // startActivity(it);
 
             }
         });
@@ -133,26 +157,95 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            // Bundle bundle = getArguments();
-            // get_location=bundle.getString("location");
-
 
                distance= getDistanceMeter(Latitude, Longitude, myla, mylo);
-                if (distance<=50){
+                idis=Math.floor(distance);
+                if ( idis<=100000000){
+                    find_number(number);
+                   // mListener.Start_game(number);
 
 
-                    mListener.Start_game();
+                    getActivity().finish();
+
+
+
                 }else {
                    Toast.makeText(getActivity(),"必須距離50公尺才算到達喔！", Toast.LENGTH_LONG).show();
                 }
-                Log.i("location", "location" +distance);
-               // Log.d("location", "location" + get_location);
+
+            }
 
 
+        });
+
+
+
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                    if(keyCode == KeyEvent.KEYCODE_BACK){
+                        return true;
+                    }
+                    return false;
+                }
+
+        });
+        get_now();
+
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addressLocation= geocoder.getFromLocationName(get_location,1);
+            Latitude= addressLocation.get(0).getLatitude();
+            Longitude=addressLocation.get(0).getLongitude();
+             nccu = new LatLng(Latitude, Longitude);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(nccu));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
+        ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.child("Location/Address").getValue().toString().equals(get_location)) {
+                   shop= (String) dataSnapshot.child("Information/Name").getValue();
+                    mMap.addMarker(new MarkerOptions().position(nccu).title(shop));
+                    /**  int store_number;
+                     store_number=((String) dataSnapshot.child("Information/Name").getValue()).length();
+                     if(store_number>0) {
+                     Toast.makeText(SearchActivity.this, "目前有"+ zip_areas+"筆", Toast.LENGTH_LONG).show();
+                     }else {
+                     Toast.makeText(SearchActivity.this, "您沒有選擇任何項目"+store_number, Toast.LENGTH_LONG).show();
+                     } **/
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
             }
         });
-
 
 
 
@@ -180,6 +273,111 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
 
 
+    private   void  firebase(final String location,final String num){
+        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+       // Map<String, Object> used_shop= new HashMap<String, Object>();
+       // used_shop.put("used",location);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String memberKey = dataSnapshot.getKey();
+                myFirebaseRef.child(memberKey).child(num).setValue(location);
+                myFirebaseRef.child(memberKey).child("times").setValue(num);
+                myFirebaseRef.child(memberKey).child("condition").setValue("false");
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
+
+    private   void  get_now(){
+        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        // Map<String, Object> used_shop= new HashMap<String, Object>();
+        // used_shop.put("used",location);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+              check_where=(String)dataSnapshot.child("now").getValue();
+                Log.d("test", "test" + check_where);
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
+
+
+    private  void  find_number(String a){
+
+        if(a=="1"){
+            firebase(get_location, "two");
+
+        }else  if (a=="2"){
+            firebase(get_location,"three");
+
+        }else  if(a=="3"){
+            firebase(get_location,"four");
+        }else if(a=="4"){
+
+            firebase(get_location,"done");
+        }
+
+
+
+
+
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -189,7 +387,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
         String best = mgr.getBestProvider(new Criteria(), true);
         if (best != null) {
-            txv.setText("取得定位資訊中...");
+            txv.setText("剩下"+idis+"公尺喔！");
             if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 requestPermissions(new String[]{ android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_REQUEST_CODE);
@@ -247,7 +445,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     }
 
 
-
+/**
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -255,7 +453,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
             mListener. Start_game();
         }
     }
-
+**/
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -272,6 +470,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         super.onDetach();
         mListener = null;
     }
+
+
 
     @Override
     public void onLocationChanged(android.location.Location location) {
@@ -323,6 +523,6 @@ public class Start_GameFragment extends Fragment implements LocationListener {
      */
     public interface Start_game {
         // TODO: Update argument type and name
-        void  Start_game();
+        void  Start_game(String check);
     }
 }

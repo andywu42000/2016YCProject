@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.peter.focus.FocusFragment;
-
 public class User_Activity extends AppCompatActivity  implements UserFragment.OnFragmentInteractionListener{
 
     @Override
