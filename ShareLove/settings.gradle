@@ -1,1 +1,1 @@
-include ':LoveCode', ':Focus', ':app'
+include ':app'

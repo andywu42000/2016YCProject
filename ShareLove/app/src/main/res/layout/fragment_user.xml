@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.example.jiarou.sharelove.UserFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jiarou.sharelove.UserFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -11,31 +11,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="right|top"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="#fff">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="143dp"
-                android:layout_height="match_parent"
-                android:id="@+id/photo"/>
+                android:layout_width="139dp"
+                android:layout_height="139dp"
+                android:id="@+id/photo"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp" />
+
+
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="right">
+                android:layout_height="161dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1.5">
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="62dp"
                     android:weightSum="1"
-                  >
-                    
+
+                    >
+
                     <ViewSwitcher
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -51,16 +62,20 @@
                                 android:textAppearance="?android:attr/textAppearanceLarge"
                                 android:text="暱稱"
                                 android:id="@+id/name"
-                                android:layout_marginLeft="10dp"
+                                android:layout_marginLeft="13dp"
                                 android:layout_centerVertical="true"
-                                android:layout_alignParentStart="true" />
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@+id/change_name_btn" />
+
                             <Button
-                                android:layout_width="wrap_content"
+                                android:layout_width="35dp"
                                 android:layout_height="wrap_content"
-                                android:text="修改"
                                 android:id="@+id/change_name_btn"
+                                android:stateListAnimator="@null"
+                                android:background="@mipmap/edit_name"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentEnd="true" />
+
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -69,7 +84,7 @@
                             android:id="@+id/relative2">
                             <EditText
                                 android:id="@+id/hidden_edit_view"
-                                android:hint="輸入新暱稱"
+                                android:hint="新暱稱"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -77,12 +92,13 @@
                                 android:layout_alignParentStart="true">
                             </EditText>
                             <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="完成"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
                                 android:id="@+id/finish_name_btn"
                                 android:layout_centerVertical="true"
-                                android:layout_alignParentEnd="true"/>
+                                android:layout_alignParentEnd="true"
+                                android:stateListAnimator="@null"
+                                android:background="@mipmap/done_name"/>
                         </RelativeLayout>
                     </ViewSwitcher>
 
@@ -93,61 +109,64 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/imageView6"
+                        android:background="@mipmap/love"
+                        android:layout_marginLeft="10dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="愛心點數:"
+                        android:text="點數:"
                         android:id="@+id/textView24"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="116dp"
                         android:layout_height="36dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:id="@+id/owned_point"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="5dp" />
 
                 </LinearLayout>
 
                 <Button
-                    android:layout_width="match_parent"
+                    android:layout_width="184dp"
                     android:layout_height="wrap_content"
                     android:text="店家收藏"
                     android:id="@+id/collect_store_btn"
-                    />
+                    android:stateListAnimator="@null"
+                    android:background="#ECECFF"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="樂透"
-            android:id="@+id/lottery_btn"
-            android:layout_weight="0.30"/>
+            android:layout_height="12dp"
+            android:background="#F0F0F0"
+            android:layout_weight="0.11"></LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="優惠券"
-            android:id="@+id/coupon_btn"
-            android:layout_weight="0.30"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="可使用優惠券"
-            android:id="@+id/owned_coupon_btn"
-            android:layout_weight="0.30"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="新增店家"
-            android:id="@+id/add_vendor_btn"
-            android:layout_weight="0.30"/>
+        <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="326.5dp"
+            android:id="@+id/gridView2"
+            android:background="#ECF4FC"
+            android:horizontalSpacing="2dp"
+            android:verticalSpacing="2dp"
+            android:listSelector="@drawable/grid_view_item_selector_xml"/>
 
     </LinearLayout>
+
 </FrameLayout>
+

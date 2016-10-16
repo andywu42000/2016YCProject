@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
 
 
@@ -19,7 +20,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".GlobalVariable">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,7 +41,8 @@
 
         <activity
             android:name=".IndexActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -53,47 +56,45 @@
         </activity>
         <activity
             android:name=".CouponMainActivity"
-            android:label="優惠券"
+            android:label="優惠券商店"
             android:parentActivityName=".User_Activity">
-
         </activity>
         <activity
-            android:name="com.example.chiayi.lovecode.MainActivity"
+            android:name=".LoveCodeMainActivity"
             android:label="愛心碼"
-            android:parentActivityName=".MapsActivity">
-        </activity>
-        <activity
-            android:name=".User_Activity"
-            android:label="個人頁面"
             android:parentActivityName=".MapsActivity">
         </activity>
 
         <activity
             android:name=".LotteryMainActivity"
             android:label="樂透"
-            android:parentActivityName=".User_Activity">
+            android:parentActivityName=".User_Activity"
+            >
         </activity>
         <activity
             android:name=".OwnedCouponMainActivity"
             android:label="我的優惠券"
             android:parentActivityName=".User_Activity">
         </activity>
-
+        <activity
+            android:name=".User_Activity"
+            android:label="個人頁面"
+            android:parentActivityName=".MapsActivity">
+        </activity>
         <activity
             android:name=".AddVendorMainActivity"
-            android:label="新增攤販資訊"
+            android:label="新增攤販"
             android:parentActivityName=".User_Activity">
         </activity>
-
-        <activity
-            android:name=".CollectStoreMainActivity"
-            android:label="收藏店家">
+        <activity android:name=".CollectStoreMainActivity"
+            android:label="收藏店家"
+            android:parentActivityName=".User_Activity">
         </activity>
-
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MapsActivity">
         </activity>
         <activity android:name=".TestActivity">
         </activity>
@@ -101,11 +102,18 @@
         </activity>
         <activity android:name=".Test03Activity">
         </activity>
+        <activity android:name=".MainActivity">
+        </activity>
         <activity android:name=".Test04Activity">
         </activity>
         <activity android:name=".MapsActivity">
         </activity>
         <activity android:name=".Login"></activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
         <service
             android:name=".MyFirebaseMessagingService">
             <intent-filter>

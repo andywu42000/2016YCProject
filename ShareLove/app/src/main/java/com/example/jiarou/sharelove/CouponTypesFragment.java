@@ -1,18 +1,17 @@
 package com.example.jiarou.sharelove;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -31,10 +30,11 @@ public class CouponTypesFragment extends Fragment{
 
 
     TextView member_owned_points;
-    Button coupon_type1;
-    Button coupon_type2;
-    Button coupon_type3;
+    //    Button coupon_type1;
+//    Button coupon_type2;
+//    Button coupon_type3;
     GridView gridView;
+    RadioGroup radioGroup1;
 
     final  static ArrayList<Long> couponPriceList= new ArrayList<>();
     final static ArrayList<String> couponInfoList= new ArrayList<>();
@@ -91,13 +91,38 @@ public class CouponTypesFragment extends Fragment{
         final View view = inflater.inflate(R.layout.coupon_types_fragment,container,false);
 
         //Coupon types page button (change page)
-        coupon_type1=(Button)view.findViewById(R.id.button);
-        coupon_type2=(Button)view.findViewById(R.id.button2);
-        coupon_type3=(Button)view.findViewById(R.id.button3);
+//        coupon_type1=(Button)view.findViewById(R.id.button);
+//        coupon_type2=(Button)view.findViewById(R.id.button2);
+//        coupon_type3=(Button)view.findViewById(R.id.button3);
+//
+//        coupon_type1.setOnClickListener(ChangePage);
+//        coupon_type2.setOnClickListener(ChangePage);
+//        coupon_type3.setOnClickListener(ChangePage);
 
-        coupon_type1.setOnClickListener(ChangePage);
-        coupon_type2.setOnClickListener(ChangePage);
-        coupon_type3.setOnClickListener(ChangePage);
+
+        radioGroup1 = (RadioGroup) view.findViewById(R.id.radioGroup1);
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.button:
+                        connectToCouponFirebase("平價");
+                        break;
+                    case R.id.button2:
+                        connectToCouponFirebase("中等");
+                        break;
+
+                    case R.id.button3:
+                        connectToCouponFirebase("豪華");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+
+
 
         //宣告上方的會員擁有點數
         member_owned_points = (TextView) view.findViewById(R.id.textView2);
@@ -108,20 +133,20 @@ public class CouponTypesFragment extends Fragment{
     }
 
 
-    //Change Pages Button
-    private View.OnClickListener ChangePage = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v.getId()== R.id.button){
-                connectToCouponFirebase("平價");
-            }
-            else if (v.getId()== R.id.button2){
-                connectToCouponFirebase("中等");
-            }else {
-                connectToCouponFirebase("豪華");
-            }
-        }
-    };
+//    //Change Pages Button
+//    private View.OnClickListener ChangePage = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            if (v.getId()== R.id.button){
+//                connectToCouponFirebase("平價");
+//            }
+//            else if (v.getId()== R.id.button2){
+//                connectToCouponFirebase("中等");
+//            }else {
+//                connectToCouponFirebase("豪華");
+//            }
+//        }
+//    };
 
 
 

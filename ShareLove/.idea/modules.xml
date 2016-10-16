@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Focus/Focus.iml" filepath="$PROJECT_DIR$/Focus/Focus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LoveCode/LoveCode.iml" filepath="$PROJECT_DIR$/LoveCode/LoveCode.iml" />
       <module fileurl="file://$PROJECT_DIR$/ShareLove.iml" filepath="$PROJECT_DIR$/ShareLove.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

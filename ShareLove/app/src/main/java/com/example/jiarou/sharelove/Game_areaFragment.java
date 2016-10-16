@@ -1,8 +1,10 @@
 package com.example.jiarou.sharelove;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -129,6 +131,7 @@ public class Game_areaFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 get_location = (String) list.getItemAtPosition(position);
+                put_now_location(get_location);
 
 
                 Log.d("location", "location" + get_location);
@@ -146,8 +149,68 @@ public class Game_areaFragment extends Fragment {
                Toast.makeText(getActivity(), "尚未選取地址", Toast.LENGTH_LONG).show();
 
            }else {
-               Log.d("location", "location" + get_location);
-               mListener.Choose_area(get_location);
+
+               AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
+               bdr.setMessage("確認後就無法返回重新選擇囉！");
+               bdr.setTitle("提醒");
+               bdr.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+                       mListener.Choose_area(get_location);
+                       put_now_location(get_location);
+                       final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+                       // Map<String, Object> used_shop= new HashMap<String, Object>();
+                       // used_shop.put("used",location);
+                       Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+                       memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+                           @Override
+                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                               String memberKey = dataSnapshot.getKey();
+                               myFirebaseRef.child(memberKey).child("condition").setValue("true");
+
+
+
+                           }
+
+                           @Override
+                           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                           }
+
+                           @Override
+                           public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                           }
+
+                           @Override
+                           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                           }
+
+                           @Override
+                           public void onCancelled(FirebaseError firebaseError) {
+
+                           }
+                       });
+
+
+
+
+
+                   }
+               });
+               bdr.setNegativeButton("返回", null);
+               bdr.show();
+
+
+
+
+
+
+
 
            }
            }
@@ -381,7 +444,52 @@ public class Game_areaFragment extends Fragment {
 
     };
 
-/**
+
+
+    private   void  put_now_location(final String location){
+        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        // Map<String, Object> used_shop= new HashMap<String, Object>();
+        // used_shop.put("used",location);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String memberKey = dataSnapshot.getKey();
+
+                myFirebaseRef.child(memberKey).child("now").setValue(location);
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
+
+    /**
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

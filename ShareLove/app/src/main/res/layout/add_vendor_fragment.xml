@@ -11,8 +11,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_weight="0.4">
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15">
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,108 +36,156 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="206dp"
-        android:layout_weight="0.5">
+        android:layout_height="wrap_content"
+        android:layout_weight="0.85"
+        android:background="#FFFF">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.2">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="店家名稱" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/Name_edit"
-                android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="店家名稱"
+                    android:layout_marginLeft="30dp"
+                    android:id="@+id/textView32" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:inputType="textPersonName"
+                    android:ems="14"
+                    android:id="@+id/Name_edit"
+                    android:layout_weight="0.60"
+                    android:background="@drawable/bg_edittext_selector"
+                    android:layout_centerVertical="true"
+                    android:layout_alignStart="@+id/textView32"
+                    android:layout_marginTop="10dp"
+                    android:autoText="false" />
+            </RelativeLayout>
+
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.2">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="店家地址" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:ems="10"
-                android:id="@+id/Address_edit"
-                android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="店家地址"
+                    android:id="@+id/textView33"
+                    android:layout_marginLeft="30dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:inputType="textPostalAddress"
+                    android:ems="14"
+                    android:id="@+id/Address_edit"
+                    android:layout_weight="1"
+                    android:layout_alignParentStart="false"
+                    android:background="@drawable/bg_edittext_selector"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignStart="@+id/textView33"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.2">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="店家類別"
-                android:id="@+id/textView22" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/variety_spinner"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="店家類別"
+                    android:id="@+id/textView22"
+                    android:layout_marginLeft="30dp" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/variety_spinner"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignStart="@+id/textView22"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="其他資訊"
-                android:id="@+id/textView13" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/info_edit"
-                android:layout_weight="1.76"
-                android:hint="營業時間(例: 星期一 10:00-21:00)" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="其他資訊"
+                    android:id="@+id/textView13"
+                    android:layout_marginLeft="30dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:inputType="textMultiLine"
+                    android:ems="14"
+                    android:id="@+id/info_edit"
+                    android:hint="營業時間(例: 星期一 10:00-21:00)"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignStart="@+id/textView13"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_edittext_selector" />
+            </RelativeLayout>
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:text="提 交"
+            android:id="@+id/add_submit"
+            android:layout_weight="0.1"
+            android:layout_gravity="center_horizontal|bottom"
+            android:drawableRight="@mipmap/right_arrow"
+            android:background="#2488FF"
+            android:textColor="#FFFF"
+            android:textSize="18dp" />
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:text="提交"
-        android:id="@+id/add_submit"
-        android:layout_gravity="right"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="0.1" />
 
 </LinearLayout>

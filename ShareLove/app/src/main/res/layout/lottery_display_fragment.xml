@@ -4,154 +4,248 @@
     android:layout_height="match_parent">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Button
-            android:layout_width="121dp"
-            android:layout_height="wrap_content"
-            android:text="遊戲規則"
-            android:id="@+id/gameRule_btn"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="right" />
+        android:layout_height="match_parent"
+        android:background="#ffff">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="118dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="目前搜集"
-                android:layout_below="@+id/gameRule_btn"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="36dp"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="65dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/current_num5"
-                android:layout_marginTop="65dp"
-                android:layout_marginLeft="50dp"
-                android:text="萬" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="\n目前搜集\n"
+                    android:id="@+id/textView29"
+                    android:textAlignment="center"
+                    android:background="#cbe74c3c"
+                    android:autoText="false"
+                    android:textColor="#FFFF"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/current_num4"
-                android:layout_marginTop="65dp"
-                android:layout_marginLeft="10dp"
-                android:text="千" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="百"
-                android:id="@+id/current_num3"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="65dp" />
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/current_num5"
+                    android:text="萬"
+                    android:textSize="24dp"
+                    android:layout_alignStart="@+id/textView29"
+                    android:layout_alignLeft="@+id/textView29"
+                    android:layout_below="@+id/textView29"
+                    android:layout_centerInParent="true"
+                    android:textAlignment="center"
+                    android:paddingTop="4dp"
+                    android:layout_marginStart="29dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded_rectangle_shape"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="十"
-                android:id="@+id/current_num2"
-                android:layout_marginTop="65dp"
-                android:layout_marginLeft="10dp" />
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/current_num4"
+                    android:text="千"
+                    android:layout_marginStart="29dp"
+                    android:textSize="24dp"
+                    android:layout_toEndOf="@+id/current_num5"
+                    android:layout_toRightOf="@+id/current_num5"
+                    android:layout_below="@+id/textView29"
+                    android:layout_centerInParent="true"
+                    android:textAlignment="center"
+                    android:paddingTop="4dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded_rectangle_shape"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="個"
-                android:id="@+id/current_num1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="65dp" />
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="百"
+                    android:id="@+id/current_num3"
+                    android:textSize="24dp"
+                    android:layout_toEndOf="@+id/current_num4"
+                    android:layout_marginStart="29dp"
+                    android:layout_below="@+id/textView29"
+                    android:layout_centerInParent="true"
+                    android:textAlignment="center"
+                    android:paddingTop="4dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded_rectangle_shape"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="十"
+                    android:id="@+id/current_num2"
+                    android:layout_marginStart="29dp"
+                    android:textSize="24dp"
+                    android:textAlignment="center"
+                    android:singleLine="false"
+                    android:paddingTop="4dp"
+                    android:layout_alignBottom="@+id/current_num3"
+                    android:layout_toEndOf="@+id/current_num3"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded_rectangle_shape"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="個"
+                    android:id="@+id/current_num1"
+                    android:layout_marginStart="29dp"
+                    android:textSize="24dp"
+                    android:autoText="false"
+                    android:layout_toEndOf="@+id/current_num2"
+                    android:layout_alignBottom="@+id/current_num2"
+                    android:paddingTop="4dp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded_rectangle_shape"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/gameRule_btn"
+                    android:layout_gravity="right"
+                    android:background="@mipmap/question"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="15dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#F0F0F0"
+            android:id="@+id/view2"
+            android:layout_below="@+id/textView29"
+            android:layout_alignParentStart="true" />
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="118dp">
+            android:layout_height="100dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="上期是否中獎"
-                android:layout_marginTop="60dp"
-                android:layout_below="@+id/textView"
-                android:layout_alignLeft="@+id/textView"
-                android:layout_alignStart="@+id/textView"
-                android:layout_marginLeft="36dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#ECF4FC">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/check_y_n"
-                android:layout_marginTop="65dp"
-                android:layout_marginLeft="50dp" />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="\n上期\n是否中獎"
+                    android:textAlignment="center"
+                    android:background="#00B3EA"
+                    android:id="@+id/textView30"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/check_y_n"
+                    android:text="Y/N"
+                    android:textAlignment="center"
+                    android:layout_centerVertical="true"
+                    android:textSize="24dp"
+                    android:layout_toEndOf="@+id/textView30" />
+            </RelativeLayout>
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#F0F0F0"
+            android:id="@+id/view3"
+            android:layout_below="@+id/textView29"
+            android:layout_alignParentStart="true" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="118dp">
+            android:layout_height="100dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="上期開獎號碼"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="64dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#ECF4FC">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="第一期獎號尚未開"
-                android:id="@+id/winning_num"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="64dp" />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="\n上期\n開獎號碼"
+                    android:textAlignment="center"
+                    android:background="#00B3EA"
+                    android:id="@+id/textView31"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/winning_num"
+                    android:textAlignment="center"
+                    android:textSize="24dp"
+                    android:layout_centerVertical="true"
+                    android:text="12345"
+                    android:layout_toEndOf="@+id/textView31"
+                    android:textColor="#00B3EA" />
+            </RelativeLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#F0F0F0"
+            android:id="@+id/view4"
+            android:layout_below="@+id/textView29"
+            android:layout_alignParentStart="true" />
+
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="搜尋頁面"
-                android:id="@+id/toSearchPage_btn"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="100dp"
-                android:visibility="gone" />
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="兌獎"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:text="兌    獎"
                 android:id="@+id/check_btn"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="150dp" />
+                android:textSize="25dp"
+                android:background="#34b581"
+                android:textColor="#ffff"
+                android:layout_gravity="bottom" />
 
         </LinearLayout>
 
     </LinearLayout>
+
 </RelativeLayout>

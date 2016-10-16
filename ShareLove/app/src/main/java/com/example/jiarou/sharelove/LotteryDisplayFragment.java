@@ -80,7 +80,7 @@ public class LotteryDisplayFragment extends Fragment{
         check_y_n = (TextView) view.findViewById(R.id.check_y_n);
         check_btn = (Button)view.findViewById(R.id.check_btn);
         winning_num = (TextView) view.findViewById(R.id.winning_num);
-//        toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
+       // toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
 //        toSearchPage_btn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

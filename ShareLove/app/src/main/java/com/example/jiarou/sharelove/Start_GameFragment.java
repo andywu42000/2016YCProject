@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -75,6 +78,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     double idis;
     LatLng nccu;
     String number;
+    String check_where,test;
 
 
 
@@ -95,6 +99,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -102,8 +107,13 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        get_location=bundle.getString("address");
-        number =bundle.getString("number");
+        number = bundle.getString("number");
+
+           get_location = bundle.getString("address");
+           // test = bundle.getString("123");
+
+
+
     }
 
     @Override
@@ -126,6 +136,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         mMap = mapView.getMap();
 
 
+
         txv = (TextView) view.findViewById(R.id.txv);
 
 
@@ -133,10 +144,11 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                get_now();
+                Log.d("test01", "test01" + check_where);
 
-
-                Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                startActivity(it);
+               // Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+               // startActivity(it);
 
             }
         });
@@ -150,7 +162,12 @@ public class Start_GameFragment extends Fragment implements LocationListener {
                 idis=Math.floor(distance);
                 if ( idis<=100000000){
                     find_number(number);
-                    mListener.Start_game(number);
+                   // mListener.Start_game(number);
+
+
+                    getActivity().finish();
+
+
 
                 }else {
                    Toast.makeText(getActivity(),"必須距離50公尺才算到達喔！", Toast.LENGTH_LONG).show();
@@ -162,6 +179,19 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         });
 
 
+
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                    if(keyCode == KeyEvent.KEYCODE_BACK){
+                        return true;
+                    }
+                    return false;
+                }
+
+        });
+        get_now();
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
@@ -243,16 +273,21 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
 
 
-    private   void  firebase(final String location,String num){
-        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/");
+    private   void  firebase(final String location,final String num){
+        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
        // Map<String, Object> used_shop= new HashMap<String, Object>();
        // used_shop.put("used",location);
-        myFirebaseRef.child(num).setValue(location);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
 
 
-        ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String memberKey = dataSnapshot.getKey();
+                myFirebaseRef.child(memberKey).child(num).setValue(location);
+                myFirebaseRef.child(memberKey).child("times").setValue(num);
+                myFirebaseRef.child(memberKey).child("condition").setValue("false");
+
 
             }
 
@@ -280,19 +315,60 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     }
 
 
+    private   void  get_now(){
+        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        // Map<String, Object> used_shop= new HashMap<String, Object>();
+        // used_shop.put("used",location);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+              check_where=(String)dataSnapshot.child("now").getValue();
+                Log.d("test", "test" + check_where);
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
+
+
     private  void  find_number(String a){
 
         if(a=="1"){
-            firebase(get_location,"one");
+            firebase(get_location, "two");
 
         }else  if (a=="2"){
-            firebase(get_location,"two");
+            firebase(get_location,"three");
 
         }else  if(a=="3"){
-            firebase(get_location,"three");
+            firebase(get_location,"four");
         }else if(a=="4"){
 
-            firebase(get_location,"four");
+            firebase(get_location,"done");
         }
 
 
@@ -394,6 +470,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         super.onDetach();
         mListener = null;
     }
+
+
 
     @Override
     public void onLocationChanged(android.location.Location location) {

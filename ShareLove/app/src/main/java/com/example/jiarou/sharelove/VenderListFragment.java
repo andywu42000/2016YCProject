@@ -7,7 +7,11 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.peter.focus.GlobalVariable;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.firebase.client.ChildEventListener;
@@ -98,31 +101,28 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_vender_list, container, false);
+        /**
+        Toolbar toolbar =(Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setContentInsetsAbsolute(0,0);
+         **/
+
+        GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+        globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+
+//        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("首頁");
+        setHasOptionsMenu(true);
         //取得searchActivuty的資料
+
+
+
+
 
         String get_area=getArguments().getString(zip_areas);
 
-        logout = (TextView)view.findViewById(R.id.logoutTextView);
-
-        if(AccessToken.getCurrentAccessToken() == null){
-            Intent intent = new Intent();
-            intent.setClass(getActivity(), Login.class);
-            startActivity(intent);
-        }else{
-            GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
-            globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
-            logout.setText("登出");
-            logout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(getActivity(), Login.class);
-                    startActivity(intent);
-                }
-            });
-        }
-
-
+/**
         search =(Button) view.findViewById(R.id.search01);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +134,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+ **/
 
         home =(Button) view.findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +144,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                 intent.setClass(getActivity(), IndexActivity.class);
 
                 startActivityForResult(intent,2);
+
 
             }
 
@@ -165,7 +167,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), com.example.peter.focus.MainActivity.class);
+                intent.setClass(getActivity(), MainActivity.class);
 
                 startActivityForResult(intent, 2);
 
@@ -176,7 +178,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), com.example.chiayi.lovecode.MainActivity.class);
+                intent.setClass(getActivity(), LoveCodeMainActivity.class);
                 startActivityForResult(intent, 2);
 
             }
@@ -253,6 +255,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
         list = (ListView) view.findViewById(R.id.venderlist_view);
+        list.bringToFront();
         connectToFirebase();
 
 
@@ -261,27 +264,97 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void connectToFirebase(){
-
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
-
-        Firebase.setAndroidContext(this.getActivity());
-
-        final Firebase vendor = new Firebase(DB_URL);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflate) {
+        inflate.inflate(R.menu.main_menu, menu);
 
 
 
+                super.onCreateOptionsMenu(menu, inflate);
 
-        vendor.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(zip_areas==null) {
-                    String title = (String) dataSnapshot.child("Information").child("Name").getValue();
 
-                    vendorTitleList.add(title);
-                }else {
-                    zip_number =zip_areas.substring(1,4);
-                    if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
+    }
+
+
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case  R.id.logout:
+                if(AccessToken.getCurrentAccessToken() == null){
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(), Login.class);
+                    startActivity(intent);
+                }else{
+                    GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+                    globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+                            Intent intent = new Intent();
+                            intent.setClass(getActivity(), Login.class);
+                            startActivity(intent);
+
+                }
+
+                break;
+            case R.id.search:
+                final Intent intent = new Intent();
+                intent.setClass(getActivity(), SearchActivity.class);
+
+                startActivityForResult(intent, 2);
+                break;
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    /**登出
+
+     logout = (TextView)view.findViewById(R.id.logoutTextView);
+
+     if(AccessToken.getCurrentAccessToken() == null){
+     Intent intent = new Intent();
+     intent.setClass(getActivity(), Login.class);
+     startActivity(intent);
+     }else{
+     GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+     globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+     logout.setText("登出");
+     logout.setOnClickListener(new View.OnClickListener() {
+    @Override public void onClick(View v) {
+    Intent intent = new Intent();
+    intent.setClass(getActivity(), Login.class);
+    startActivity(intent);
+    }
+    });
+     }
+     **/
+
+
+    public void connectToFirebase() {
+
+                final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
+
+                Firebase.setAndroidContext(this.getActivity());
+
+                final Firebase vendor = new Firebase(DB_URL);
+
+
+                vendor.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        if (zip_areas == null) {
+                            String title = (String) dataSnapshot.child("Information").child("Name").getValue();
+
+                            vendorTitleList.add(title);
+                        } else {
+                            zip_number = zip_areas.substring(1, 4);
+                            if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
                         vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
                         shop_list=(String) dataSnapshot.child("Information/Name").getValue();
 
