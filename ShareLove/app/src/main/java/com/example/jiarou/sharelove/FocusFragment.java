@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
  * Created by Peter on 2016/8/6
  */
 public class FocusFragment extends Fragment {
+
 
     ListView focusListView;
 
@@ -76,9 +79,12 @@ public class FocusFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        final View view = inflater.inflate(com.example.peter.focus.R.layout.focus_fragment, container, false);
+        final View view = inflater.inflate(R.layout.focus_fragment, container, false);
 
-        focusListView = (ListView)view.findViewById(com.example.peter.focus.R.id.focusListView);
+        focusListView = (ListView)view.findViewById(R.id.focusListView);
+        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+    //    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("焦點");
 
         connectToFirebase();
 
@@ -87,9 +93,7 @@ public class FocusFragment extends Fragment {
 
     public void connectToFirebase(){
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList/*,
-                vendorPhoneList, timeRemarkList, monTimeList, tueTimeList, wedTimeList, thurTimeList, friTimeList,
-                satTimeList, sunTimeList, vendorAddressList, vendorStoryList*/);
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList);
 
         Firebase.setAndroidContext(this.getActivity());
 
@@ -199,7 +203,7 @@ public class FocusFragment extends Fragment {
                              String satTime, String sunTime, String vendorAddress, String vendorStory*/);
     }
 
-    public class CustomAdapter extends BaseAdapter{
+    public class CustomAdapter extends BaseAdapter {
 
         Context c;
 
@@ -268,10 +272,10 @@ public class FocusFragment extends Fragment {
             View list;
             LayoutInflater inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            list = inflater.inflate(com.example.peter.focus.R.layout.custom_listview, null);
+            list = inflater.inflate(R.layout.custom_listview, null);
 
-            TextView listTextView = (TextView)list.findViewById(com.example.peter.focus.R.id.listTextView);
-            ImageView listImageView = (ImageView)list.findViewById(com.example.peter.focus.R.id.listImageView);
+            TextView listTextView = (TextView)list.findViewById(R.id.listTextView);
+            ImageView listImageView = (ImageView)list.findViewById(R.id.listImageView);
 
             final String title = vendorTitle.get(position);
             listTextView.setText(title);

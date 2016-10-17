@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.lang.Long;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by chiayi on 16/8/17.
  */
@@ -30,7 +32,8 @@ public class AddVendorFragment extends Fragment{
 
     final static String MEMBER_DB = "https://member-139bd.firebaseio.com/";
     final static String MEMBER_VENDOR_DB = "https://member-vendor.firebaseio.com/";
-    Long facebookID = (Long) 111111111111111l; //到時候應該是可以透過什麼管道取得的   //好像他們新增的會員資料是string
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     Button add_submit;
     Spinner variety_spinner;
     EditText Name_edit,Address_edit,info_edit;

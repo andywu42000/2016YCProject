@@ -11,9 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".GlobalVariable">
+        android:name="com.example.jiarou.sharelove.GlobalVariable">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.jiarou.sharelove.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

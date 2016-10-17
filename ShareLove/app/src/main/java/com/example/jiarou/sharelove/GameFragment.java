@@ -1,18 +1,16 @@
 package com.example.jiarou.sharelove;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.peter.focus.*;
+
 
 
 /**
@@ -70,6 +68,10 @@ public class GameFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view =inflater.inflate(R.layout.fragment_game, container, false);
+
+        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
 
         generate_btn= (Button)  view.findViewById(R.id.general_btn);
         generate_btn.setOnClickListener(new View.OnClickListener() {

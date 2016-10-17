@@ -1,7 +1,9 @@
 package com.example.jiarou.sharelove;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.*;
 import android.location.Location;
@@ -13,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     String get_check;
     String condition;
     String Address;
+    private  Fragment fg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,29 +84,29 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                final  String memberKey01 = dataSnapshot.getKey();
-               condition = (String)dataSnapshot.child("condition").getValue();
-                Address =(String)dataSnapshot.child("now").getValue();
+                final String memberKey01 = dataSnapshot.getKey();
+                condition = (String) dataSnapshot.child("condition").getValue();
+                Address = (String) dataSnapshot.child("now").getValue();
                 Log.d("d", "hhhh" + Address);
-        if (Objects.equals(condition, "false")) {
-            final Game_areaFragment game_areaFragment =
-                    Game_areaFragment.newInstance();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.game_root,game_areaFragment, "game_areaFragment")
-                .addToBackStack(null)
-                .commit();
-        }else if(Objects.equals(condition, "true")){
+                if (Objects.equals(condition, "false")) {
+                    final Game_areaFragment game_areaFragment =
+                            Game_areaFragment.newInstance();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.game_root, game_areaFragment, "game_areaFragment")
+                            .addToBackStack(null)
+                            .commit();
+                } else if (Objects.equals(condition, "true")) {
 
-            final Game_areaFragment game_areaFragment =
-                    Game_areaFragment.newInstance();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.game_root, game_areaFragment, "game_areaFragment")
-                    .addToBackStack(null)
-                    .commit();
+                    final Game_areaFragment game_areaFragment =
+                            Game_areaFragment.newInstance();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.game_root, game_areaFragment, "game_areaFragment")
+                            .addToBackStack(null)
+                            .commit();
 
-        }
+                }
             }
 
             @Override
@@ -224,5 +228,28 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     }
 
+    @Override
+    public  boolean onKeyDown(int keyCode, KeyEvent event){
+        Log.d("test","event");
+        AlertDialog.Builder bdr = new AlertDialog.Builder(this);
+        bdr.setMessage("確定離開遊戲嘛？");
+        bdr.setTitle("提醒");
+        bdr.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GameActivity.this.finish();
 
-}
+            }
+        });
+
+        bdr.setNegativeButton("繼續", null);
+                 bdr.show();
+                 if (fg instanceof Start_GameFragment) {
+                     Start_GameFragment.onKeyDown(keyCode, event);
+
+                 }
+                 return super.onKeyDown(keyCode, event);
+             }
+
+
+         }

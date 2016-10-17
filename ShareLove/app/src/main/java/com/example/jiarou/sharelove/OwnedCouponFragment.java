@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by chiayi on 16/8/16.
  */
@@ -36,7 +38,8 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
 
     Integer POSITION = null;
     ListView owned_coupon_list;
-    Long facebookID = 111111111111111l; //到時候應該是可以透過什麼管道取得的
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     String imgurURL = "http://i.imgur.com/";
     String member_ID;
     private CustomAdapter adapter = null;

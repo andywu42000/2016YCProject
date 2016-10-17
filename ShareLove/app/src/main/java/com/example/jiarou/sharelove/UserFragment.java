@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -20,6 +23,13 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -37,10 +47,19 @@ public class UserFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     String imgurURL = "http://i.imgur.com/";
-    Long facebookID = 111111111111111l; //到時候應該是可以透過什麼管道取得的
-    Button coupon_btn, lottery_btn, owned_coupon_btn, add_vendor_btn, collect_store_btn, change_name, finish_name;
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
+    Button collect_store_btn, change_name, finish_name;
     final Firebase user_ref = new Firebase("https://member-139bd.firebaseio.com/");
 
+    //Oct 14 update
+    private GridView gridView;
+    private int[] navigatebtn = {
+            R.mipmap.lotto,R.mipmap.my_coupon, R.mipmap.buy_coupon,
+            R.mipmap.add_vendor};
+    private String[] navigateText = {
+            "樂透", "優惠券商店", "我的優惠券", "新增店家"};
+    //
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -95,54 +114,65 @@ public class UserFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        //跳到Ａctivity的按鈕
-        coupon_btn=(Button)view.findViewById(R.id.coupon_btn);
-        coupon_btn.setOnClickListener(new View.OnClickListener() {
+
+
+        //Oct 14 update
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (int i = 0; i < navigatebtn.length; i++) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("navigatebtn", navigatebtn[i]);
+            item.put("text", navigateText[i]);
+            items.add(item);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(this.getContext(), items, R.layout.user_gridview, new String[]{"navigatebtn", "text"}, new int[]{R.id.imageView5, R.id.textView25});
+
+
+        gridView = (GridView)view.findViewById(R.id.gridView2);
+        gridView.setNumColumns(2);
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), CouponMainActivity.class);
-                startActivity(intent);
+
+                switch (position) {
+
+                    case 0:
+                        intent.setClass(getActivity(), LotteryMainActivity.class);
+                        startActivity(intent);
+                        break;
+
+
+                    case 1:
+                        intent.setClass(getActivity(), CouponMainActivity.class);
+                        startActivity(intent);
+                        break;
+
+
+                    case 2:
+                        intent.setClass(getActivity(), OwnedCouponMainActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case 3:
+                        intent.setClass(getActivity(), AddVendorMainActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    default:
+                        break;
+
+
+                }
+
 
             }
-        });
 
-        //跳到 Lottery的按鈕
-        lottery_btn=(Button)view.findViewById(R.id.lottery_btn);
-        lottery_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(),  LotteryMainActivity.class );
-                startActivity(intent);
-
-            }
-        });
-
-        //跳到 Owned_coupon的按鈕
-        owned_coupon_btn=(Button)view.findViewById(R.id.owned_coupon_btn);
-        owned_coupon_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), OwnedCouponMainActivity.class);
-                startActivity(intent);
-
-            }
         });
 
 
-        //跳到 Add_Vendor的按鈕
-        add_vendor_btn=(Button)view.findViewById(R.id.add_vendor_btn);
-        add_vendor_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), AddVendorMainActivity.class);
-                startActivity(intent);
-
-            }
-        });
+        //
 
 
         //跳到 collect_store的按鈕
@@ -162,7 +192,7 @@ public class UserFragment extends Fragment {
         final TextView user_name = (TextView)view.findViewById(R.id.name);
         final TextView owned_point= (TextView)view.findViewById(R.id.owned_point);
         final ImageView photo= (ImageView)view.findViewById(R.id.photo);
-       //firebase 取資料
+        //firebase 取資料
         Firebase.setAndroidContext(this.getActivity());
 
         /*之後要加這段半別是哪一個使用者*/
@@ -188,8 +218,9 @@ public class UserFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.my_switcher1);
+                        gridView.setEnabled(false);
+                        collect_store_btn.setEnabled(false);
                         switcher.showNext();
-                        //RelativeLayout relativeLayout = (RelativeLayout) switcher.findViewById(R.id.relative1);
                     }
                 });
 
@@ -200,14 +231,13 @@ public class UserFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         ViewSwitcher switcher = (ViewSwitcher) view.findViewById(R.id.my_switcher1);
-
                         EditText edit_name = (EditText) view.findViewById(R.id.hidden_edit_view);
                         String name = edit_name.getText().toString();
 
                         if (name.isEmpty()){
 
-                            Toast.makeText(getContext(),"不可為空白", Toast.LENGTH_LONG).show();
-
+                            switcher.showPrevious();
+                            Toast.makeText(getContext(),"No Change", Toast.LENGTH_LONG).show();
 
                         }else{
 
@@ -218,6 +248,8 @@ public class UserFragment extends Fragment {
 
                         }
 
+                        collect_store_btn.setEnabled(true);
+                        gridView.setEnabled(true);
 
 
                     }
@@ -227,8 +259,8 @@ public class UserFragment extends Fragment {
 
                 //大頭照取的地方
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
-                String pic = imgurURL + picId + ".jpg";
-                DownloadImageTask downloadImage = new DownloadImageTask(photo);
+                String pic = "https://graph.facebook.com/" + picId + "/picture?type=normal";
+                DownloadHttpsImageTask downloadImage = new DownloadHttpsImageTask(photo);
                 downloadImage.execute(pic);
 
             }
@@ -257,7 +289,7 @@ public class UserFragment extends Fragment {
 
 
 
-            return  view;
+        return  view;
 
 
 

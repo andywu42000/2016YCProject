@@ -4,14 +4,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.peter.focus.*;
-import com.example.peter.focus.VendedInfoFragment;
-
 /**
  * Created by chiayi on 16/8/17.
  */
 public class CollectStoreMainActivity extends AppCompatActivity  implements CollectStoreFragment.OnFocusSelected
-        , com.example.peter.focus.VendedInfoFragment.OnCommentSelected, VendedInfoFragment.OnNavigationSelected
+        , VendedInfoFragment.OnCommentSelected, VendedInfoFragment.OnNavigationSelected
         , VenderListFragment.OnFragmentInteractionListener{
 
     @Override
@@ -28,8 +25,8 @@ public class CollectStoreMainActivity extends AppCompatActivity  implements Coll
 
     @Override
     public void OnFocusSelected(String vendorTitle) {
-        final com.example.peter.focus.VendedInfoFragment infoFragment =
-                com.example.peter.focus.VendedInfoFragment.newInstance(vendorTitle);
+        final VendedInfoFragment infoFragment =
+                VendedInfoFragment.newInstance(vendorTitle);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.root_layout, infoFragment, "VendorInfo")

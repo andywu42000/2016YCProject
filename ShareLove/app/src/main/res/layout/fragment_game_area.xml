@@ -4,13 +4,15 @@
              android:layout_height="match_parent"
              tools:context="com.example.jiarou.sharelove.Game_areaFragment"
              android:id="@+id/game_area">
-
+    <include layout="@layout/toolbar"
+             android:id="@+id/my_toolbar"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|top"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_marginTop="70dp">
 
         <TextView
             android:layout_width="wrap_content"

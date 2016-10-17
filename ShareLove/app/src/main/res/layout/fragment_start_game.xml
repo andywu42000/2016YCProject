@@ -4,6 +4,10 @@
              android:layout_height="match_parent"
              tools:context="com.example.jiarou.sharelove.Start_GameFragment"
              android:id="@+id/f2">
+
+
+    <include layout="@layout/toolbar"
+             android:id="@+id/my_toolbar"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -17,13 +21,16 @@
             android:layout_height="wrap_content"
             android:text="開啟GPS"
             android:id="@+id/open"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right"
+            />
 
         <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
             android:layout_height="256dp"
             android:id="@+id/game_map"
-            />
+            android:layout_marginTop="50dp"
+            android:background="@drawable/round01"
+            android:layout_weight="0.69"/>
 
         <LinearLayout
             android:orientation="horizontal"
