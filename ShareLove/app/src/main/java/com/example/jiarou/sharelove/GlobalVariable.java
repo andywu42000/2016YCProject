@@ -7,7 +7,9 @@ import android.app.Application;
  */
 public class GlobalVariable extends Application {
     public String userId = "" ;
-    public void setUserId(String userId){this.userId = userId;}
+    public String setUserId(String userId){this.userId = userId;
+        return userId;
+    }
     public String getUserId(){return userId;}
 
     public Long zip = 0L;

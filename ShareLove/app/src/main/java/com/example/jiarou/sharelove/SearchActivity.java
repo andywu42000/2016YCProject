@@ -3,38 +3,23 @@ package com.example.jiarou.sharelove;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.google.android.gms.maps.SupportMapFragment;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import static android.R.layout.select_dialog_item;
-import static android.R.layout.simple_selectable_list_item;
-import static android.R.layout.simple_spinner_item;
 
 public class SearchActivity extends AppCompatActivity {
     private Spinner spinner;
     Spinner city;
-    Spinner vendor_type;
+    //Spinner vendor_type;
     /*spinner 連動*/
     private String[] type = new String[] {"基隆市", "新北市","臺北市","宜蘭縣","新竹縣","桃園縣"
             ,"苗栗縣","臺中市","彰化縣","南投縣","嘉義縣","雲林縣","臺南市","高雄市","澎湖縣","金門縣"
@@ -75,6 +60,9 @@ public class SearchActivity extends AppCompatActivity {
         VenderListFragment fragobj=new  VenderListFragment();
         fragobj.setArguments(bundle);
 
+//        Toolbar my_toolbar= (Toolbar)findViewById(R.id.my_toolbar);
+//         setSupportActionBar(my_toolbar);
+//        getSupportActionBar().setTitle("搜尋店家");
 
 
        search = (Button) findViewById(R.id.search);
@@ -123,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
         */
 
 
-        vendor_type=(Spinner) findViewById(R.id.spinner2);
+      //  vendor_type=(Spinner) findViewById(R.id.spinner2);
          /*spinner 連動*/
         context = this;
         //程式剛啟始時載入第一個下拉選單
@@ -131,6 +119,7 @@ public class SearchActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp = (Spinner) findViewById(R.id.spinner);
         sp.setAdapter(adapter);
+
         sp.setOnItemSelectedListener(selectListener);
         //因為下拉選單第一個為地址，所以先載入地址群組進第二個下拉選單
         adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, address);
@@ -224,7 +213,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void order(View v){
 
-        String []  vendor_types=getResources().getStringArray(R.array.vendor_types);
+      //  String []  vendor_types=getResources().getStringArray(R.array.vendor_types);
     }
 
 

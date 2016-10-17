@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +50,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
+    final static ArrayList<String> zipeList = new ArrayList<>();
     ListView list;
     private MapView mapView;
     String zip_areas;
@@ -57,6 +59,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     TextView noshop;
     TextView logout;
     String shop_list;
+    String user_zip;
+    Long userLongId;
+    String a;
+
     private GoogleMap mMap;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,10 +70,13 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     final static String DB_URL = "https://vendor-5acbc.firebaseio.com/Vendors";
     private OnFragmentInteractionListener mListener;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         super.onCreate(savedInstanceState);
+
+
     }
 
 
@@ -110,18 +119,20 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
         globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+        String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+        userLongId = Long.parseLong(userId, 10);
+
+
+
 
         Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("首頁");
         setHasOptionsMenu(true);
         //取得searchActivuty的資料
 
 
 
-
-
-        String get_area=getArguments().getString(zip_areas);
 
 /**
         search =(Button) view.findViewById(R.id.search01);
@@ -179,8 +190,8 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(getActivity(), com.example.chiayi.lovecode.MainActivity.class);
-                startActivityForResult(intent, 2);
+                intent.setClass(getActivity(), LoveCodeMainActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -190,10 +201,18 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 final Intent intent = new Intent();
                 intent.setClass(getActivity(), User_Activity.class);
-                startActivityForResult(intent,2);
+                startActivityForResult(intent, 2);
 
             }
         });
+
+
+
+
+        if(shop_list==null){
+
+            Toast.makeText(getActivity(), "此地尚無店家喔～", Toast.LENGTH_LONG).show();
+        }
 
 
         //fragment加入地圖頁面
@@ -204,11 +223,19 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
         MapsInitializer.initialize(getActivity());
 
         mMap = mapView.getMap();
+        /**
         LatLng nccu = new LatLng(24.9849998, 121.5761281);
         mMap.addMarker(new MarkerOptions().position(nccu).title("Marker in NCCU"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nccu));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+
+
+**/
+
+
         Firebase.setAndroidContext(getActivity());
+
+
         final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
         ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
 
@@ -257,7 +284,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         list = (ListView) view.findViewById(R.id.venderlist_view);
         list.bringToFront();
-        connectToFirebase();
+       connectToFirebase();
+        Log.d("789", String.valueOf(user_zip));
+
+
 
 
         return view;
@@ -341,6 +371,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
                 final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
 
+        final CustomAdapter zipadapter = new CustomAdapter(this.getActivity(),  zipeList);
+
+
+
                 Firebase.setAndroidContext(this.getActivity());
 
                 final Firebase vendor = new Firebase(DB_URL);
@@ -350,51 +384,200 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         if (zip_areas == null) {
-                            String title = (String) dataSnapshot.child("Information").child("Name").getValue();
 
-                            vendorTitleList.add(title);
+                            final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
+                            Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(userLongId);
+
+
+                             memberQuery.addChildEventListener(new ChildEventListener() {
+
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    Long user_zip001 = (Long) dataSnapshot.child("Default_Zone").getValue();
+                                    String user_zip002 = String.valueOf(user_zip001);
+
+                                    zipeList.add(user_zip002);
+
+                                    Log.d("hahaha", String.valueOf(user_zip002));
+
+                                    user_zip = zipeList.get(0);
+                                    int get_size = zipeList.size();
+                                     switch (get_size) {
+                                         case 0:
+                                         case 1:
+
+                                         Log.d("rrrrr", String.valueOf(user_zip));
+                                         final Firebase vendor01 = new Firebase(DB_URL);
+
+                                         vendor01.addChildEventListener(new ChildEventListener() {
+                                             @Override
+                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                                                 if (dataSnapshot.child("Location/ZIP").getValue().equals(String.valueOf(user_zip))) {
+                                                 // user_zip= zipeList.get(0);
+
+                                                 Log.d("hhhh", String.valueOf(user_zip));
+                                                 String address = "台灣";
+                                                  a="1";
+                                                 String address01 = address + user_zip;
+                                                 Log.d("hi", address01);
+                                                 switch (a) {
+
+                                                     case "1":
+
+
+                                                     Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+                                                     //有問題
+
+                                                     List<Address> addressLocation = null;
+
+
+                                                     try {
+
+                                                         addressLocation = geoCoder.getFromLocationName(address01, 1);
+
+
+                                                     } catch (IOException e) {
+                                                         e.printStackTrace();
+                                                     }
+
+                                                     double latitude = addressLocation.get(0).getLatitude();
+                                                     double longitude = addressLocation.get(0).getLongitude();
+
+                                                     LatLng area_type = new LatLng(latitude, longitude);
+
+
+                                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(area_type));
+                                                     mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
+
+
+                                                         vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                                                         shop_list = (String) dataSnapshot.child("Information/Name").getValue();
+                                                            a="2";
+
+
+                                                         if (shop_list == null) {
+                                                             Toast.makeText(getActivity(), "此地尚無店家喔～", Toast.LENGTH_LONG).show();
+
+                                                         }
+                                                         break;
+
+                                                     }
+
+
+                                                   }
+
+                                                 }
+
+                                                 @Override
+                                                 public void onChildChanged (DataSnapshot
+                                                 dataSnapshot, String s){
+
+                                                 }
+
+                                                 @Override
+                                                 public void onChildRemoved (DataSnapshot
+                                                 dataSnapshot){
+
+                                                 }
+
+                                                 @Override
+                                                 public void onChildMoved (DataSnapshot
+                                                 dataSnapshot, String s){
+
+                                                 }
+
+                                                 @Override
+                                                 public void onCancelled (FirebaseError
+                                                 firebaseError){
+
+                                                 }
+
+                                         });
+
+                                             break;
+                                     }
+
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged (DataSnapshot dataSnapshot, String s)
+                                    {
+
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved (DataSnapshot dataSnapshot){
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved (DataSnapshot dataSnapshot, String s){
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled (FirebaseError firebaseError){
+
+                                    }
+
+                            });
+
+
+
+
                         } else {
                             zip_number = zip_areas.substring(1, 4);
                             if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
-                        vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
-                        shop_list=(String) dataSnapshot.child("Information/Name").getValue();
+                                vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                                shop_list = (String) dataSnapshot.child("Information/Name").getValue();
 
 
+                            }
+
+
+                        }
+
+                        list.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
                     }
 
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
+                    }
 
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                }
+                    }
 
-               list.setAdapter(adapter);
-            }
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+                    }
+                });
 
         vendorTitleList.clear();
 
     }
+
+
+    public void test() {
+        Firebase.setAndroidContext(this.getActivity());
+
+
+
+
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -558,6 +741,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                     //textview
                     noshop = (TextView) getView().findViewById(R.id.noshop);
                     noshop.setText("尚無店家");
+                    Toast.makeText(getActivity(), "此地尚無店家喔～", Toast.LENGTH_LONG).show();
                 }
 
 

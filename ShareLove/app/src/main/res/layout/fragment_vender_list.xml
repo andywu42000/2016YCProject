@@ -15,8 +15,8 @@
         android:background="@mipmap/ic_home01">
 
 
-        <include layout="@layout/toolbar"
-                 android:id="@+id/my_toolbar"/>
+        <!--<include layout="@layout/toolbar"-->
+                 <!--android:id="@+id/my_toolbar"/>-->
 
 
         <com.google.android.gms.maps.MapView

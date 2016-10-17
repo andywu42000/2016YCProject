@@ -19,14 +19,6 @@ public class IndexActivity extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_index);
 
 
-
-
-
-
-
-
-
-
         if(savedInstanceState == null){
             getSupportFragmentManager()
                     .beginTransaction()
@@ -84,13 +76,11 @@ public class IndexActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onNavigationSelected(String vendorTitle) {
-        final VenderListFragment venderListFragment = VenderListFragment.newInstance();
-
-        venderListFragment.getNavigation(vendorTitle);
+        final NavigationMapFragment navigationMapFragment = NavigationMapFragment.newInstance(vendorTitle);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.venderlist, venderListFragment, "Venderlist2")
+                .replace(R.id.venderlist, navigationMapFragment, "Venderlist2")
                 .addToBackStack(null)
                 .commit();
     }

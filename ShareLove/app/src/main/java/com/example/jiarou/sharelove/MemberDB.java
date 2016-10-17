@@ -18,13 +18,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by chiayi on 16/8/27.
  */
 public class MemberDB {
 
 
-    Long facebookID = 111111111111111l; //到時候應該是可以透過什麼管道取得的
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     final static String MEMBER_DB_URL = "https://member-139bd.firebaseio.com/";
     final Firebase member_db = new Firebase(MEMBER_DB_URL);
     Query query = member_db.orderByChild("Facebook_ID").equalTo(facebookID);
@@ -207,7 +210,7 @@ public class MemberDB {
                  */
 
 
-                if(dataSnapshot.hasChild("Lottery_Numbers") == false){
+                if(dataSnapshot.child("Lottery_Numbers").getValue() == "" ||dataSnapshot.hasChild("Lottery_Numbers") == false){
 
                     Map <String,Object> lotto_nums = new HashMap<>();
                     Map <String,Object> lotto_period = new HashMap<>();
@@ -239,9 +242,7 @@ public class MemberDB {
 
                         p_arrayList.add(period);
                         k_arrayList.add(key);
-
                     }
-
 
 
                     System.out.println("=========================================");
@@ -284,16 +285,9 @@ public class MemberDB {
 
                     }else{
 
-
-
                         Toast.makeText(mContext,"[您尚未兌獎]本期已開獎，至星期五午夜前可兌獎，兌獎後才可繼續進行下期樂透活動，若逾期兌獎將不分發獎勵",Toast.LENGTH_LONG).show();
 
-
-
-
                     }
-
-
 
 
 
@@ -301,139 +295,9 @@ public class MemberDB {
 
 
 
-
-//                if(dataSnapshot.hasChild("Lottery_Numbers") == false ){
-//
-//                    Map <String,Object> lotto_nums = new HashMap<>();
-//                    Map <String,Object> lotto_period = new HashMap<>();
-//
-//                    lotto_nums.put("First",random_nums());
-//                    lotto_nums.put("Second","");
-//                    lotto_nums.put("Third","");
-//                    lotto_nums.put("Fourth","");
-//                    lotto_nums.put("Fifth","");
-//
-//                    Map<String,Map<String,Object>> lotto = new HashMap<>();
-//                    lotto.put("Numbers",lotto_nums);
-//                    lotto_period.put("Period", time);
-//
-//
-//                    String k = member_db.child(memberID).child("Lottery_Numbers").push().getKey();
-//                    member_db.child(memberID).child("Lottery_Numbers").child(k).setValue(lotto);
-//                    member_db.child(memberID).child("Lottery_Numbers").child(k).updateChildren(lotto_period);
-//
-//
-//
-//                }else{
-//
-//                    HashMap<String, Object> id = (HashMap<String, Object>) dataSnapshot.child("Lottery_Numbers").getValue();
-//
-//
-//
-//                    for (Map.Entry<String,Object> entry: id.entrySet()){
-//
-//                        key = entry.getKey();
-//                        period = (String) dataSnapshot.child("Lottery_Numbers").child(key).child("Period").getValue();
-//
-//
-//                        p_arrayList.add(period);
-//                        k_arrayList.add(key);
-//
-//
-//
-//
-//                    }
-//
-//
-//                    // 如果要被記錄的時間 等於 已經被記錄在資料庫的時間 -> 本週已經有分享過一次，繼續分享則依序填入2、3、4、5個號碼
-//                    // 如果要被記錄的時間 不等於 被記錄在資料庫的時間 -> ...? 還沒被記錄過
-//
-//
-//
-//
-//                        int i = 0; // latest data
-//                        if (p_arrayList.get(i).equals(time)){
-//
-//
-//                            Long num1 = (Long) dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("First").getValue();
-//                            Object num2 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Second").getValue();
-//                            Object num3 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Third").getValue();
-//                            Object num4 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Fourth").getValue();
-//                            Object num5 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Fifth").getValue();
-//
-//
-//
-//                            if (num1 != null && num2 == "" ){
-//
-//                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Second").setValue(random_nums());
-//
-//                            }else if (num2 != "" && num3 == ""){
-//
-//                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Third").setValue(random_nums());
-//
-//                            }else if (num3 != "" && num4 == ""){
-//
-//                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Fourth").setValue(random_nums());
-//
-//                            }else if (num4 != "" && num5 == "") {
-//
-//                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(i)).child("Numbers").child("Fifth").setValue(random_nums());
-//
-//                            }else {
-//
-//                                System.out.println("=========================");
-//                                System.out.println("=========================");
-//                                System.out.println("=========================");
-//                                System.out.println("CANNOT SHARE ANYMORE");
-//                                Toast.makeText(mContext,"您本週已分享超過五次，至週五為止將不會再分發樂透給您",Toast.LENGTH_LONG).show();
-//
-//
-//                            }
-//
-//
-//
-//                        } else {
-//
-//
-//
-//
-//
-//                                    Map<String, Object> lotto_number = new HashMap<>();
-//                                    Map<String, Object> lotto_periods = new HashMap<>();
-//                                    Random random = new Random();
-//                                    int random_nums = random.nextInt(10);
-//
-//                                    lotto_number.put("First", random_nums);
-//                                    lotto_number.put("Second", "");
-//                                    lotto_number.put("Third", "");
-//                                    lotto_number.put("Fourth", "");
-//                                    lotto_number.put("Fifth", "");
-//
-//                                    Map<String, Map<String, Object>> lotto = new HashMap<>();
-//                                    lotto.put("Numbers", lotto_number);
-//                                    lotto_periods.put("Period", time);
-//
-//
-//                                    String k = member_db.child(memberID).child("Lottery_Numbers").push().getKey();
-//                                    member_db.child(memberID).child("Lottery_Numbers").child(k).setValue(lotto);
-//                                    member_db.child(memberID).child("Lottery_Numbers").child(k).updateChildren(lotto_periods);
-//
-//
-//
-//
-//                            }
-//
-//
-//
-//
-//                    }
-
-
-
-
-
-
             }
+
+
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -460,44 +324,6 @@ public class MemberDB {
 
 
 
-
-
-//        query.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//
-//                Long ds = (Long) dataSnapshot.child("Lottery_Numbers").child("Numbers").child("First").getValue();
-//
-//                System.out.println("=====================================");
-//                System.out.println("=====================================");
-//                System.out.println("=====================================");
-//                System.out.println(ds);
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
-//        });
-//
-//
-//    }
 
     }
 

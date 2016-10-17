@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -43,6 +42,15 @@ public class Login extends AppCompatActivity{
     final String[] userBirth = {""};
     */
 
+
+    Long userLongId ;
+    String userName;
+    String userPic ;
+    String userLocale ;
+    String userBirth ;
+    Long zip2;
+
+
     CallbackManager callbackManager;
 
     @Override
@@ -54,6 +62,8 @@ public class Login extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+
 
         //建立callbackManager處理login回呼
         callbackManager = CallbackManager.Factory.create();
@@ -67,9 +77,9 @@ public class Login extends AppCompatActivity{
             public void onSuccess(final LoginResult loginResult) {
                 final Firebase member = new Firebase(DB_URL);
 
+                Long fbId = Long.parseLong(loginResult.getAccessToken().getUserId(), 10);
 
-
-                Query member2 = member.orderByChild("Facebook_ID").equalTo(loginResult.getAccessToken().getUserId());
+                Query member2 = member.orderByChild("Facebook_ID").equalTo(fbId);
 
                 member2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -86,7 +96,14 @@ public class Login extends AppCompatActivity{
                             Intent intent;
                             intent = new Intent();
                             intent.setClass(Login.this, IndexActivity.class);
+
+                            //傳值給首頁
+
                             startActivity(intent);
+
+
+
+
                         }else{
                             final View item = LayoutInflater.from(Login.this).inflate(R.layout.login_dialog, null);
                             new AlertDialog.Builder(Login.this)
@@ -107,15 +124,15 @@ public class Login extends AppCompatActivity{
                                                 @Override
                                                 public void onCompleted(JSONObject object, GraphResponse response) {
 
-                                                    String userId = object.optString("id");
-                                                    Long userLongId = Long.parseLong(userId, 10);
-                                                    String userName = object.optString("name");
-                                                    String userPic = object.optString("picture/data/url");
-                                                    String userLocale = object.optString("locale");
-                                                    String userBirth = object.optString("birthday");
+                                                   String userId = object.optString("id");
+                                                    userLongId = Long.parseLong(userId, 10);
+                                                    userName = object.optString("name");
+                                                     userPic = object.optString("picture/data/url");
+                                                    userLocale = object.optString("locale");
+                                                    userBirth = object.optString("birthday");
 
                                                     GlobalVariable globalVariable5 = (GlobalVariable)getApplicationContext();
-                                                    Long zip2 = globalVariable5.getZip();
+                                                    zip2 = globalVariable5.getZip();
 
                                                     Map<String, Object> newMember = new HashMap<String, Object>();
                                                     //Map<String, String> favVendor = new HashMap<String, String>();
@@ -141,7 +158,22 @@ public class Login extends AppCompatActivity{
                                                     //globalVariable.setUserId(loginResult.getAccessToken().getUserId());
                                                     globalVariable.setUserId(userId);
 
-                                                    Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_LONG).show();
+                                                   // Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_LONG).show();
+                                                    final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+                                                    Map mParent = new HashMap();
+                                                    mParent.put("one", "");
+                                                    mParent.put("two", "");
+                                                    mParent.put("three", "");
+                                                    mParent.put("four", "");
+                                                    mParent.put("times", "one");
+                                                    mParent.put("done", "");
+                                                    mParent.put("Facebook_ID", userLongId);
+                                                    FirebaseRef.push().setValue(mParent);
+
+
+
+
+
                                                 }
                                             });
 

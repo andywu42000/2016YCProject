@@ -120,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent();
-                intent.setClass(MapsActivity.this, com.example.chiayi.lovecode.MainActivity.class);
+                intent.setClass(MapsActivity.this, LoveCodeMainActivity.class);
                 startActivity(intent);
             }
         });

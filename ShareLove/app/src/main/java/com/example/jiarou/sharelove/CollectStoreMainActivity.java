@@ -57,13 +57,12 @@ public class CollectStoreMainActivity extends AppCompatActivity  implements Coll
 
     @Override
     public void onNavigationSelected(String vendorTitle) {
-        final VenderListFragment venderListFragment = VenderListFragment.newInstance();
+        final NavigationMapFragment navigationMapFragment = NavigationMapFragment.newInstance(vendorTitle);
 
-        venderListFragment.getNavigation(vendorTitle);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.root_layout, venderListFragment, "Venderlist2")
+                .replace(R.id.root_layout, navigationMapFragment, "Venderlist2")
                 .addToBackStack(null)
                 .commit();
     }

@@ -1,5 +1,6 @@
 package com.example.jiarou.sharelove;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -79,6 +83,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     LatLng nccu;
     String number;
     String check_where,test;
+    Long  userLongId;
 
 
 
@@ -122,9 +127,15 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_start_game, container, false);
 
+        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
+
         mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-
+        GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+        String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+        userLongId = Long.parseLong(userId, 10);
         //fragment加入地圖頁面
         mapView = (MapView) view.findViewById(R.id.game_map);
         mapView.onCreate(savedInstanceState);
@@ -144,11 +155,11 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                get_now();
-                Log.d("test01", "test01" + check_where);
+                    //get_now();
+               // Log.d("test01", "test01" + check_where);
 
-               // Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-               // startActivity(it);
+                Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                startActivity(it);
 
             }
         });
@@ -160,7 +171,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
                distance= getDistanceMeter(Latitude, Longitude, myla, mylo);
                 idis=Math.floor(distance);
-                if ( idis<=100000000){
+                if ( idis<=10000){
                     find_number(number);
                    // mListener.Start_game(number);
 
@@ -178,7 +189,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
         });
 
-
+/**
 
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -191,7 +202,10 @@ public class Start_GameFragment extends Fragment implements LocationListener {
                 }
 
         });
-        get_now();
+
+
+   **/
+
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
@@ -277,7 +291,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
        // Map<String, Object> used_shop= new HashMap<String, Object>();
        // used_shop.put("used",location);
-        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(userLongId);
         memberQuery.addChildEventListener(new ChildEventListener() {
 
 
@@ -319,7 +333,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
         // Map<String, Object> used_shop= new HashMap<String, Object>();
         // used_shop.put("used",location);
-        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(userLongId);
         memberQuery.addChildEventListener(new ChildEventListener() {
 
 
@@ -454,6 +468,17 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         }
     }
 **/
+  public static boolean onKeyDown(int keyCode, KeyEvent event){
+      if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+          return true;
+      }
+      return true;
+
+  }
+
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

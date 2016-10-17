@@ -51,7 +51,13 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
 
     @Override
     public void onNavigationSelected(String vendorTitle) {
+        final NavigationMapFragment navigationMapFragment = NavigationMapFragment.newInstance(vendorTitle);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.focus_root, navigationMapFragment, "Venderlist2")
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

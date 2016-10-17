@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.facebook.AccessToken;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -59,9 +62,10 @@ public class Game_areaFragment extends Fragment {
     String get_city;
     String get_area;
     String get_address;
-    ArrayAdapter<String>  area_adapter,adapter;
+    ArrayAdapter<String>  area_adapter,adapter,test_adapter;
     String get_location;
     Button start;
+    Long userLongId;
 
 
 
@@ -103,9 +107,14 @@ public class Game_areaFragment extends Fragment {
         // Inflate the layout for this fragment
        final View view = inflater.inflate(R.layout.fragment_game_area, container, false);
 
+        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
 
 
-
+        GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+        String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+        userLongId = Long.parseLong(userId, 10);
 
         //選擇城市的spinner
         city=(Spinner) view.findViewById(R.id.city);
@@ -123,10 +132,14 @@ public class Game_areaFragment extends Fragment {
 
         area.setOnItemSelectedListener(zipListener);
 
+
+
+        not_repeat();
+
         list = (ListView) view.findViewById(R.id.check);
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, android.R.id.text1);
         list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        list.setAdapter(adapter);
+        list.setAdapter(test_adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,6 +151,9 @@ public class Game_areaFragment extends Fragment {
 
             }
         });
+
+
+
 
 
         start =(Button) view.findViewById(R.id.start);
@@ -162,7 +178,7 @@ public class Game_areaFragment extends Fragment {
                        final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
                        // Map<String, Object> used_shop= new HashMap<String, Object>();
                        // used_shop.put("used",location);
-                       Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+                       Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(userLongId);
                        memberQuery.addChildEventListener(new ChildEventListener() {
 
 
@@ -238,6 +254,7 @@ public class Game_areaFragment extends Fragment {
                 String city = title.substring(0, 3);
 
 
+
                 Log.d("test", "test" + address);
 
                 set.add(city);
@@ -245,6 +262,8 @@ public class Game_areaFragment extends Fragment {
                 num=set.size();
                 Iterator it;
                 it=set.iterator();
+
+
                 while (it.hasNext()){
                     city_adapter.add((String) it.next());
 
@@ -450,7 +469,7 @@ public class Game_areaFragment extends Fragment {
         final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
         // Map<String, Object> used_shop= new HashMap<String, Object>();
         // used_shop.put("used",location);
-        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(userLongId);
         memberQuery.addChildEventListener(new ChildEventListener() {
 
 
@@ -486,6 +505,63 @@ public class Game_areaFragment extends Fragment {
             }
         });
 
+    }
+
+
+    //測試不重複
+
+    private  void  not_repeat(){
+
+
+        final Firebase vendor = new Firebase(DB_URL);
+        Query gameQuery = vendor.orderByChild("Game").equalTo(true);
+        gameQuery.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                String title = (String) dataSnapshot.child("Location/Address").getValue();
+                String city = title.substring(0, 3);
+
+                test_adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, android.R.id.text1);
+                test_adapter.add(city);
+
+
+                Log.d("test10", "test10" + city);
+
+
+
+
+
+                //Toast.makeText(getActivity(),num , Toast.LENGTH_LONG).show();
+
+
+
+
+            }
+
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
     }
 
 

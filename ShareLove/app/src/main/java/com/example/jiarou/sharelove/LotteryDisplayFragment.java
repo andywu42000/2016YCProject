@@ -1,7 +1,6 @@
 package com.example.jiarou.sharelove;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +24,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by chiayi on 16/8/14.
  */
@@ -35,7 +36,8 @@ public class LotteryDisplayFragment extends Fragment{
 
     final static String LOTTO_DB_URL = "https://lottery-72c58.firebaseio.com/"; //用在開獎
     final static String MEMBER_DB_URL = "https://member-139bd.firebaseio.com/";
-    Long facebookID = (Long) 111111111111111l; //到時候應該是可以透過什麼管道取得的
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     ArrayList<Long> lottoWinNum = new ArrayList<>();
     ArrayList<Long> lottoNum = new ArrayList<>();
     Object n1,n2,n3,n4,n5;
@@ -47,7 +49,7 @@ public class LotteryDisplayFragment extends Fragment{
     String message;
 
 
-    TextView cnum1,cnum2,cnum3,cnum4,cnum5,winning_num,check_y_n;
+    TextView cnum1,cnum2,cnum3,cnum4,cnum5,winning_num,check_y_n,latest_period,collect_period;
     Button toSearchPage_btn, gameRule_btn, check_btn;
     LottoRuleDialogFragment lottoRuleFragment = new LottoRuleDialogFragment();
 
@@ -81,15 +83,17 @@ public class LotteryDisplayFragment extends Fragment{
         check_y_n = (TextView) view.findViewById(R.id.check_y_n);
         check_btn = (Button)view.findViewById(R.id.check_btn);
         winning_num = (TextView) view.findViewById(R.id.winning_num);
-        toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
-        toSearchPage_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), SearchActivity.class);
-                getActivity().startActivity(intent);
-            }
-        });
+        latest_period = (TextView) view.findViewById(R.id.win_period);
+        collect_period = (TextView) view.findViewById(R.id.collect_period);
+        // toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
+//        toSearchPage_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Intent intent = new Intent();
+//                intent.setClass(getActivity(), SearchActivity.class);
+//                getActivity().startActivity(intent);
+//            }
+//        });
 
         gameRule_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +139,9 @@ public class LotteryDisplayFragment extends Fragment{
 
                 String winning_number = w5 + w4 + w3 + w2 + w1;
                 winning_num.setText(winning_number);
+                latest_period.setText("\n" + win_period);
+                collect_period.setText(owned_period);
+
 
 
             }
@@ -333,7 +340,7 @@ public class LotteryDisplayFragment extends Fragment{
 
         }else if (date1.compareTo(date2)>0){
 
-            Toast.makeText(getContext(), "發生錯誤", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "目前尚未開出獎號，週六凌晨將準時開獎", Toast.LENGTH_LONG).show();
 
 
         }
@@ -368,7 +375,7 @@ public class LotteryDisplayFragment extends Fragment{
                 memberKey = dataSnapshot.getKey();
 
 
-                if (dataSnapshot.hasChild("Lottery_Numbers")){
+                if (dataSnapshot.hasChild("Lottery_Numbers") && dataSnapshot.child("Lottery_Numbers").getValue()!=""){
                     HashMap<String, Object> id = (HashMap<String, Object>) dataSnapshot.child("Lottery_Numbers").getValue();
                     for (Map.Entry<String,Object> entry: id.entrySet()){
 
@@ -456,11 +463,11 @@ public class LotteryDisplayFragment extends Fragment{
                 }else{
 
 
-                    cnum1.setText("");
-                    cnum2.setText("");
-                    cnum3.setText("");
-                    cnum4.setText("");
-                    cnum5.setText("您還未收集這期樂透");
+                    cnum5.setText("您");
+                    cnum4.setText("尚");
+                    cnum3.setText("未");
+                    cnum2.setText("收");
+                    cnum1.setText("集");
 
                 }
 

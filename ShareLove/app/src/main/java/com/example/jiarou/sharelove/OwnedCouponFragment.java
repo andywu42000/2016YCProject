@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by chiayi on 16/8/16.
  */
@@ -36,7 +38,8 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
 
     Integer POSITION = null;
     ListView owned_coupon_list;
-    Long facebookID = 111111111111111l; //到時候應該是可以透過什麼管道取得的
+    GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+    Long facebookID = Long.parseLong(globalVariable.getUserId());
     String imgurURL = "http://i.imgur.com/";
     String member_ID;
     private CustomAdapter adapter = null;
@@ -143,19 +146,30 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
 
                     }else {
 
-                        for (Map.Entry<String, Map<String, String>> entry : id.entrySet()) {
-                            String key = entry.getKey();
-                            String coupon_id = id.get(key).get("Coupon_ID");
-                            String due_date = id.get(key).get("Due_Date");
-                            String coupon_info = id.get(key).get("Information");
+                        if(dataSnapshot.child("Owned_Coupons").getValue()==""){
 
-                                    couponkeyList.add(key);
-                                    couponIDList.add(coupon_id);
-                                    couponInfoList.add(coupon_info);
-                                    couponDueDateList.add(due_date);
-                                    member_ID = dataSnapshot.getKey();
-                                    checkDate();
-                                    getCouponNameandPic(coupon_id);
+
+                            //Do nothing
+
+
+                        }else{
+
+                            for (Map.Entry<String, Map<String, String>> entry : id.entrySet()) {
+                                String key = entry.getKey();
+                                String coupon_id = id.get(key).get("Coupon_ID");
+                                String due_date = id.get(key).get("Due_Date");
+                                String coupon_info = id.get(key).get("Information");
+
+                                couponkeyList.add(key);
+                                couponIDList.add(coupon_id);
+                                couponInfoList.add(coupon_info);
+                                couponDueDateList.add(due_date);
+                                member_ID = dataSnapshot.getKey();
+                                checkDate();
+                                getCouponNameandPic(coupon_id);
+
+                            }
+
 
                         }
                     }

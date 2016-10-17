@@ -32,5 +32,9 @@
     <string name="登出">logout1</string>
     <string name="logout01">登出</string>
 
+    <string name="action_settings">Settings</string>
+
+
+
 
 </resources>

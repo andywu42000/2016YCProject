@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -49,6 +52,7 @@ public class ChanglleFragment extends Fragment {
     Long point;
     Long points;
     String memberKey;
+    Long  userLongId;
 
 
     private OnFragmentInteractionListener mListener;
@@ -96,9 +100,17 @@ public class ChanglleFragment extends Fragment {
         c3 = (Button) view.findViewById(R.id.c3);
         c4 = (Button) view.findViewById(R.id.c4);
         over_btn= (Button) view.findViewById(R.id.over_btn);
+
+        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
+
+        GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+        String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+        userLongId = Long.parseLong(userId, 10);
         //第二格
         final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
-        Query memberQuery = FirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        Query memberQuery = FirebaseRef.orderByChild("Facebook_ID").equalTo( userLongId);
         memberQuery.addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -106,6 +118,8 @@ public class ChanglleFragment extends Fragment {
               final  String memberKey01 = dataSnapshot.getKey();
                 get_number = (String)dataSnapshot.child("times").getValue();
                 Log.d("d", "d" + get_number);
+
+
 
         if(Objects.equals(get_number, "two")) {
             c1.setOnClickListener(new View.OnClickListener() {
@@ -288,10 +302,10 @@ public class ChanglleFragment extends Fragment {
                             getActivity().finish();
 
 
-                            FirebaseRef.child(memberKey01).child("done").setValue("無");
-                            FirebaseRef.child(memberKey01).child("two").setValue("無");
-                            FirebaseRef.child(memberKey01).child("three").setValue("無");
-                            FirebaseRef.child(memberKey01).child("four").setValue("無");
+                            FirebaseRef.child(memberKey01).child("done").setValue("");
+                            FirebaseRef.child(memberKey01).child("two").setValue("");
+                            FirebaseRef.child(memberKey01).child("three").setValue("");
+                            FirebaseRef.child(memberKey01).child("four").setValue("");
 
                             FirebaseRef.child(memberKey01).child("times").setValue("one");
 
@@ -301,7 +315,7 @@ public class ChanglleFragment extends Fragment {
 
                             final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
               /*之後要加這段半別是哪一個使用者*/
-                            Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+                            Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo( userLongId);
 
 
                             memberQuery.addChildEventListener(new ChildEventListener() {
@@ -355,13 +369,17 @@ public class ChanglleFragment extends Fragment {
                 public void onClick(View v) {
                    mListener.onFragmentInteraction("1");
 /***
-                    final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+                    final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
                     Map mParent = new HashMap();
-                    mParent.put("one", "台北市文山區指南路二段64號");
-                    mParent.put("two", "台北市文山區指南路二段64號");
-                    mParent.put("three", "台北市文山區指南路二段64號");
-                    mParent.put("four", "嘉義市東區宣信街226號");
+                    mParent.put("one", "");
+                    mParent.put("two", "");
+                    mParent.put("three", "");
+                    mParent.put("four", "");
                     mParent.put("times", "one");
+                    mParent.put("done", "");
+                    mParent.put("Facebook_ID", );
+
+
 
                     myFirebaseRef.push().setValue(mParent);
 
