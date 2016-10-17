@@ -146,19 +146,30 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
 
                     }else {
 
-                        for (Map.Entry<String, Map<String, String>> entry : id.entrySet()) {
-                            String key = entry.getKey();
-                            String coupon_id = id.get(key).get("Coupon_ID");
-                            String due_date = id.get(key).get("Due_Date");
-                            String coupon_info = id.get(key).get("Information");
+                        if(dataSnapshot.child("Owned_Coupons").getValue()==""){
 
-                                    couponkeyList.add(key);
-                                    couponIDList.add(coupon_id);
-                                    couponInfoList.add(coupon_info);
-                                    couponDueDateList.add(due_date);
-                                    member_ID = dataSnapshot.getKey();
-                                    checkDate();
-                                    getCouponNameandPic(coupon_id);
+
+                            //Do nothing
+
+
+                        }else{
+
+                            for (Map.Entry<String, Map<String, String>> entry : id.entrySet()) {
+                                String key = entry.getKey();
+                                String coupon_id = id.get(key).get("Coupon_ID");
+                                String due_date = id.get(key).get("Due_Date");
+                                String coupon_info = id.get(key).get("Information");
+
+                                couponkeyList.add(key);
+                                couponIDList.add(coupon_id);
+                                couponInfoList.add(coupon_info);
+                                couponDueDateList.add(due_date);
+                                member_ID = dataSnapshot.getKey();
+                                checkDate();
+                                getCouponNameandPic(coupon_id);
+
+                            }
+
 
                         }
                     }

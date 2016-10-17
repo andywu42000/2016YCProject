@@ -127,6 +127,16 @@
                     android:layout_alignParentEnd="true"
                     android:layout_margin="15dp"
                     android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/collect_period"
+                    android:layout_alignBottom="@+id/textView29"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#FFFF" />
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -154,7 +164,7 @@
                     android:layout_width="100dp"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="\n上期\n是否中獎"
+                    android:text="\n這期\n是否中獎"
                     android:textAlignment="center"
                     android:background="#00B3EA"
                     android:id="@+id/textView30"
@@ -198,12 +208,13 @@
                     android:layout_width="100dp"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="\n上期\n開獎號碼"
+                    android:text="開獎號碼"
                     android:textAlignment="center"
                     android:background="#00B3EA"
                     android:id="@+id/textView31"
                     android:layout_alignParentBottom="true"
-                    android:textColor="#FFFF" />
+                    android:textColor="#FFFF"
+                    android:layout_below="@+id/winning_num" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -216,6 +227,17 @@
                     android:text="12345"
                     android:layout_toEndOf="@+id/textView31"
                     android:textColor="#00B3EA" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/win_period"
+                    android:background="#00B3EA"
+                    android:textSize="18dp"
+                    android:layout_alignBottom="@+id/winning_num"
+                    android:textColor="#FFFF"
+                    android:textAlignment="center" />
             </RelativeLayout>
         </LinearLayout>
         <View

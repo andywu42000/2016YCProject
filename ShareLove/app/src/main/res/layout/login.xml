@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+                android:background="#8ddbf5">
 
-    <com.facebook.login.widget.LoginButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginButton"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Welcome to Sharing Love"
+                android:id="@+id/textView26"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:textSize="30dp"
+                android:textColor="#0a0a0a"/>
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:id="@+id/imageView5"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/login_01"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="使用ＦＢ註冊"
+                android:id="@+id/textView25"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp"
+                android:textColor="#000000"
+                android:textIsSelectable="false"
+                android:layout_marginTop="5dp"/>
+
+            <com.facebook.login.widget.LoginButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loginButton"
+                android:layout_marginBottom="141dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="90dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

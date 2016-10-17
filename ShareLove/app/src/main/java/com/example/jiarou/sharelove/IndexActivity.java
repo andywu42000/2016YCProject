@@ -19,14 +19,6 @@ public class IndexActivity extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_index);
 
 
-
-
-
-
-
-
-
-
         if(savedInstanceState == null){
             getSupportFragmentManager()
                     .beginTransaction()

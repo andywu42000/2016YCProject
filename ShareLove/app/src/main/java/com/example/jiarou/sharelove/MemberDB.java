@@ -233,69 +233,69 @@ public class MemberDB {
 
                 }else{
 
-                        HashMap<String, Object> id = (HashMap<String, Object>) dataSnapshot.child("Lottery_Numbers").getValue();
-                        for (Map.Entry<String,Object> entry: id.entrySet()){
+                    HashMap<String, Object> id = (HashMap<String, Object>) dataSnapshot.child("Lottery_Numbers").getValue();
+                    for (Map.Entry<String,Object> entry: id.entrySet()){
 
-                            key = entry.getKey();
-                            period = (String) dataSnapshot.child("Lottery_Numbers").child(key).child("Period").getValue();
-
-
-                            p_arrayList.add(period);
-                            k_arrayList.add(key);
-                        }
+                        key = entry.getKey();
+                        period = (String) dataSnapshot.child("Lottery_Numbers").child(key).child("Period").getValue();
 
 
-                        System.out.println("=========================================");
-                        System.out.println(period);
+                        p_arrayList.add(period);
+                        k_arrayList.add(key);
+                    }
 
 
-                        if (p_arrayList.get(0).equals(time)){
-                            Long num1 = (Long) dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("First").getValue();
-                            Object num2 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Second").getValue();
-                            Object num3 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Third").getValue();
-                            Object num4 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fourth").getValue();
-                            Object num5 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fifth").getValue();
-
-                            if (num1 != null && num2 == "" ){
-
-                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Second").setValue(random_nums());
-
-                            }else if (num2 != "" && num3 == ""){
-
-                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Third").setValue(random_nums());
-
-                            }else if (num3 != "" && num4 == ""){
-
-                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fourth").setValue(random_nums());
-
-                            }else if (num4 != "" && num5 == "") {
-
-                                member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fifth").setValue(random_nums());
-
-                            }else {
-
-                                System.out.println("=========================");
-                                System.out.println("=========================");
-                                System.out.println("=========================");
-                                System.out.println("CANNOT SHARE ANYMORE");
-                                Toast.makeText(mContext,"您本週已分享超過五次，至週五為止將不會再分發樂透給您",Toast.LENGTH_LONG).show();
+                    System.out.println("=========================================");
+                    System.out.println(period);
 
 
-                            }
+                    if (p_arrayList.get(0).equals(time)){
+                        Long num1 = (Long) dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("First").getValue();
+                        Object num2 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Second").getValue();
+                        Object num3 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Third").getValue();
+                        Object num4 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fourth").getValue();
+                        Object num5 =  dataSnapshot.child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fifth").getValue();
 
-                        }else{
+                        if (num1 != null && num2 == "" ){
 
-                            Toast.makeText(mContext,"[您尚未兌獎]本期已開獎，至星期五午夜前可兌獎，兌獎後才可繼續進行下期樂透活動，若逾期兌獎將不分發獎勵",Toast.LENGTH_LONG).show();
+                            member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Second").setValue(random_nums());
+
+                        }else if (num2 != "" && num3 == ""){
+
+                            member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Third").setValue(random_nums());
+
+                        }else if (num3 != "" && num4 == ""){
+
+                            member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fourth").setValue(random_nums());
+
+                        }else if (num4 != "" && num5 == "") {
+
+                            member_db.child(memberID).child("Lottery_Numbers").child(k_arrayList.get(0)).child("Numbers").child("Fifth").setValue(random_nums());
+
+                        }else {
+
+                            System.out.println("=========================");
+                            System.out.println("=========================");
+                            System.out.println("=========================");
+                            System.out.println("CANNOT SHARE ANYMORE");
+                            Toast.makeText(mContext,"您本週已分享超過五次，至週五為止將不會再分發樂透給您",Toast.LENGTH_LONG).show();
+
 
                         }
 
+                    }else{
 
+                        Toast.makeText(mContext,"[您尚未兌獎]本期已開獎，至星期五午夜前可兌獎，兌獎後才可繼續進行下期樂透活動，若逾期兌獎將不分發獎勵",Toast.LENGTH_LONG).show();
 
                     }
 
 
 
                 }
+
+
+
+            }
 
 
 
