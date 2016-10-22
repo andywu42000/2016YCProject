@@ -1,19 +1,19 @@
 package com.example.jiarou.sharelove;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.*;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,17 +32,12 @@ import com.firebase.client.Query;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -127,9 +122,6 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_start_game, container, false);
 
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
 
         mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 

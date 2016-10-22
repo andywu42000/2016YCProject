@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -78,9 +77,9 @@ public class Login extends AppCompatActivity{
             public void onSuccess(final LoginResult loginResult) {
                 final Firebase member = new Firebase(DB_URL);
 
+                Long fbId = Long.parseLong(loginResult.getAccessToken().getUserId(), 10);
 
-
-                Query member2 = member.orderByChild("Facebook_ID").equalTo(loginResult.getAccessToken().getUserId());
+                Query member2 = member.orderByChild("Facebook_ID").equalTo(fbId);
 
                 member2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

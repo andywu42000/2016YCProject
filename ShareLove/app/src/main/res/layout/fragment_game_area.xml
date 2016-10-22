@@ -4,8 +4,7 @@
              android:layout_height="match_parent"
              tools:context="com.example.jiarou.sharelove.Game_areaFragment"
              android:id="@+id/game_area">
-    <include layout="@layout/toolbar"
-             android:id="@+id/my_toolbar"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

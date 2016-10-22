@@ -311,29 +311,84 @@ public class VendedInfoFragment extends Fragment {
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 final String[] key2 = {""};
                 GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
                 String userId =globalVariable.getUserId();
                 //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
-                Long userLongId = Long.parseLong(userId, 10);
+                final Long userLongId = Long.parseLong(userId, 10);
 
                 final Firebase member = new Firebase(DB_MEMBER_URL);
                 Query  findMember = member.orderByChild("Facebook_ID").equalTo(userLongId);
+
                 findMember.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        key2[0] = dataSnapshot.getKey();
-                        //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
-                        final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
 
-                        //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
+                        Integer wow = 0;
+                        for (DataSnapshot exSnapshot : dataSnapshot.child("Favorite_Vendors").getChildren()) {
+                            String favKey = (String) exSnapshot.child("Vendor_ID").getValue();
+                            if (favKey == key[0]) {
+                                wow = 1;
+                                Toast.makeText(getContext(), "已收藏過", Toast.LENGTH_LONG).show();
+                                break;
+                            } else {
+                                wow = 2;
+                            }
 
-                        //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
-                        //globalVariable2.setCollectedVendor(key[0]);
+                        }
 
-                        Map<String, Object> favVendor = new HashMap<String, Object>();
-                        favVendor.put("Vendor_ID", key[0]);
-                        member3.child("Favorite_Vendors").push().setValue(favVendor);
+                        if (wow == 2) {
+                            Query findMember2 = member.orderByChild("Facebook_ID").equalTo(userLongId);
+                            findMember2.addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    key2[0] = dataSnapshot.getKey();
+                                    //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
+                                    final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
+
+                                    //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
+
+                                    //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
+                                    //globalVariable2.setCollectedVendor(key[0]);
+
+                                    Map<String, Object> favVendor = new HashMap<String, Object>();
+                                    favVendor.put("Vendor_ID", key[0]);
+                                    member3.child("Favorite_Vendors").push().setValue(favVendor);
+
+                                }
+
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+
+                            final Firebase collection = new Firebase(DB_URL + "/" + key[0]);
+                            mathth = counting + 1L;
+                            collection.child("Popularity").setValue(mathth);
+                            String mathS = mathth.toString();
+                            count.setText(mathS);
+
+                            Toast.makeText(getContext(), "已成功收藏", Toast.LENGTH_LONG).show();
+                        }
 
                     }
 
@@ -357,14 +412,6 @@ public class VendedInfoFragment extends Fragment {
 
                     }
                 });
-
-                final Firebase collection = new Firebase(DB_URL + "/" + key[0]);
-                mathth = counting + 1L;
-                collection.child("Popularity").setValue(mathth);
-                String mathS = mathth.toString();
-                count.setText(mathS);
-
-
 
 
 

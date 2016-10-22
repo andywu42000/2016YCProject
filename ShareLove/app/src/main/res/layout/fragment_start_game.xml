@@ -6,8 +6,6 @@
              android:id="@+id/f2">
 
 
-    <include layout="@layout/toolbar"
-             android:id="@+id/my_toolbar"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
