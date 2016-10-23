@@ -7,7 +7,6 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -129,6 +129,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("首頁");
         setHasOptionsMenu(true);
+
         //取得searchActivuty的資料
 
 

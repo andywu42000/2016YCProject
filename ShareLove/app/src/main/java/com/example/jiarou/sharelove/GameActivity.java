@@ -1,23 +1,19 @@
 package com.example.jiarou.sharelove;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.*;
 import android.location.Location;
-import android.net.Uri;
+import android.location.LocationListener;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Toast;
+import android.view.MenuItem;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -27,16 +23,33 @@ import com.firebase.client.Query;
 
 import java.util.Objects;
 
-public class GameActivity extends AppCompatActivity  implements GameFragment.OpenGame,ChanglleFragment.OnFragmentInteractionListener,Game_areaFragment.Choose_area,Start_GameFragment.Start_game,LocationListener,ChanglleFragment.delete{
+public class GameActivity extends AppCompatActivity  implements GameFragment.OpenGame,ChanglleFragment.OnFragmentInteractionListener,Game_areaFragment.Choose_area,Start_GameFragment.Start_game,LocationListener,ChanglleFragment.delete,NavigationView.OnNavigationItemSelectedListener{
     String get_number;
     String get_check;
     String condition;
     String Address;
     private  Fragment fg;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
 
 
         if(savedInstanceState == null) {
@@ -49,6 +62,21 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
         }
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        //noinspection SimplifiableIfStatement
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
     @Override
@@ -251,5 +279,38 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
                  return super.onKeyDown(keyCode, event);
              }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
 
-         }
+        int id = item.getItemId();
+        final Intent intent = new Intent();
+        switch (id){
+            case R.id.nav_home:
+
+                intent.setClass(this, IndexActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_game:
+                intent.setClass(this, GameActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_focus:
+                intent.setClass(this, MainActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_lovecode:
+                intent.setClass(this, LoveCodeMainActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_user:
+                intent.setClass(this, User_Activity.class);
+                startActivityForResult(intent, 2);
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+
+}
