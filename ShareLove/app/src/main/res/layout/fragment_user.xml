@@ -72,7 +72,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/change_name_btn"
                                 android:stateListAnimator="@null"
-                                android:background="@mipmap/edit_name"
+                                android:background="@mipmap/ic_mode_edit_black_24dp"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentEnd="true" />
 
@@ -98,7 +98,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentEnd="true"
                                 android:stateListAnimator="@null"
-                                android:background="@mipmap/done_name"/>
+                                android:background="@mipmap/ic_check_box_black_24dp"/>
                         </RelativeLayout>
                     </ViewSwitcher>
 
@@ -141,10 +141,12 @@
                     android:text="店家收藏"
                     android:id="@+id/collect_store_btn"
                     android:stateListAnimator="@null"
-                    android:background="#ECECFF"
+                    android:background="#B3E5FC"
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:textColor="#0288DE"
+                    android:textSize="15dp" />
 
             </LinearLayout>
 

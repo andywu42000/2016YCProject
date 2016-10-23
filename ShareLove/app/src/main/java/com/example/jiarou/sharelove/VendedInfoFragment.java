@@ -272,6 +272,7 @@ public class VendedInfoFragment extends Fragment {
                         memberDB.getLottoNum();
 
 
+
                     }
 
                     @Override

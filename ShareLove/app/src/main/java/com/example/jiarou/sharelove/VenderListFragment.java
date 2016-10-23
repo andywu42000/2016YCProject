@@ -16,11 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -55,7 +53,6 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     String zip_areas;
     String zip_number;
-    Button search,home,game,focus,code,my;
     TextView noshop;
     TextView logout;
     String shop_list;
@@ -125,7 +122,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+  //      Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("首頁");
         setHasOptionsMenu(true);
@@ -148,64 +145,6 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             }
         });
  **/
-
-        home =(Button) view.findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), IndexActivity.class);
-
-                startActivityForResult(intent,2);
-
-
-            }
-
-
-        });
-
-        game =(Button) view.findViewById(R.id.game);
-        game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), GameActivity.class);
-
-                startActivityForResult(intent, 2);
-
-            }
-        });
-       focus =(Button) view.findViewById(R.id.focus);
-        focus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), MainActivity.class);
-
-                startActivityForResult(intent, 2);
-
-            }
-        });
-      code =(Button) view.findViewById(R.id.code);
-        code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), LoveCodeMainActivity.class);
-                startActivity(intent);
-
-            }
-        });
-       my =(Button) view.findViewById(R.id.my);
-        my.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), User_Activity.class);
-                startActivityForResult(intent, 2);
-
-            }
-        });
 
 
 
