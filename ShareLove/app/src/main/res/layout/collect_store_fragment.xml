@@ -10,12 +10,19 @@
         android:text="您收藏的店家"
         android:id="@+id/textView"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:textColor="#212121"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/collectListView"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:listSelector="#B3E5FC"
+        android:divider="#B3E5FC"
+        android:dividerHeight="3dp"
+        android:radius = "15dp"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="20dp"/>
 </LinearLayout>

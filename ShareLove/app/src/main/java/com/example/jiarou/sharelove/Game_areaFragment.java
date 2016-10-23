@@ -1,15 +1,10 @@
 package com.example.jiarou.sharelove;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,22 +17,16 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
 import com.facebook.AccessToken;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.wallet.fragment.SupportWalletFragment;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 
@@ -106,10 +95,6 @@ public class Game_areaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        final View view = inflater.inflate(R.layout.fragment_game_area, container, false);
-
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
 
 
         GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();

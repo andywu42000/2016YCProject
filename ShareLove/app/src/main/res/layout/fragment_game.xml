@@ -5,8 +5,6 @@
              tools:context="com.example.jiarou.sharelove.GameFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <include layout="@layout/toolbar"
-             android:id="@+id/my_toolbar"/>
 
     <LinearLayout
         android:orientation="vertical"

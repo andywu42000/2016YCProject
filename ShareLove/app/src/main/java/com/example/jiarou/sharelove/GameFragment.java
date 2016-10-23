@@ -3,8 +3,6 @@ package com.example.jiarou.sharelove;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +67,6 @@ public class GameFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         final View view =inflater.inflate(R.layout.fragment_game, container, false);
 
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
 
         generate_btn= (Button)  view.findViewById(R.id.general_btn);
         generate_btn.setOnClickListener(new View.OnClickListener() {

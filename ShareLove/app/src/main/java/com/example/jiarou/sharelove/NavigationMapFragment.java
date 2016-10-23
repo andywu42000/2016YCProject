@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -102,12 +103,16 @@ public class NavigationMapFragment extends Fragment implements OnMapReadyCallbac
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String navLatitude = dataSnapshot.child("Location/Latitude").getValue().toString();
                 String navLongitude = dataSnapshot.child("Location/Longitude").getValue().toString();
+                String location = dataSnapshot.child("Location/Address").getValue().toString();
 
                 double location_left = Double.parseDouble(navLatitude);
                 double location_right = Double.parseDouble(navLongitude);
 
                 final LatLng navImp = new LatLng(location_left, location_right);
-                mMap.addMarker(new MarkerOptions().position(navImp).title(vendorTitle));
+                mMap.addMarker(new MarkerOptions().position(navImp).title(vendorTitle)
+                        .snippet(location)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                        .showInfoWindow();
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(navImp)
                         .zoom(15)

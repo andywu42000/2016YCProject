@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:padding="5dp"
+    android:background="#B3E5FC">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -12,20 +17,30 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@drawable/vendor_info_background"
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/titleTextView"
                 android:layout_gravity="center_horizontal"
-                android:textSize="36dp"/>
+                android:textSize="36dp"
+                android:textColor="#0288D1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="300dp"
                 android:layout_height="225dp"
                 android:id="@+id/vendorImageView"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                app:riv_corner_radius = "5dp"
+                app:riv_border_width = "1dp"
+                app:riv_border_color = "#B3E5FC"
+                app:riv_mutate_background="true"
+                app:riv_tile_mode="repeat"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,7 +52,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textView10"
                     android:text="連絡電話："
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -45,7 +61,8 @@
                     android:id="@+id/phoneTextView"
                     android:textSize="18dp"
                     android:layout_toRightOf="@+id/textView10"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#757575"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -58,7 +75,8 @@
                     android:layout_height="wrap_content"
                     android:text="營業時間："
                     android:id="@+id/textView"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -66,7 +84,8 @@
                     android:id="@+id/remarkTextView"
                     android:layout_toRightOf="@+id/textView"
                     android:layout_marginLeft="10dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +94,8 @@
                     android:id="@+id/textView2"
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/textView"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,7 +104,8 @@
                     android:id="@+id/textView3"
                     android:layout_below="@+id/textView2"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +114,8 @@
                     android:id="@+id/textView4"
                     android:layout_below="@+id/textView3"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,7 +124,8 @@
                     android:id="@+id/textView5"
                     android:layout_below="@+id/textView4"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -111,7 +134,8 @@
                     android:id="@+id/textView6"
                     android:layout_below="@+id/textView5"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -120,7 +144,8 @@
                     android:id="@+id/textView7"
                     android:layout_below="@+id/textView6"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,7 +154,8 @@
                     android:id="@+id/textView8"
                     android:layout_below="@+id/textView7"
                     android:layout_marginTop="5dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -139,7 +165,8 @@
                     android:layout_below="@+id/textView"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -149,7 +176,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/textView2"
                     android:layout_toRightOf="@+id/textView3"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -159,7 +187,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_below="@+id/textView3"
                     android:layout_toRightOf="@+id/textView4"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,7 +198,8 @@
                     android:layout_below="@+id/textView4"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -179,7 +209,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/textView5"
                     android:layout_toRightOf="@+id/textView6"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -189,7 +220,8 @@
                     android:layout_below="@+id/textView6"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -199,7 +231,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@+id/textView8"
                     android:layout_below="@+id/textView7"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp"
+                    android:textColor="#757575"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -212,7 +245,8 @@
                     android:layout_height="wrap_content"
                     android:text="地點："
                     android:id="@+id/textView9"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -220,7 +254,8 @@
                     android:id="@+id/addressTextView"
                     android:textSize="18dp"
                     android:layout_toRightOf="@+id/textView9"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#757575"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -233,7 +268,8 @@
                     android:layout_height="wrap_content"
                     android:text="背景故事："
                     android:id="@+id/textView11"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:textColor="#212121"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -241,18 +277,21 @@
                     android:id="@+id/storyTextView"
                     android:textSize="18dp"
                     android:layout_below="@+id/textView11"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:textColor="#757575"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/vendor_info_background">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:id="@+id/imageView"
-                    android:src = "@mipmap/ic_tag_faces_black_18dp"/>
+                    android:padding="5dp"
+                    android:src = "@mipmap/ic_heart"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -264,37 +303,39 @@
                     android:layout_centerVertical="true" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:id="@+id/imageView2"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/imageView3"
-                    android:src="@mipmap/ic_chat_bubble_outline_black_18dp"/>
+                    android:src="@mipmap/ic_speechbubble"
+                    android:padding="5dp"/>
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:id="@+id/imageView3"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/imageView4"
-                    android:src="@mipmap/ic_thumb_up_black_18dp"/>
+                    android:src="@mipmap/ic_thumb_up"
+                    android:padding="5dp"/>
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:id="@+id/imageView4"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/fbShareImageView"
-                    android:src="@mipmap/ic_navigation_18pt_2x"/>
+                    android:src="@mipmap/ic_pin"
+                    android:padding="5dp"/>
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:id="@+id/fbShareImageView"
-                    android:src="@mipmap/fb_35"
+                    android:src="@mipmap/ic_facebook"
                     android:layout_alignParentRight="true"
-                    android:longClickable="false"
-                    android:clickable="true" />
+                    android:padding="5dp" />
             </RelativeLayout>
 
         </LinearLayout>

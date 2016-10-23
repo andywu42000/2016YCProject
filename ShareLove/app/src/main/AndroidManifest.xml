@@ -49,10 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SearchActivity"
-            android:label="@string/title_activity_search"
-            android:theme="@style/AppTheme">
+            android:label="搜尋">
         </activity>
         <activity
             android:name=".CouponMainActivity"
@@ -61,8 +61,7 @@
         </activity>
         <activity
             android:name=".LoveCodeMainActivity"
-            android:label="愛心碼"
-            android:parentActivityName=".MapsActivity">
+            android:label="愛心碼">
         </activity>
 
         <activity
@@ -78,8 +77,7 @@
         </activity>
         <activity
             android:name=".User_Activity"
-            android:label="個人頁面"
-            android:parentActivityName=".MapsActivity">
+            android:label="個人頁面">
         </activity>
         <activity
             android:name=".AddVendorMainActivity"
@@ -90,10 +88,13 @@
             android:label="收藏店家"
             android:parentActivityName=".User_Activity">
         </activity>
+        <activity android:name=".MainActivity"
+            android:label="焦點頁面">
+        </activity>
+
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="遊戲">
         </activity>
         <activity android:name=".TestActivity">
         </activity>
@@ -101,13 +102,13 @@
         </activity>
         <activity android:name=".Test03Activity">
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
         <activity android:name=".Test04Activity">
         </activity>
+
         <activity android:name=".MapsActivity">
         </activity>
         <activity android:name=".Login"></activity>
+
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"

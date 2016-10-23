@@ -228,6 +228,7 @@ public class MemberDB {
                     k = member_db.child(memberID).child("Lottery_Numbers").push().getKey();
                     member_db.child(memberID).child("Lottery_Numbers").child(k).setValue(lotto);
                     member_db.child(memberID).child("Lottery_Numbers").child(k).updateChildren(lotto_period);
+                    Toast.makeText(mContext, "分享成功，可前去樂透頁面查看新增的樂透號碼", Toast.LENGTH_LONG).show();
 
 
 

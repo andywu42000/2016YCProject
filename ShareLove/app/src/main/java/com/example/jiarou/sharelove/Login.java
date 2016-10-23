@@ -77,7 +77,7 @@ public class Login extends AppCompatActivity{
             public void onSuccess(final LoginResult loginResult) {
                 final Firebase member = new Firebase(DB_URL);
 
-                Long fbId = Long.parseLong(loginResult.getAccessToken().getUserId(), 10);
+                Double fbId = Double.parseDouble(loginResult.getAccessToken().getUserId());
 
                 Query member2 = member.orderByChild("Facebook_ID").equalTo(fbId);
 
