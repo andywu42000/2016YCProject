@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="經過審核的店家將會顯示在頁面上，且會分發獎勵給您"
+            android:text="經過審核的店家將會顯示在頁面上，並分發獎勵給您"
             android:id="@+id/textView15"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp" />
@@ -48,7 +48,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -165,7 +166,7 @@
                     android:inputType="textMultiLine"
                     android:ems="14"
                     android:id="@+id/info_edit"
-                    android:hint="營業時間(例: 星期一 10:00-21:00)"
+                    android:hint=" 營業時間(例: 星期一 10:00-21:00)"
                     android:layout_marginTop="10dp"
                     android:layout_alignStart="@+id/textView13"
                     android:layout_centerVertical="true"
@@ -177,14 +178,13 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="30dp"
-            android:text="提 交"
+            android:text="提        交"
             android:id="@+id/add_submit"
             android:layout_weight="0.1"
             android:layout_gravity="center_horizontal|bottom"
-            android:drawableRight="@mipmap/right_arrow"
-            android:background="#2488FF"
-            android:textColor="#FFFF"
-            android:textSize="18dp" />
+            android:background="#B3E5FC"
+            android:textColor="#0288D1"
+            android:textSize="20dp" />
 
     </LinearLayout>
 
