@@ -9,9 +9,8 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@mipmap/ic_home01">
 
 
@@ -32,7 +31,6 @@
             android:layout_width="383dp"
             android:layout_height="174dp"
             android:layout_gravity="center_horizontal"
-            android:weightSum="1"
             android:layout_marginTop="0dp"
 
             android:layout_marginLeft="15dp"
@@ -56,60 +54,6 @@
                 android:id="@+id/noshop"
                 android:layout_weight="2.16"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="358dp"
-            android:layout_height="56dp"
-            android:layout_gravity="center_horizontal|top"
-            android:weightSum="1"
-            android:layout_marginTop="0dp"
-            android:background="#89b1f7"
-            android:layout_weight="0.13"
-            >
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/home"
-                android:background="@mipmap/ic_home01"
-                />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/game"
-                android:background="@mipmap/ic_game01"
-                android:layout_marginRight="0dp"
-                android:layout_marginLeft="8dp"/>
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/focus"
-                android:background="@mipmap/ic_focus01"
-                android:layout_marginLeft="8dp"/>
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_love01"
-                android:id="@+id/code"
-                android:layout_marginLeft="8dp"/>
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/my"
-                android:layout_marginRight="10dp"
-                android:background="@mipmap/ic_member01"
-                android:layout_marginLeft="8dp"/>
         </LinearLayout>
 
     </LinearLayout>

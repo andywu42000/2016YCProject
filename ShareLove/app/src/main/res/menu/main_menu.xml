@@ -8,9 +8,6 @@
          app:showAsAction="ifRoom"
         />
 
-
-
-
         <item android:id="@+id/logout"
           android:title="@string/logout01"
               app:showAsAction="never"

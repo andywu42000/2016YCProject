@@ -16,9 +16,9 @@ public class GlobalVariable extends Application {
     public void setZip (Long zip){this.zip = zip;}
     public Long getZip(){return zip;}
 
-    /*
-    public ArrayList<String> collectedVendor = new ArrayList<>();
-    public void setCollectedVendor(String key){this.collectedVendor.add(key);}
-    public ArrayList<String> getCollectedVendor(){return collectedVendor;}
-    */
+    public Integer wow = 0;
+    public void setWow(Integer wow){this.wow = wow;}
+    public Integer getWow(){return wow;}
+
+
 }

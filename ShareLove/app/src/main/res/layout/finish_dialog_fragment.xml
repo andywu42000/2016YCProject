@@ -33,6 +33,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_marginTop="5dp"
-        android:text="請到「可使用優惠券」頁面查看新購買的優惠券" />
+        android:text="請到「我的優惠券」頁面查看新購買的優惠券" />
 
 </LinearLayout>

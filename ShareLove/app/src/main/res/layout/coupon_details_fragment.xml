@@ -74,7 +74,8 @@
                         android:layout_weight="0"
                         android:layout_gravity="center"
                         android:layout_marginLeft="130dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:textSize="16dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -85,8 +86,9 @@
                         android:layout_alignRight="@+id/textView4"
                         android:layout_alignEnd="@+id/textView4"
                         android:layout_weight="0"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="12dp" />
+                        android:layout_marginTop="11dp"
+                        android:layout_marginLeft="12dp"
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -105,7 +107,8 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="0"
                         android:layout_marginLeft="130dp"
-                        android:layout_marginRight="12dp" />
+                        android:layout_marginRight="12dp"
+                        android:textSize="16dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -116,7 +119,8 @@
                         android:layout_alignRight="@+id/textView6"
                         android:layout_alignEnd="@+id/textView6"
                         android:layout_weight="0"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:textSize="16dp" />
                 </LinearLayout>
 
                 <Button
@@ -128,7 +132,7 @@
                     android:layout_below="@+id/textView7"
                     android:layout_alignRight="@+id/textView8"
                     android:layout_alignEnd="@+id/textView8"
-                    android:background="#ff7575"
+                    android:background="#ff5252"
                     android:textSize="20dp"
                     android:textColor="#ffffff"
                     android:layout_gravity="center"
@@ -147,7 +151,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="246dp"
-                android:background="#ECF5FF">
+                android:background="#B3E5FC">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -165,7 +169,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="#8E8E8E"
+                    android:background="#FFFF"
                     android:layout_marginTop="5dp" />
 
                 <TextView

@@ -49,7 +49,7 @@ public class LotteryDisplayFragment extends Fragment{
     String message;
 
 
-    TextView cnum1,cnum2,cnum3,cnum4,cnum5,winning_num,check_y_n;
+    TextView cnum1,cnum2,cnum3,cnum4,cnum5,winning_num,check_y_n,latest_period,collect_period;
     Button toSearchPage_btn, gameRule_btn, check_btn;
     LottoRuleDialogFragment lottoRuleFragment = new LottoRuleDialogFragment();
 
@@ -83,7 +83,9 @@ public class LotteryDisplayFragment extends Fragment{
         check_y_n = (TextView) view.findViewById(R.id.check_y_n);
         check_btn = (Button)view.findViewById(R.id.check_btn);
         winning_num = (TextView) view.findViewById(R.id.winning_num);
-       // toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
+        latest_period = (TextView) view.findViewById(R.id.win_period);
+        collect_period = (TextView) view.findViewById(R.id.collect_period);
+        // toSearchPage_btn=(Button)view.findViewById(R.id.toSearchPage_btn);
 //        toSearchPage_btn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -137,6 +139,9 @@ public class LotteryDisplayFragment extends Fragment{
 
                 String winning_number = w5 + w4 + w3 + w2 + w1;
                 winning_num.setText(winning_number);
+                latest_period.setText("\n" + win_period);
+                collect_period.setText(owned_period);
+
 
 
             }

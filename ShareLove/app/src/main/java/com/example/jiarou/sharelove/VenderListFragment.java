@@ -7,7 +7,6 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +53,6 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     String zip_areas;
     String zip_number;
-    Button search,home,game,focus,code,my;
     TextView noshop;
     TextView logout;
     String shop_list;
@@ -63,6 +60,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     Long userLongId;
     String a;
 
+    String user_zip002;
     private GoogleMap mMap;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -125,10 +123,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+  //      Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("首頁");
         setHasOptionsMenu(true);
+
         //取得searchActivuty的資料
 
 
@@ -148,71 +147,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
         });
  **/
 
-        home =(Button) view.findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), IndexActivity.class);
-
-                startActivityForResult(intent,2);
-
-
-            }
-
-
-        });
-
-        game =(Button) view.findViewById(R.id.game);
-        game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), GameActivity.class);
-
-                startActivityForResult(intent, 2);
-
-            }
-        });
-       focus =(Button) view.findViewById(R.id.focus);
-        focus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), MainActivity.class);
-
-                startActivityForResult(intent, 2);
-
-            }
-        });
-      code =(Button) view.findViewById(R.id.code);
-        code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), LoveCodeMainActivity.class);
-                startActivity(intent);
-
-            }
-        });
-       my =(Button) view.findViewById(R.id.my);
-        my.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent();
-                intent.setClass(getActivity(), User_Activity.class);
-                startActivityForResult(intent, 2);
-
-            }
-        });
 
 
 
-
-        if(shop_list==null){
-
-            Toast.makeText(getActivity(), "此地尚無店家喔～", Toast.LENGTH_LONG).show();
-        }
 
 
         //fragment加入地圖頁面
@@ -366,208 +303,196 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
      }
      **/
 
-
     public void connectToFirebase() {
 
-                final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
 
         final CustomAdapter zipadapter = new CustomAdapter(this.getActivity(),  zipeList);
 
 
 
-                Firebase.setAndroidContext(this.getActivity());
-
-                final Firebase vendor = new Firebase(DB_URL);
+        Firebase.setAndroidContext(this.getActivity());
 
 
-                vendor.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        if (zip_areas == null) {
+        if (zip_areas == null) {
 
-                            final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
-                            Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(userLongId);
+            final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
+            Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(userLongId);
+
+            memberQuery.addChildEventListener(new ChildEventListener() {
+
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    Long user_zip001 = (Long) dataSnapshot.child("Default_Zone").getValue();
+                    user_zip002 = String.valueOf(user_zip001);
 
 
-                             memberQuery.addChildEventListener(new ChildEventListener() {
+                    zipeList.add(user_zip002);
 
+                    Log.d("hahaha", String.valueOf(user_zip002));
+
+                    user_zip = zipeList.get(0);
+
+
+                    Log.d("hhhh", String.valueOf(user_zip));
+                    String address = "台灣";
+
+                    String address01 = address + user_zip;
+                    Log.d("hi", address01);
+
+                    Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+                    List<Address> addressLocation = null;
+                    try {
+
+                        addressLocation = geoCoder.getFromLocationName(address01, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    double latitude = addressLocation.get(0).getLatitude();
+                    double longitude = addressLocation.get(0).getLongitude();
+                    LatLng area_type = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(area_type));
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
+
+                    int get_size = zipeList.size();
+                    Log.i("size", String.valueOf(get_size));
+                    a = "1";
+                    switch (a) {
+
+                        case "1":
+
+                            Log.d("rrrrr", String.valueOf(user_zip));
+                            final Firebase vendor01 = new Firebase(DB_URL);
+
+                            vendor01.addChildEventListener(new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                    Long user_zip001 = (Long) dataSnapshot.child("Default_Zone").getValue();
-                                    String user_zip002 = String.valueOf(user_zip001);
 
-                                    zipeList.add(user_zip002);
+                                    if (dataSnapshot.child("Location/ZIP").getValue().equals(String.valueOf(user_zip))) {
+                                        vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
 
-                                    Log.d("hahaha", String.valueOf(user_zip002));
+                                        shop_list = (String) dataSnapshot.child("Information/Name").getValue();
 
-                                    user_zip = zipeList.get(0);
-                                    int get_size = zipeList.size();
-                                     switch (get_size) {
-                                         case 0:
-                                         case 1:
-
-                                         Log.d("rrrrr", String.valueOf(user_zip));
-                                         final Firebase vendor01 = new Firebase(DB_URL);
-
-                                         vendor01.addChildEventListener(new ChildEventListener() {
-                                             @Override
-                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                                                 if (dataSnapshot.child("Location/ZIP").getValue().equals(String.valueOf(user_zip))) {
-                                                 // user_zip= zipeList.get(0);
-
-                                                 Log.d("hhhh", String.valueOf(user_zip));
-                                                 String address = "台灣";
-                                                  a="1";
-                                                 String address01 = address + user_zip;
-                                                 Log.d("hi", address01);
-                                                 switch (a) {
-
-                                                     case "1":
-
-
-                                                     Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
-                                                     //有問題
-
-                                                     List<Address> addressLocation = null;
-
-
-                                                     try {
-
-                                                         addressLocation = geoCoder.getFromLocationName(address01, 1);
-
-
-                                                     } catch (IOException e) {
-                                                         e.printStackTrace();
-                                                     }
-
-                                                     double latitude = addressLocation.get(0).getLatitude();
-                                                     double longitude = addressLocation.get(0).getLongitude();
-
-                                                     LatLng area_type = new LatLng(latitude, longitude);
-
-
-                                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(area_type));
-                                                     mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-
-
-
-                                                         vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
-                                                         shop_list = (String) dataSnapshot.child("Information/Name").getValue();
-                                                            a="2";
-
-
-                                                         if (shop_list == null) {
-                                                             Toast.makeText(getActivity(), "此地尚無店家喔～", Toast.LENGTH_LONG).show();
-
-                                                         }
-                                                         break;
-
-                                                     }
-
-
-                                                   }
-
-                                                 }
-
-                                                 @Override
-                                                 public void onChildChanged (DataSnapshot
-                                                 dataSnapshot, String s){
-
-                                                 }
-
-                                                 @Override
-                                                 public void onChildRemoved (DataSnapshot
-                                                 dataSnapshot){
-
-                                                 }
-
-                                                 @Override
-                                                 public void onChildMoved (DataSnapshot
-                                                 dataSnapshot, String s){
-
-                                                 }
-
-                                                 @Override
-                                                 public void onCancelled (FirebaseError
-                                                 firebaseError){
-
-                                                 }
-
-                                         });
-
-                                             break;
-                                     }
+                                        Log.d("ㄎ ", shop_list);
+                                        list.setAdapter(adapter);
 
 
                                     }
 
-                                    @Override
-                                    public void onChildChanged (DataSnapshot dataSnapshot, String s)
-                                    {
+                                }
 
+                                @Override
+                                public void onChildChanged(DataSnapshot
+                                                                   dataSnapshot, String s) {
 
-                                    }
+                                }
 
-                                    @Override
-                                    public void onChildRemoved (DataSnapshot dataSnapshot){
+                                @Override
+                                public void onChildRemoved(DataSnapshot
+                                                                   dataSnapshot) {
 
-                                    }
+                                }
 
-                                    @Override
-                                    public void onChildMoved (DataSnapshot dataSnapshot, String s){
+                                @Override
+                                public void onChildMoved(DataSnapshot
+                                                                 dataSnapshot, String s) {
 
-                                    }
+                                }
 
-                                    @Override
-                                    public void onCancelled (FirebaseError firebaseError){
+                                @Override
+                                public void onCancelled(FirebaseError
+                                                                firebaseError) {
 
-                                    }
+                                }
+
 
                             });
 
 
 
 
-                        } else {
-                            zip_number = zip_areas.substring(1, 4);
-                            if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
-                                vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
-                                shop_list = (String) dataSnapshot.child("Information/Name").getValue();
+                            vendorTitleList.clear();
+                            break;
+                    }
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
 
-                            }
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+
+            });
 
 
-                        }
+            vendorTitleList.clear();
 
+
+        } else {
+            final Firebase vendor = new Firebase(DB_URL);
+
+
+            vendor.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    zip_number = zip_areas.substring(1, 4);
+
+                    if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
+                        vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                        shop_list = (String) dataSnapshot.child("Information/Name").getValue();
                         list.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
                     }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                }
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
-                });
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+
+        }
 
         vendorTitleList.clear();
-
     }
+
 
 
     public void test() {

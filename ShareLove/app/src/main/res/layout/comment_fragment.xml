@@ -7,17 +7,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:singleLine="true" />
+        android:singleLine="false"
+        android:textColor="#212121"
+        android:inputType="textMultiLine"
+        android:hint="請輸入評論..."
+        android:textColorHint="#757575"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="留言"
         android:id="@+id/textView13"
-        android:textSize="36dp"/>
+        android:textSize="36dp"
+        android:textColor="#212121"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/commentListView" />
+        android:id="@+id/commentListView"
+        android:listSelector="#B3E5FC"
+        android:divider="#B3E5FC"
+        android:dividerHeight="3dp"
+        android:headerDividersEnabled="true"
+        android:radius = "15dp"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="20dp"/>
 </LinearLayout>

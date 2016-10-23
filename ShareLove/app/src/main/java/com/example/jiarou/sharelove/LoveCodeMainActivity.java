@@ -1,10 +1,13 @@
 package com.example.jiarou.sharelove;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,13 +27,15 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.ArrayList;
 
-public class LoveCodeMainActivity extends AppCompatActivity {
+public class LoveCodeMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     //Resource: http://stackoverflow.com/questions/28232116/android-using-zxing-generate-qr-code
     final static String DB_URL="https://barcode-29a1e.firebaseio.com/Invoice";
     TextView textView2;
     Spinner spinner;
     ImageView imageView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
 
 
@@ -38,8 +43,16 @@ public class LoveCodeMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lovecode);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
-//        setSupportActionBar(toolbar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         //add a array list to retrieve title 0629
         //可用
@@ -121,6 +134,21 @@ public class LoveCodeMainActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        //noinspection SimplifiableIfStatement
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private Bitmap toBitmap(BitMatrix bitMatrix) {
 //        // 定义位图的款和高
         int width = bitMatrix.getWidth();
@@ -137,29 +165,38 @@ public class LoveCodeMainActivity extends AppCompatActivity {
         return bmap;
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        final Intent intent = new Intent();
+        switch (id){
+            case R.id.nav_home:
+
+                intent.setClass(this, IndexActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_game:
+                intent.setClass(this, GameActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_focus:
+                intent.setClass(this, MainActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_lovecode:
+                intent.setClass(this, LoveCodeMainActivity.class);
+                startActivityForResult(intent, 2);
+                break;
+            case R.id.nav_user:
+                intent.setClass(this, User_Activity.class);
+                startActivityForResult(intent, 2);
+                break;
+            default:
+                break;
+        }
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
 }
 
 

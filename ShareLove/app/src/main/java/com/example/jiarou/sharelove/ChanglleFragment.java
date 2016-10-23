@@ -3,12 +3,9 @@ package com.example.jiarou.sharelove;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +19,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -101,10 +95,6 @@ public class ChanglleFragment extends Fragment {
         c4 = (Button) view.findViewById(R.id.c4);
         over_btn= (Button) view.findViewById(R.id.over_btn);
 
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("遊戲");
-
         GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
         String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
         userLongId = Long.parseLong(userId, 10);
@@ -122,6 +112,7 @@ public class ChanglleFragment extends Fragment {
 
 
         if(Objects.equals(get_number, "two")) {
+            c1.setBackgroundColor(Color.rgb(0,355,127));
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -167,6 +158,7 @@ public class ChanglleFragment extends Fragment {
                 }
             });
         }else if(Objects.equals(get_number, "three")) {
+            c1.setBackgroundColor(Color.rgb(0,355,127));
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,6 +168,7 @@ public class ChanglleFragment extends Fragment {
                 }
             });
 
+            c2.setBackgroundColor(Color.rgb(175,238,238));
             c2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -211,6 +204,7 @@ public class ChanglleFragment extends Fragment {
                 }
             });
         }else  if(Objects.equals(get_number, "four")) {
+            c1.setBackgroundColor(Color.rgb(0,355,127));
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -218,7 +212,7 @@ public class ChanglleFragment extends Fragment {
 
                 }
             });
-
+            c2.setBackgroundColor(Color.rgb(175, 238, 238));
             c2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -228,7 +222,7 @@ public class ChanglleFragment extends Fragment {
                 }
             });
 
-
+            c3.setBackgroundColor(Color.rgb(221, 160, 221));
             c3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -254,6 +248,7 @@ public class ChanglleFragment extends Fragment {
                 }
             });
         }else  if(Objects.equals(get_number, "done")){
+            c1.setBackgroundColor(Color.rgb(0,355,127));
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -261,7 +256,7 @@ public class ChanglleFragment extends Fragment {
 
                 }
             });
-
+            c2.setBackgroundColor(Color.rgb(175, 238, 238));
             c2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -271,7 +266,7 @@ public class ChanglleFragment extends Fragment {
                 }
             });
 
-
+            c3.setBackgroundColor(Color.rgb(221, 160, 221));
             c3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -280,7 +275,7 @@ public class ChanglleFragment extends Fragment {
 
                 }
             });
-
+            c4.setBackgroundColor(Color.rgb(152, 251, 152));
             c4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

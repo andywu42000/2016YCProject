@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 public class CouponMainActivity extends AppCompatActivity implements CouponTypesFragment.OnCouponSelected {
 
 
+    String price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class CouponMainActivity extends AppCompatActivity implements CouponTypes
                 .addToBackStack(null)
                 .commit();
     }
+
+
 
 
 

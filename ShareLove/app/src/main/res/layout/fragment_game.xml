@@ -5,8 +5,6 @@
              tools:context="com.example.jiarou.sharelove.GameFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <include layout="@layout/toolbar"
-             android:id="@+id/my_toolbar"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,15 +13,38 @@
         android:layout_gravity="center"
         android:weightSum="1">
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="任務挑戰拿點數"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="任務遊戲挑戰"
+            android:id="@+id/textView35"
+            android:layout_gravity="center_horizontal|top"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:layout_width="337dp"
+            android:layout_height="249dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView34"
+            android:background="@drawable/round01"
+            android:text="尋找身邊的弱勢攤販，伸手做愛心，快點來挑戰，只要將四宮格集滿，就能獲得10顆愛心幣喔～ "
+            android:backgroundTint="#ac70bdf4"
+            android:textSize="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:layout_width="323dp"
+            android:layout_height="135dp"
+            android:text="開始挑戰"
             android:id="@+id/general_btn"
-            android:layout_gravity="center_horizontal"
             android:textSize="50dp"
             android:background="@drawable/round01"
-            android:layout_marginTop="190dp"/>
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#60a2ff"
+            android:layout_marginLeft="15dp"/>
 
     </LinearLayout>
+
 </FrameLayout>

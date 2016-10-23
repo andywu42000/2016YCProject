@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -31,9 +32,9 @@ public class CouponTypesFragment extends Fragment{
 
 
     TextView member_owned_points;
-    //    Button coupon_type1;
-//    Button coupon_type2;
-//    Button coupon_type3;
+    Button coupon_type1;
+    Button coupon_type2;
+    Button coupon_type3;
     GridView gridView;
     RadioGroup radioGroup1;
 
@@ -52,9 +53,11 @@ public class CouponTypesFragment extends Fragment{
 
     public static CouponTypesFragment newInstance() {
 
-        Bundle args = new Bundle();
         CouponTypesFragment fragment = new CouponTypesFragment();
-        fragment.setArguments(args);
+            Bundle args = new Bundle();
+            fragment.setArguments(args);
+
+
         return fragment;
     }
 
@@ -71,11 +74,9 @@ public class CouponTypesFragment extends Fragment{
         } else {
             throw new ClassCastException(context.toString() + " must implement OnCouponSelected.");
         }
-
-
-
-
     }
+
+
 
 
 
@@ -83,49 +84,43 @@ public class CouponTypesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
-
         connectToCouponFirebase("平價");
         connectToMemberFirebase();
 
-
-
         //將畫面設為coupon_types_fragment.xml
-        final View view = inflater.inflate(R.layout.coupon_types_fragment,container,false);
+        final View view = inflater.inflate(R.layout.coupon_types_fragment, container, false);
 
         //Coupon types page button (change page)
-//        coupon_type1=(Button)view.findViewById(R.id.button);
-//        coupon_type2=(Button)view.findViewById(R.id.button2);
-//        coupon_type3=(Button)view.findViewById(R.id.button3);
+        coupon_type1=(Button)view.findViewById(R.id.coupon_type1);
+        coupon_type2=(Button)view.findViewById(R.id.coupon_type2);
+        coupon_type3=(Button)view.findViewById(R.id.coupon_type3);
+
+        coupon_type1.setOnClickListener(ChangePage);
+        coupon_type2.setOnClickListener(ChangePage);
+        coupon_type3.setOnClickListener(ChangePage);
+
+
+//        radioGroup1 = (RadioGroup) view.findViewById(R.id.radioGroup1);
+//        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                switch (checkedId){
+//                    case R.id.button:
+//                        connectToCouponFirebase("平價");
+//                        break;
+//                    case R.id.button2:
+//                        connectToCouponFirebase("中等");
+//                        break;
 //
-//        coupon_type1.setOnClickListener(ChangePage);
-//        coupon_type2.setOnClickListener(ChangePage);
-//        coupon_type3.setOnClickListener(ChangePage);
-
-
-        radioGroup1 = (RadioGroup) view.findViewById(R.id.radioGroup1);
-        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.button:
-                        connectToCouponFirebase("平價");
-                        break;
-                    case R.id.button2:
-                        connectToCouponFirebase("中等");
-                        break;
-
-                    case R.id.button3:
-                        connectToCouponFirebase("豪華");
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        });
-
-
+//                    case R.id.button3:
+//                        connectToCouponFirebase("豪華");
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
 
         //宣告上方的會員擁有點數
         member_owned_points = (TextView) view.findViewById(R.id.textView2);
@@ -136,20 +131,20 @@ public class CouponTypesFragment extends Fragment{
     }
 
 
-//    //Change Pages Button
-//    private View.OnClickListener ChangePage = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            if (v.getId()== R.id.button){
-//                connectToCouponFirebase("平價");
-//            }
-//            else if (v.getId()== R.id.button2){
-//                connectToCouponFirebase("中等");
-//            }else {
-//                connectToCouponFirebase("豪華");
-//            }
-//        }
-//    };
+    //Change Pages Button
+    private View.OnClickListener ChangePage = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId()== R.id.coupon_type1){
+                connectToCouponFirebase("平價");
+            }
+            else if (v.getId()== R.id.coupon_type2){
+                connectToCouponFirebase("中等");
+            }else {
+                connectToCouponFirebase("豪華");
+            }
+        }
+    };
 
 
 
@@ -200,6 +195,8 @@ public class CouponTypesFragment extends Fragment{
 
     //連接Firebase取出名字、價錢、照片，置入ArrayList中
     public void connectToCouponFirebase(String couponType){
+
+
         Firebase.setAndroidContext(this.getActivity());
         //Adapter宣告
         final CustomAdapter adapter= new CustomAdapter(this.getActivity(), couponNameList, couponPriceList, couponImagesList, couponInfoList);
@@ -222,11 +219,7 @@ public class CouponTypesFragment extends Fragment{
                 couponNameList.add(name);
                 couponPriceList.add(price);
                 couponInfoList.add(information);
-
-
                 gridView.setAdapter(adapter);
-
-
             }
 
             @Override
@@ -249,6 +242,7 @@ public class CouponTypesFragment extends Fragment{
             public void onCancelled(FirebaseError firebaseError) {
 
             }
+
         });
 
         couponImagesList.clear();

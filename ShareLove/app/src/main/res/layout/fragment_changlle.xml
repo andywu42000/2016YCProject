@@ -4,8 +4,7 @@
              android:layout_height="match_parent"
              tools:context="com.example.jiarou.sharelove.ChanglleFragment"
              android:id="@+id/challenge_root">
-    <include layout="@layout/toolbar"
-             android:id="@+id/my_toolbar"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -21,7 +20,8 @@
             android:id="@+id/textView16"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:text="完成四宮格，即可獲得10顆愛心點數"
             android:id="@+id/textView17"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="40dp"
             android:textSize="20dp"/>
 
         <LinearLayout
@@ -37,7 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="10dp">
 
             <Button
                 android:layout_width="150dp"
@@ -60,7 +61,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp">
 
             <Button
                 android:layout_width="150dp"
@@ -86,7 +88,7 @@
             android:text="已完成"
             android:id="@+id/over_btn"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </FrameLayout>
