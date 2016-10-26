@@ -1,11 +1,8 @@
 package com.example.jiarou.sharelove;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +46,6 @@ public class VendedInfoFragment extends Fragment {
     private OnCommentSelected mListener;
     private OnNavigationSelected mListener2;
 
-    private SQLiteDatabase helper;
 
     CallbackManager callbackManager;
     ShareDialog shareDialog;
@@ -69,7 +65,6 @@ public class VendedInfoFragment extends Fragment {
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
 
-        helper = new CollectDBHelper(this.getContext(), "vendor", null, 1).getDatabase(this.getContext());
 
 
     }
@@ -152,7 +147,7 @@ public class VendedInfoFragment extends Fragment {
                 key[0] = dataSnapshot.getKey();
                 //Toast.makeText(getContext(), key[0], Toast.LENGTH_LONG).show();
 
-                String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
+                String picId = (String) dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
                 DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
                 downloadImage.execute(pic);
@@ -184,7 +179,7 @@ public class VendedInfoFragment extends Fragment {
                 String sun = sunOpen + "~" + sunClose;
                 String address = (String) dataSnapshot.child("Location").child("Address").getValue();
                 String story = (String) dataSnapshot.child("Information").child("Introduction").getValue();
-                counting = (Long)dataSnapshot.child("Popularity").getValue();
+                counting = (Long) dataSnapshot.child("Popularity").getValue();
 
                 phoneTextView.setText(phone);
                 remarkTextView.setText(remark);
@@ -223,6 +218,8 @@ public class VendedInfoFragment extends Fragment {
             }
         });
 
+
+
         fbShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,12 +231,9 @@ public class VendedInfoFragment extends Fragment {
                         !!!在這裡做分享完成後想要做的動作，幫助樂透運行
                          */
 
-
                         //8/27變動部分
                         MemberDB memberDB = new MemberDB(getActivity(), getContext());
                         memberDB.getLottoNum();
-
-
 
                     }
 
@@ -282,92 +276,115 @@ public class VendedInfoFragment extends Fragment {
             public void onClick(View v) {
                 final GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
 
-                //final SQLiteDatabase db = helper.getWritableDatabase();
-                Cursor c = helper.query("Vendor", new String[]{"vendorid"}, null, null, null, null, null);
-
-                int row = c.getCount();
-                c.moveToFirst();
-                while(c.moveToNext()){
-                    if(c.getString(0).equals(key[0])){
-                        globalVariable.setWow(1);
-                    }
-                }
-
-                c.close();
-
-
-
-                final String[] key2 = {""};
                 String userId =globalVariable.getUserId();
                 //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
                 final Long userLongId = Long.parseLong(userId, 10);
 
-                final Firebase member = new Firebase(DB_MEMBER_URL);
+                final Firebase memberCollect = new Firebase(DB_MEMBER_URL);
+
+                final String[] Key3 = {""};
+                Query findMember = memberCollect.orderByChild("Facebook_ID").equalTo(userLongId);
+
+                findMember.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        for(DataSnapshot exdataSnapshot: dataSnapshot.child("Favorite_Vendors").getChildren()){
+                            String keys = (String)exdataSnapshot.child("Vendor_ID").getValue();
+                            if(key[0] == keys){
+                                Key3[0] = "1";
+                            }else{
+                                Key3[0] = "0";
+                            }
+                        }
+
+                        final String[] key2 = {""};
+
+                        final Firebase member = new Firebase(DB_MEMBER_URL);
+
+                        switch(Key3[0]){
+                            case "1":
+                                Toast.makeText(getContext(), "已收藏過", Toast.LENGTH_LONG).show();
+                                globalVariable.setWow(0);
+                                break;
+                            case "0":
+                                Query findMember2 = member.orderByChild("Facebook_ID").equalTo(userLongId);
+                                findMember2.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        key2[0] = dataSnapshot.getKey();
+                                        //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
+                                        final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
+
+                                        //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
+
+                                        //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
+                                        //globalVariable2.setCollectedVendor(key[0]);
+
+                                        Map<String, Object> favVendor = new HashMap<String, Object>();
+                                        favVendor.put("Vendor_ID", key[0]);
+                                        member3.child("Favorite_Vendors").push().setValue(favVendor);
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+
+                                final Firebase collection = new Firebase(DB_URL + "/" + key[0]);
+                                mathth = counting + 1L;
+                                collection.child("Popularity").setValue(mathth);
+                                String mathS = mathth.toString();
+                                count.setText(mathS);
+
+                                Toast.makeText(getContext(), "已成功收藏", Toast.LENGTH_LONG).show();
+
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
 
                 Integer wow = globalVariable.getWow();
 
-                switch(wow){
-                    case 1:
-                        Toast.makeText(getContext(), "已收藏過", Toast.LENGTH_LONG).show();
-                        globalVariable.setWow(0);
-                        break;
-                    case 0:
-                        Query findMember2 = member.orderByChild("Facebook_ID").equalTo(userLongId);
-                        findMember2.addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                key2[0] = dataSnapshot.getKey();
-                                //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
-                                final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
 
-                                //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
-
-                                //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
-                                //globalVariable2.setCollectedVendor(key[0]);
-
-                                Map<String, Object> favVendor = new HashMap<String, Object>();
-                                favVendor.put("Vendor_ID", key[0]);
-                                member3.child("Favorite_Vendors").push().setValue(favVendor);
-
-                            }
-
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                            }
-
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                            }
-
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-
-                            }
-                        });
-
-                        final Firebase collection = new Firebase(DB_URL + "/" + key[0]);
-                        mathth = counting + 1L;
-                        collection.child("Popularity").setValue(mathth);
-                        String mathS = mathth.toString();
-                        count.setText(mathS);
-
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("vendorid", key[0]);
-                        helper.insert("Vendor", null, contentValues);
-
-                        Toast.makeText(getContext(), "已成功收藏", Toast.LENGTH_LONG).show();
-
-
-
-                        break;
-                }
 
             }
         });
