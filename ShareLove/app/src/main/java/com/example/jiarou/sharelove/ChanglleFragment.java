@@ -112,6 +112,7 @@ public class ChanglleFragment extends Fragment {
 
 
         if(Objects.equals(get_number, "two")) {
+
             c1.setBackgroundColor(Color.rgb(0,355,127));
             c1.setOnClickListener(new View.OnClickListener() {
                 @Override

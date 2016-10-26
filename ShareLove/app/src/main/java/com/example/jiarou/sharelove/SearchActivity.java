@@ -136,7 +136,10 @@ public class SearchActivity extends AppCompatActivity {
             zip_area = zips.getSelectedItem().toString();
             zip_areas = zip_area.substring(0,8);
             //去掉中文字
-            zip_number= zip_area.substring(1,4);
+            zip_number= zip_area.substring(1, 4);
+
+            tx1.setText("抱歉！此區尚無攤販資料喔！><");
+            tx1.setVisibility(View.VISIBLE);
 
            //將firebase取到的資料印在上面
             /**
@@ -165,8 +168,6 @@ public class SearchActivity extends AppCompatActivity {
 
                         if(shop_name==null){
 
-                            tx1.setText("抱歉！此區尚無攤販資料喔！><");
-                            tx1.setVisibility(View.VISIBLE);
 
 
                         }else {
