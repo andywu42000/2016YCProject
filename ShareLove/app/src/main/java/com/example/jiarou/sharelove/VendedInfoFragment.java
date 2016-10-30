@@ -45,7 +45,6 @@ public class VendedInfoFragment extends Fragment {
 
     private static final String ARGUMENT_TITLE = "VendorTitle";
 
-
     private OnCommentSelected mListener;
     private OnNavigationSelected mListener2;
 
@@ -131,9 +130,6 @@ public class VendedInfoFragment extends Fragment {
         final ImageView comment = (ImageView)view.findViewById(R.id.imageView2);
         final ImageView navigation = (ImageView)view.findViewById(R.id.imageView4);
         fbShare.bringToFront();
-        comment.bringToFront();
-        collect.bringToFront();
-        navigation.bringToFront();
 
         final Bundle args = getArguments();
         titleTextView.setText(args.getString(ARGUMENT_TITLE));
@@ -150,7 +146,7 @@ public class VendedInfoFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 key[0] = dataSnapshot.getKey();
-                //Toast.makeText(getContext(), key[0], Toast.LENGTH_LONG).show();
+
 
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
@@ -238,7 +234,6 @@ public class VendedInfoFragment extends Fragment {
                         //8/27變動部分
                         MemberDB memberDB = new MemberDB(getActivity(), getContext());
                         memberDB.getLottoNum();
-
 
 
                     }
@@ -403,6 +398,12 @@ public class VendedInfoFragment extends Fragment {
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        helper.close();
     }
 
 }
