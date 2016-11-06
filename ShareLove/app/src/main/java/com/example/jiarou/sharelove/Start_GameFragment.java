@@ -169,7 +169,9 @@ startActivity(it);
                     // mListener.Start_game(number);
 
 
-                    getActivity().finish();
+                   // getActivity().finish();
+                    mListener.Start_game("hi");
+
 
 
 

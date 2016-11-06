@@ -167,6 +167,10 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     }
 
+
+
+
+
     @Override
     public void Choose_area(String data) {
 
@@ -176,9 +180,9 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
         final android.support.v4.app.FragmentManager fragmentManager =
                 getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentByTag("game_areaFragment");
+        Fragment fragment = fragmentManager.findFragmentByTag("changenge");
         getSupportFragmentManager().popBackStack();
-        fragmentTransaction.hide(fragment);
+        fragmentTransaction.detach(fragment);
         //fragmentTransaction.hide(fragment);
         fragmentTransaction.commit();
 
@@ -203,15 +207,19 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
 
 
+
+
+
+
+
     @Override
-    public void Start_game(String check) {
+    public void Start_game(String number) {
+
+
+
+
         final ChanglleFragment changlleFragment =
                 ChanglleFragment.newInstance();
-               get_check=check;
-        Bundle bundle =new Bundle();
-        bundle.putString("check",get_check);
-
-        changlleFragment.setArguments(bundle);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -220,7 +228,16 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
                 .commit();
 
 
+
+
+
+
+
     }
+
+
+
+
     @Override
     public void delete() {
        final GameFragment  gameFragment =GameFragment.newInstance();
