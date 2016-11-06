@@ -21,10 +21,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/nameTextView"
+        android:textColor="#757575"
         android:layout_below="@+id/memberImageView"
-        android:layout_alignLeft="@+id/memberImageView"
-        android:layout_alignStart="@+id/memberImageView"
-        android:textColor="#757575"/>
+        android:layout_alignStart="@+id/memberImageView" />
 
     <TextView
         android:layout_width="wrap_content"

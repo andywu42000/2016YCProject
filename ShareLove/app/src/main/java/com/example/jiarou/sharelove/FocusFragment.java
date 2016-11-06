@@ -32,6 +32,8 @@ public class FocusFragment extends Fragment {
 
     final static ArrayList<String> vendorTitleList = new ArrayList<>();
     final static ArrayList<String> vendorPicList = new ArrayList<>();
+    final static ArrayList<String> vendorPhoneList = new ArrayList<>();
+    final static ArrayList<String> vendorAddressList = new ArrayList<>();
     /*
     final static ArrayList<String> vendorPhoneList = new ArrayList<>();
     final static ArrayList<String> timeRemarkList= new ArrayList<>();
@@ -93,7 +95,8 @@ public class FocusFragment extends Fragment {
 
     public void connectToFirebase(){
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList);
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList, vendorPicList,
+                vendorPhoneList, vendorAddressList);
 
         Firebase.setAndroidContext(this.getActivity());
 
@@ -108,6 +111,8 @@ public class FocusFragment extends Fragment {
 
                 String title = (String)dataSnapshot.child("Information").child("Name").getValue();
                 String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
+                String phone = (String)dataSnapshot.child("Information").child("Phone").getValue();
+                String address = (String)dataSnapshot.child("Location").child("Address").getValue();
                 /*
                 String phone = (String)dataSnapshot.child("Information").child("Phone").getValue();
                 String remark = (String)dataSnapshot.child("Open_Days").child("Remark").getValue();
@@ -142,6 +147,8 @@ public class FocusFragment extends Fragment {
                 pic = imgurURL;
 
                 vendorTitleList.add(title);
+                vendorPhoneList.add(phone);
+                vendorAddressList.add(address);
                 /*
                 vendorPhoneList.add(phone);
                 timeRemarkList.add(remark);
@@ -182,6 +189,8 @@ public class FocusFragment extends Fragment {
 
         vendorTitleList.clear();
         vendorPicList.clear();
+        vendorPhoneList.clear();
+        vendorAddressList.clear();
         /*
         vendorPhoneList.clear();
         timeRemarkList.clear();
@@ -210,6 +219,8 @@ public class FocusFragment extends Fragment {
         ArrayList<String> vendorTitle;
 
         ArrayList<String> vendorPic;
+        ArrayList<String> vendorPhone;
+        ArrayList<String> vendorAddress;
         /*
 
         ArrayList<String> vendorPhone;
@@ -228,7 +239,8 @@ public class FocusFragment extends Fragment {
         ArrayList<String> vendorStory;
         */
 
-        public CustomAdapter(Context context, ArrayList<String> vendorTitle, ArrayList<String> vendorPic/*,
+        public CustomAdapter(Context context, ArrayList<String> vendorTitle, ArrayList<String> vendorPic,
+                             ArrayList<String> vendorPhone, ArrayList<String> vendorAddress/*,
                              ArrayList<String> vendorPhone, ArrayList<String> timeRemark, ArrayList<String> monTime,
                              ArrayList<String> tueTime, ArrayList<String> wedTime, ArrayList<String> thuTime,
                              ArrayList<String> friTime, ArrayList<String> satTime, ArrayList<String> sunTime,
@@ -236,6 +248,8 @@ public class FocusFragment extends Fragment {
             c = context;
             this.vendorTitle = vendorTitle;
             this.vendorPic = vendorPic;
+            this.vendorPhone = vendorPhone;
+            this.vendorAddress = vendorAddress;
             /*
             this.vendorPhone = vendorPhone;
             this.timeRemark = timeRemark;
@@ -276,6 +290,8 @@ public class FocusFragment extends Fragment {
 
             TextView listTextView = (TextView)list.findViewById(R.id.listTextView);
             ImageView listImageView = (ImageView)list.findViewById(R.id.listImageView);
+            TextView listPhoneView = (TextView)list.findViewById(R.id.focusPhoneTextView);
+            TextView listAddressView = (TextView)list.findViewById(R.id.focusAddressTextView);
 
             final String title = vendorTitle.get(position);
             listTextView.setText(title);
@@ -284,6 +300,12 @@ public class FocusFragment extends Fragment {
             //Do bitmapTask
             DownloadImageTask downloadImage = new DownloadImageTask(listImageView);
             downloadImage.execute(vendorURL);
+
+            final String phone = vendorPhone.get(position);
+            listPhoneView.setText(phone);
+
+            final String address = vendorAddress.get(position);
+            listAddressView.setText(address);
 
             /*
             final String phone = vendorPhone.get(position);

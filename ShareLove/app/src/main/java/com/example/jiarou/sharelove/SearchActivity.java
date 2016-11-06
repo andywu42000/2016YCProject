@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
     String zip_area;
     String zip_areas;
     TextView tx1;
+    ImageView face;
 
     ArrayAdapter<String> adapter2;
 
@@ -90,7 +92,9 @@ public class SearchActivity extends AppCompatActivity {
         */
 
         tx1 =(TextView) findViewById(R.id.tx1);
-        tx1.setText("抱歉！此區尚無攤販資料喔！><");
+        tx1.setText("抱歉！此區尚無攤販資料喔！");
+        face =(ImageView) findViewById(R.id.face);
+        face.setBackgroundResource(R.drawable.unhappy);
 
         //tx1.setVisibility(View.GONE);
       //  vendor_type=(Spinner) findViewById(R.id.spinner2);
@@ -138,10 +142,12 @@ public class SearchActivity extends AppCompatActivity {
             //去掉中文字
             zip_number= zip_area.substring(1, 4);
 
-            tx1.setText("抱歉！此區尚無攤販資料喔！><");
+            tx1.setText("抱歉！此區尚無攤販資料喔！");
             tx1.setVisibility(View.VISIBLE);
+            face.setBackgroundResource(R.drawable.unhappy);
 
-           //將firebase取到的資料印在上面
+
+            //將firebase取到的資料印在上面
             /**
             ListView areas = (ListView) findViewById(R.id.areaView2);
             final ArrayAdapter<String> arealist =
@@ -166,17 +172,14 @@ public class SearchActivity extends AppCompatActivity {
                         search = (Button) findViewById(R.id.search);
                         Log.d("hell", "no"+vendorTitleList.size());
 
-                        if(shop_name==null){
-
-
-
-                        }else {
 
                             tx1.setText("此區域有愛心攤販喔～");
                             tx1.setVisibility(View.VISIBLE);
+                           face.setBackgroundResource(R.drawable.happy);
 
 
-                            search.setOnClickListener(new Button.OnClickListener() {
+
+                        search.setOnClickListener(new Button.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 
@@ -203,7 +206,7 @@ public class SearchActivity extends AppCompatActivity {
                             }
 
                         });
-                        }
+
                         /**  int store_number;
                         store_number=((String) dataSnapshot.child("Information/Name").getValue()).length();
                        if(store_number>0) {

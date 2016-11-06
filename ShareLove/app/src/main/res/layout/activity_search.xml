@@ -56,14 +56,32 @@
         android:layout_marginTop="25dp"
         android:textSize="30dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/tx1"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/spinner3"
-        android:layout_alignStart="@+id/spinner3"/>
+        android:layout_alignStart="@+id/tx1">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/face"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/tx1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/spinner3"
+            android:layout_alignStart="@+id/spinner3"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="7dp"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

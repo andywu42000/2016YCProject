@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,8 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     String user_zip;
     Long userLongId;
     String a;
+    int count_shop;
+    ImageView shop_icon;
 
     String user_zip002;
     private GoogleMap mMap;
@@ -150,6 +153,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
+        noshop = (TextView) view.findViewById(R.id.noshop);
+        shop_icon =(ImageView) view.findViewById(R.id.shpo_icon);
+        shop_icon.setBackgroundResource(R.drawable.exclamation);
 
 
         //fragment加入地圖頁面
@@ -221,6 +227,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         list = (ListView) view.findViewById(R.id.venderlist_view);
         list.bringToFront();
+
        connectToFirebase();
         Log.d("789", String.valueOf(user_zip));
 
@@ -316,6 +323,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         if (zip_areas == null) {
 
+            noshop.setText("尚無店家");
+            shop_icon.setBackgroundResource(R.drawable.exclamation);
+
+            list.setVisibility(View.INVISIBLE);
+
             final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
             Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo(userLongId);
 
@@ -371,12 +383,29 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                                     if (dataSnapshot.child("Location/ZIP").getValue().equals(String.valueOf(user_zip))) {
-                                        vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
-
                                         shop_list = (String) dataSnapshot.child("Information/Name").getValue();
+                                        if(shop_list!=null){
 
-                                        Log.d("ㄎ ", shop_list);
-                                        list.setAdapter(adapter);
+                                            count_shop=1;
+
+                                        }
+
+                                        if (count_shop==1){
+
+
+
+
+                                            vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                                            noshop.setText("店家名稱");
+                                            list.setVisibility(View.VISIBLE);
+                                            shop_icon.setBackgroundResource(R.drawable.sun_umbrella);
+
+                                            Log.d("使用者區", shop_list);
+                                            list.setAdapter(adapter);
+
+
+                                        }
+
 
 
                                     }
@@ -450,16 +479,43 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             final Firebase vendor = new Firebase(DB_URL);
 
 
+
+            noshop.setText("尚無店家");
+            shop_icon.setBackgroundResource(R.drawable.exclamation);
+
+            list.setVisibility(View.INVISIBLE);
+
+
+
             vendor.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                     zip_number = zip_areas.substring(1, 4);
+                    count_shop=0;
 
                     if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
-                        vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
                         shop_list = (String) dataSnapshot.child("Information/Name").getValue();
-                        list.setAdapter(adapter);
+
+
+
+                        if(shop_list!=null){
+
+                            count_shop=1;
+                            if (count_shop==1){
+
+
+                                vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                                noshop.setText("店家名稱");
+                                list.setVisibility(View.VISIBLE);
+                                shop_icon.setBackgroundResource(R.drawable.sun_umbrella);
+
+                                list.setAdapter(adapter);
+
+
+                            }
+
+                        }
 
                     }
 
@@ -494,14 +550,6 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-    public void test() {
-        Firebase.setAndroidContext(this.getActivity());
-
-
-
-
-    }
 
 
     @Override
@@ -652,7 +700,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
             case 2://當B傳回來的Intent的requestCode 等於當初A傳出去的話
 
                 zip_areas =  data.getExtras().getString("name");
-                Toast.makeText(getActivity(), zip_areas, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), zip_areas, Toast.LENGTH_SHORT).show();
 
                 Bundle bundle=new Bundle();
                 bundle.putString(zip_areas, "From Activity");
@@ -660,14 +708,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                 VenderListFragment fragobj=new  VenderListFragment();
                 fragobj.setArguments(bundle);
 
+
                 connectToFirebase();
 
-                if(shop_list==null){
-                    //textview
-                    noshop = (TextView) getView().findViewById(R.id.noshop);
-                    noshop.setText("尚無店家");
-                    Toast.makeText(getActivity(), "此地尚無店家喔～", Toast.LENGTH_LONG).show();
-                }
 
 
                 zip_number =zip_areas.substring(1,4);

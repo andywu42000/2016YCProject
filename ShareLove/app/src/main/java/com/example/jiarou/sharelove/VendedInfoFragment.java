@@ -1,11 +1,8 @@
 package com.example.jiarou.sharelove;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,8 +45,6 @@ public class VendedInfoFragment extends Fragment {
     private OnCommentSelected mListener;
     private OnNavigationSelected mListener2;
 
-    private SQLiteDatabase helper;
-
     CallbackManager callbackManager;
     ShareDialog shareDialog;
 
@@ -67,9 +62,6 @@ public class VendedInfoFragment extends Fragment {
 
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
-
-        helper = new CollectDBHelper(this.getContext(), "vendor", null, 1).getDatabase(this.getContext());
-
 
     }
 
@@ -134,9 +126,17 @@ public class VendedInfoFragment extends Fragment {
         final Bundle args = getArguments();
         titleTextView.setText(args.getString(ARGUMENT_TITLE));
 
+        final GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
+        globalVariable.setWow(0);
+        final String[] key2 = {""};
+        final String userId =globalVariable.getUserId();
+        //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
+        final Long userLongId = Long.parseLong(userId, 10);
+
 
         Firebase.setAndroidContext(this.getActivity());
         final Firebase vendor2 = new Firebase(DB_URL);
+        final Firebase member = new Firebase(DB_MEMBER_URL);
         String mark = args.getString(ARGUMENT_TITLE);
 
         Query focusVendor2 = vendor2.orderByChild("Information/Name").equalTo(mark);
@@ -148,7 +148,7 @@ public class VendedInfoFragment extends Fragment {
                 key[0] = dataSnapshot.getKey();
 
 
-                String picId = (String)dataSnapshot.child("Photos").child("Photo_ID").getValue();
+                String picId = (String) dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
                 DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
                 downloadImage.execute(pic);
@@ -180,7 +180,7 @@ public class VendedInfoFragment extends Fragment {
                 String sun = sunOpen + "~" + sunClose;
                 String address = (String) dataSnapshot.child("Location").child("Address").getValue();
                 String story = (String) dataSnapshot.child("Information").child("Introduction").getValue();
-                counting = (Long)dataSnapshot.child("Popularity").getValue();
+                counting = (Long) dataSnapshot.child("Popularity").getValue();
 
                 phoneTextView.setText(phone);
                 remarkTextView.setText(remark);
@@ -196,6 +196,44 @@ public class VendedInfoFragment extends Fragment {
                 String countingS = counting.toString();
                 count.setText(countingS);
 
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        Double userDoubleId = Double.parseDouble(userId);
+
+        Query findMember = member.orderByChild("Facebook_ID").equalTo(userDoubleId);
+
+        findMember.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for(DataSnapshot exDataSnaoshot: dataSnapshot.child("Favorite_Vendors").getChildren()){
+                    String mark = (String)exDataSnaoshot.child("Vendor_ID").getValue();
+                    if(key[0].equals(mark)){
+                        globalVariable.setWow(1);
+                        Toast.makeText(getContext(), mark, Toast.LENGTH_LONG).show();
+                    }
+
+                }
             }
 
             @Override
@@ -275,36 +313,13 @@ public class VendedInfoFragment extends Fragment {
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
-
-                //final SQLiteDatabase db = helper.getWritableDatabase();
-                Cursor c = helper.query("Vendor", new String[]{"vendorid"}, null, null, null, null, null);
-
-                int row = c.getCount();
-                c.moveToFirst();
-                while(c.moveToNext()){
-                    if(c.getString(0).equals(key[0])){
-                        globalVariable.setWow(1);
-                    }
-                }
-
-                c.close();
-
-
-
-                final String[] key2 = {""};
-                String userId =globalVariable.getUserId();
-                //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
-                final Long userLongId = Long.parseLong(userId, 10);
-
-                final Firebase member = new Firebase(DB_MEMBER_URL);
 
                 Integer wow = globalVariable.getWow();
 
                 switch(wow){
                     case 1:
                         Toast.makeText(getContext(), "已收藏過", Toast.LENGTH_LONG).show();
-                        globalVariable.setWow(0);
+                        //globalVariable.setWow(0);
                         break;
                     case 0:
                         Query findMember2 = member.orderByChild("Facebook_ID").equalTo(userLongId);
@@ -353,13 +368,7 @@ public class VendedInfoFragment extends Fragment {
                         String mathS = mathth.toString();
                         count.setText(mathS);
 
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("vendorid", key[0]);
-                        helper.insert("Vendor", null, contentValues);
-
                         Toast.makeText(getContext(), "已成功收藏", Toast.LENGTH_LONG).show();
-
-
 
                         break;
                 }
@@ -400,10 +409,5 @@ public class VendedInfoFragment extends Fragment {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onStop(){
-        super.onStop();
-        helper.close();
-    }
 
 }
