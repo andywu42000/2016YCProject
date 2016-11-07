@@ -64,12 +64,13 @@
                 android:layout_height="110dp"
                 android:id="@+id/venderlist_view"
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/round01"
                 android:textSize="30px"
 
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="0.19"/>
+                android:layout_weight="0.19"
+                style="@style/AlertDialog.AppCompat"
+                android:textFilterEnabled="false"/>
 
         </LinearLayout>
 

@@ -146,7 +146,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="10dp"
             android:background="#F0F0F0"
             android:id="@+id/view2"
             android:layout_below="@+id/textView29"
@@ -156,43 +156,115 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_weight="1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="蒐集獎號"
+                    android:textAlignment="center"
+                    android:background="#B3E5FC"
+                    android:id="@+id/textView36"
+                    android:textColor="#212121"
+                    android:textSize="14dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/past_owned_number" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/past_owned_number"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:textColor="#fdc72b"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/textView36" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/past_period"
+                    android:background="#B3E5FC"
+                    android:textSize="14dp"
+                    android:textColor="#212121"
+                    android:textAlignment="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignBottom="@+id/past_owned_number" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#F0F0F0"
+            android:id="@+id/view5"
+            android:layout_below="@+id/textView29"
+            android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="#ECF4FC">
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="\n這期\n是否中獎"
+                    android:text="是否中獎"
                     android:textAlignment="center"
                     android:background="#00B3EA"
                     android:id="@+id/textView30"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
-                    android:textColor="#FFFF" />
+                    android:textColor="#FFFF"
+                    android:textSize="14dp"
+                    android:layout_below="@+id/check_y_n" />
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/check_y_n"
-                    android:text="Y/N"
                     android:textAlignment="center"
                     android:layout_centerVertical="true"
-                    android:textSize="24dp"
+                    android:textSize="20dp"
                     android:layout_toEndOf="@+id/textView30"
                     android:textColor="#0288DE" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/past_period2"
+                    android:background="#00B3EA"
+                    android:textSize="14dp"
+                    android:textColor="#FFFF"
+                    android:textAlignment="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignBottom="@+id/check_y_n" />
             </RelativeLayout>
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="10dp"
             android:background="#F0F0F0"
             android:id="@+id/view3"
             android:layout_below="@+id/textView29"
@@ -201,11 +273,12 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_weight="1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="match_parent"
                 android:background="#ECF4FC">
 
                 <TextView
@@ -218,7 +291,8 @@
                     android:id="@+id/textView31"
                     android:layout_alignParentBottom="true"
                     android:textColor="#FFFF"
-                    android:layout_below="@+id/winning_num" />
+                    android:layout_below="@+id/winning_num"
+                    android:textSize="14dp" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -226,9 +300,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/winning_num"
                     android:textAlignment="center"
-                    android:textSize="24dp"
+                    android:textSize="20dp"
                     android:layout_centerVertical="true"
-                    android:text="12345"
                     android:layout_toEndOf="@+id/textView31"
                     android:textColor="#0288DE"
                     />
@@ -239,7 +312,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/win_period"
                     android:background="#00B3EA"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:layout_alignBottom="@+id/winning_num"
                     android:textColor="#FFFF"
                     android:textAlignment="center" />
@@ -247,7 +320,7 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="10dp"
             android:background="#F0F0F0"
             android:id="@+id/view4"
             android:layout_below="@+id/textView29"
@@ -258,7 +331,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_weight="20">
 
 
             <Button
