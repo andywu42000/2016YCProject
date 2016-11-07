@@ -3,6 +3,7 @@ package com.example.jiarou.sharelove;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -87,7 +89,7 @@ public class ChanglleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       final View view= inflater.inflate(R.layout.fragment_changlle, container, false);
+        final View view= inflater.inflate(R.layout.fragment_changlle, container, false);
         c1 = (Button) view.findViewById(R.id.c1);
         c2 = (Button) view.findViewById(R.id.c2);
         c3 = (Button) view.findViewById(R.id.c3);
@@ -104,317 +106,331 @@ public class ChanglleFragment extends Fragment {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-              final  String memberKey01 = dataSnapshot.getKey();
+                final  String memberKey01 = dataSnapshot.getKey();
                 get_number = (String)dataSnapshot.child("times").getValue();
                 Log.d("d", "d" + get_number);
 
 
 
-        if(Objects.equals(get_number, "two")) {
-            c1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "完成囉～ 前進第二關吧！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("1");
+                if(Objects.equals(get_number, "two")) {
 
-                }
-            });
-
-            c2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onFragmentInteraction("2");
-
-
-                }
-            });
-
-
-            c3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第二關喔！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("3");
-
-                }
-            });
-
-            c4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第二關喔！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("4");
-
-                }
-            });
-
-            over_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第二關喔！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-        }else if(Objects.equals(get_number, "three")) {
-            c1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //mListener.onFragmentInteraction("1");
-                    Toast.makeText(getActivity(), "已完成，到第三關囉！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-            c2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //mListener.onFragmentInteraction("2");
-                    Toast.makeText(getActivity(),"已完成，到第三關囉！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-
-            c3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   // Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                    mListener.onFragmentInteraction("3");
-
-                }
-            });
-
-            c4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "第三關還沒完成喔！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("4");
-
-                }
-            });
-            over_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第三關喔！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-        }else  if(Objects.equals(get_number, "four")) {
-            c1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "剩下第四關了！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-            c2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //mListener.onFragmentInteraction("2");
-                    Toast.makeText(getActivity(), "剩下第四關了！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-
-            c3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "剩下第四關了！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("3");
-
-                }
-            });
-
-            c4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                    mListener.onFragmentInteraction("4");
-
-                }
-            });
-            over_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第四關喔！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-        }else  if(Objects.equals(get_number, "done")){
-            c1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-            c2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //mListener.onFragmentInteraction("2");
-                    Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-
-            c3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("3");
-
-                }
-            });
-
-            c4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
-
-
-                }
-            });
-            over_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
-                    bdr.setMessage("獲得10個愛心幣");
-                    bdr.setTitle("恭喜挑戰成功");
-                    bdr.setPositiveButton("領取", new DialogInterface.OnClickListener() {
+                    c1.setBackgroundResource(R.drawable.certificate);
+                    c1.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            getActivity().finish();
-
-
-                            FirebaseRef.child(memberKey01).child("done").setValue("");
-                            FirebaseRef.child(memberKey01).child("two").setValue("");
-                            FirebaseRef.child(memberKey01).child("three").setValue("");
-                            FirebaseRef.child(memberKey01).child("four").setValue("");
-
-                            FirebaseRef.child(memberKey01).child("times").setValue("one");
-
-
-
-
-
-                            final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
-              /*之後要加這段半別是哪一個使用者*/
-                            Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo( userLongId);
-
-
-                            memberQuery.addChildEventListener(new ChildEventListener() {
-
-                                @Override
-                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                    point = (Long) dataSnapshot.child("Owned_Points").getValue();
-                                    memberKey = dataSnapshot.getKey();
-                                    memberRef.child(memberKey).child("Owned_Points").setValue(point + 10);
-
-
-                                }
-
-                                @Override
-                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                                    point = (Long) dataSnapshot.child("Owned_Points").getValue();
-
-                                }
-
-                                @Override
-                                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                                }
-
-                                @Override
-                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                                }
-
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
-
-                                }
-                            });
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "完成囉～ 前進第二關吧！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("1");
 
                         }
                     });
-                    bdr.setCancelable(false);
-                    bdr.show();
+
+                    c2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mListener.onFragmentInteraction("2");
 
 
+                        }
+                    });
+
+
+                    c3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第二關喔！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("3");
+
+                        }
+                    });
+
+                    c4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第二關喔！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("4");
+
+                        }
+                    });
+
+                    over_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第二關喔！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }else if(Objects.equals(get_number, "three")) {
+                    c1.setBackgroundResource(R.drawable.certificate);
+                    c1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //mListener.onFragmentInteraction("1");
+                            Toast.makeText(getActivity(), "已完成，到第三關囉！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+                    c2.setBackgroundResource(R.drawable.certificate);
+                    c2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //mListener.onFragmentInteraction("2");
+                            Toast.makeText(getActivity(),"已完成，到第三關囉！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+
+                    c3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
+                            mListener.onFragmentInteraction("3");
+
+                        }
+                    });
+
+                    c4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "第三關還沒完成喔！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("4");
+
+                        }
+                    });
+                    over_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第三關喔！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }else  if(Objects.equals(get_number, "four")) {
+
+                    c1.setBackgroundResource(R.drawable.certificate);
+                    c1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "剩下第四關了！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                    c2.setBackgroundResource(R.drawable.certificate);
+                    c2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //mListener.onFragmentInteraction("2");
+                            Toast.makeText(getActivity(), "剩下第四關了！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+                    c3.setBackgroundResource(R.drawable.certificate);
+                    c3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "剩下第四關了！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("3");
+
+                        }
+                    });
+
+                    c4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
+                            mListener.onFragmentInteraction("4");
+
+                        }
+                    });
+                    over_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第四關喔！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }else  if(Objects.equals(get_number, "done")){
+                    c1.setBackgroundResource(R.drawable.certificate);
+                    c1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                    c2.setBackgroundResource(R.drawable.certificate);
+                    c2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //mListener.onFragmentInteraction("2");
+                            Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+                    c3.setBackgroundResource(R.drawable.certificate);
+                    c3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("3");
+
+                        }
+                    });
+                    c4.setBackgroundResource(R.drawable.certificate);
+                    c4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "可以領取愛心幣囉～", Toast.LENGTH_LONG).show();
+
+
+                        }
+                    });
+
+                    final ImageView img = new ImageView(getActivity());
+                    img.setImageResource(R.drawable.heart);
+                    over_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
+                            bdr.setMessage("               恭喜獲得10個愛心幣");
+                            bdr.setView(img);
+                            bdr.setTitle("挑戰成功");
+                            bdr.setIcon(R.drawable.cup);
+                            bdr.setPositiveButton("領取", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    getActivity().finish();
+
+
+                                    FirebaseRef.child(memberKey01).child("done").setValue("");
+                                    FirebaseRef.child(memberKey01).child("two").setValue("");
+                                    FirebaseRef.child(memberKey01).child("three").setValue("");
+                                    FirebaseRef.child(memberKey01).child("four").setValue("");
+
+                                    FirebaseRef.child(memberKey01).child("times").setValue("one");
+
+
+
+
+
+                                    final Firebase memberRef = new Firebase("https://member-139bd.firebaseio.com/");
+              /*之後要加這段半別是哪一個使用者*/
+                                    Query memberQuery = memberRef.orderByChild("Facebook_ID").equalTo( userLongId);
+
+
+                                    memberQuery.addChildEventListener(new ChildEventListener() {
+
+                                        @Override
+                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                            point = (Long) dataSnapshot.child("Owned_Points").getValue();
+                                            memberKey = dataSnapshot.getKey();
+                                            memberRef.child(memberKey).child("Owned_Points").setValue(point + 10);
+
+
+                                        }
+
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                            point = (Long) dataSnapshot.child("Owned_Points").getValue();
+
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            });
+                            bdr.setCancelable(false);
+                            bdr.show();
+
+
+
+                        }
+                    });
 
                 }
-            });
+                else {
+                    c1.setBackgroundResource(R.drawable.round01);
+                    c1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-        }
-        else {
-            c1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   mListener.onFragmentInteraction("1");
+                            mListener.onFragmentInteraction("1");
 /***
-                    final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
-                    Map mParent = new HashMap();
-                    mParent.put("one", "");
-                    mParent.put("two", "");
-                    mParent.put("three", "");
-                    mParent.put("four", "");
-                    mParent.put("times", "one");
-                    mParent.put("done", "");
-                    mParent.put("Facebook_ID", );
+ final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+ Map mParent = new HashMap();
+ mParent.put("one", "");
+ mParent.put("two", "");
+ mParent.put("three", "");
+ mParent.put("four", "");
+ mParent.put("times", "one");
+ mParent.put("done", "");
+ mParent.put("Facebook_ID", );
 
 
 
-                    myFirebaseRef.push().setValue(mParent);
+ myFirebaseRef.push().setValue(mParent);
 
 
-**/
+ **/
 
+                        }
+                    });
+                    c2.setBackgroundResource(R.drawable.round01);
+                    c2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //mListener.onFragmentInteraction("2");
+                            Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
+                            //Log.d("area", "area" + get_check);
+
+
+                        }
+                    });
+
+                    c3.setBackgroundResource(R.drawable.round01);
+                    c3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("3");
+
+                        }
+                    });
+                    c4.setBackgroundResource(R.drawable.round01);
+                    c4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
+                            //mListener.onFragmentInteraction("4");
+
+                        }
+                    });
+                    over_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
                 }
-            });
-
-            c2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //mListener.onFragmentInteraction("2");
-                    Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                    //Log.d("area", "area" + get_check);
-
-
-                }
-            });
-
-
-            c3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("3");
-
-                }
-            });
-
-            c4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                    //mListener.onFragmentInteraction("4");
-
-                }
-            });
-            over_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-
-                }
-            });
-        }
 
 
             }
@@ -457,13 +473,13 @@ public class ChanglleFragment extends Fragment {
 
 
     /**
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction();
-        }
-    }
- **/
+     // TODO: Rename method, update argument and hook method into UI event
+     public void onButtonPressed(Uri uri) {
+     if (mListener != null) {
+     mListener.onFragmentInteraction();
+     }
+     }
+     **/
 
     @Override
     public void onAttach(Context context) {

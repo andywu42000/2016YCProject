@@ -2,13 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-              android:weightSum="1">
+              android:weightSum="1"
+    android:background="#B3E5FC"
+    android:padding="5dp">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/focusListView"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/round01"
+        android:background="#FFFFFF"
+        android:listSelector="#B3E5FC"
+        android:divider="#B3E5FC"
+        android:dividerHeight="5dp"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="20dp"
         />
 </LinearLayout>

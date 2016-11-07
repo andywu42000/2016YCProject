@@ -4,17 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+
+import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
     private Spinner spinner;
@@ -46,6 +52,8 @@ public class SearchActivity extends AppCompatActivity {
     private Button search;
     String zip_area;
     String zip_areas;
+    TextView tx1;
+    ImageView face;
 
     ArrayAdapter<String> adapter2;
 
@@ -65,34 +73,7 @@ public class SearchActivity extends AppCompatActivity {
 //        getSupportActionBar().setTitle("搜尋店家");
 
 
-       search = (Button) findViewById(R.id.search);
-       search.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //與maps相通
-                Intent intent01 = getIntent();
-                Bundle bundle = new Bundle();
-                bundle.putString("name", zip_areas);
-                intent01.putExtras(bundle);
-                setResult(2, intent01);
 
-                /** 與fragment相通
-                Bundle bundle=new Bundle();
-                bundle.putString(zip_areas, "From Activity");
-                //set Fragmentclass Arguments
-                VenderListFragment fragobj=new  VenderListFragment();
-                fragobj.setArguments(bundle); **/
-                SearchActivity.this.finish();
-
-
-
-
-                //requestCode需跟A.class的一樣
-
-
-            }
-
-        });
         //跳頁
 
 
@@ -110,7 +91,12 @@ public class SearchActivity extends AppCompatActivity {
         });
         */
 
+        tx1 =(TextView) findViewById(R.id.tx1);
+        tx1.setText("抱歉！此區尚無攤販資料喔！");
+        face =(ImageView) findViewById(R.id.face);
+        face.setBackgroundResource(R.drawable.unhappy);
 
+        //tx1.setVisibility(View.GONE);
       //  vendor_type=(Spinner) findViewById(R.id.spinner2);
          /*spinner 連動*/
         context = this;
@@ -154,9 +140,15 @@ public class SearchActivity extends AppCompatActivity {
             zip_area = zips.getSelectedItem().toString();
             zip_areas = zip_area.substring(0,8);
             //去掉中文字
-            zip_number= zip_area.substring(1,4);
+            zip_number= zip_area.substring(1, 4);
 
-           //將firebase取到的資料印在上面
+            tx1.setText("抱歉！此區尚無攤販資料喔！");
+            tx1.setVisibility(View.VISIBLE);
+            face.setBackgroundResource(R.drawable.unhappy);
+
+
+            //將firebase取到的資料印在上面
+            /**
             ListView areas = (ListView) findViewById(R.id.areaView2);
             final ArrayAdapter<String> arealist =
                     new ArrayAdapter<String>(SearchActivity.this,
@@ -164,13 +156,57 @@ public class SearchActivity extends AppCompatActivity {
                             android.R.id.text1);
 
             areas.setAdapter(arealist);
-
+**/
             final Firebase myFirebaseRef = new Firebase("https://vendor-5acbc.firebaseio.com/Vendors");
             ChildEventListener childEventListener = myFirebaseRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     if (dataSnapshot.child("Location/ZIP").getValue().toString().equals(zip_number)) {
-                        arealist.add((String) dataSnapshot.child("Information/Name").getValue());
+                       // arealist.add((String) dataSnapshot.child("Information/Name").getValue());
+                       final String shop_name= (String) dataSnapshot.child("Information/Name").getValue();
+                        final ArrayList<String> vendorTitleList = new ArrayList<>();
+                        vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
+                        int a =0;
+
+
+                        search = (Button) findViewById(R.id.search);
+                        Log.d("hell", "no"+vendorTitleList.size());
+
+
+                            tx1.setText("此區域有愛心攤販喔～");
+                            tx1.setVisibility(View.VISIBLE);
+                           face.setBackgroundResource(R.drawable.happy);
+
+
+
+                        search.setOnClickListener(new Button.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+
+                                    //與maps相通
+                                    Intent intent01 = getIntent();
+                                    Bundle bundle = new Bundle();
+                                bundle.putString("name", zip_areas);
+                                intent01.putExtras(bundle);
+                                setResult(2, intent01);
+
+                                    /** 與fragment相通
+                                     Bundle bundle=new Bundle();
+                                     bundle.putString(zip_areas, "From Activity");
+                                     //set Fragmentclass Arguments
+                                     VenderListFragment fragobj=new  VenderListFragment();
+                                     fragobj.setArguments(bundle); **/
+                                    SearchActivity.this.finish();
+
+
+                                //requestCode需跟A.class的一樣
+
+
+                            }
+
+                        });
+
                         /**  int store_number;
                         store_number=((String) dataSnapshot.child("Information/Name").getValue()).length();
                        if(store_number>0) {

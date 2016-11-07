@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,6 +32,9 @@ public class CommentFragment extends Fragment {
     private static final String ARGUMENT_TITLE = "VendorTitle";
 
     ListView commentListView;
+    EditText editText;
+    Bundle args;
+    Button commentButton;
 
     final static ArrayList<String> memberPicList = new ArrayList<>();
     final static ArrayList<String> memberNameList = new ArrayList<>();
@@ -69,10 +71,14 @@ public class CommentFragment extends Fragment {
 
         commentListView = (ListView)view.findViewById(R.id.commentListView);
 
-        final Bundle args = getArguments();
+        args = getArguments();
 
-        final EditText editText = (EditText)view.findViewById(R.id.editText);
+        editText = (EditText)view.findViewById(R.id.editText);
 
+        commentButton = (Button)view.findViewById(R.id.commentButton);
+
+
+        /*
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -123,12 +129,12 @@ public class CommentFragment extends Fragment {
                                         addComment.put("Member_ID", key);
                                         addComment.put("Content", note);
                                         addComment.put("Date", date);
-                                        Map<String, String> addComment2 = new HashMap<String, String>();
-                                        /*
-                                        addComment2.put("Member_ID", "");
-                                        addComment2.put("Content", "");
-                                        addComment2.put("Date", "");
-                                        */
+
+                                        //Map<String, String> addComment2 = new HashMap<String, String>();
+                                        //addComment2.put("Member_ID", "");
+                                        //addComment2.put("Content", "");
+                                        //addComment2.put("Date", "");
+
                                         Map<String, Object> finalComment = new HashMap<String, Object>();
                                         finalComment.put("Comments", "");
                                         confuse.updateChildren(finalComment);
@@ -238,12 +244,12 @@ public class CommentFragment extends Fragment {
                                         addComment.put("Member_ID", key);
                                         addComment.put("Content", note);
                                         addComment.put("Date", date);
-                                        /*
-                                        Map<String, String> addComment2 = new HashMap<String, String>();
-                                        addComment2.put("Member_ID", "");
-                                        addComment2.put("Content", "");
-                                        addComment2.put("Date", "");
-                                        */
+
+                                        //Map<String, String> addComment2 = new HashMap<String, String>();
+                                        //addComment2.put("Member_ID", "");
+                                        //addComment2.put("Content", "");
+                                        //addComment2.put("Date", "");
+
                                         Map<String, Object> finalComment = new HashMap<String, Object>();
                                         finalComment.put("Comments", "");
                                         confuse.updateChildren(finalComment);
@@ -302,6 +308,127 @@ public class CommentFragment extends Fragment {
                 return false;
             }
         });
+*/
+
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String note = editText.getText().toString();
+
+                final Firebase findMemberId = new Firebase(DB_MEMBER_URL);
+
+                GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
+                String userId =globalVariable.getUserId();
+
+                Long userLongId = Long.parseLong(userId, 10);
+
+                Query memberKey = findMemberId.orderByChild("Facebook_ID").equalTo(userLongId);
+
+                memberKey.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        final String key = dataSnapshot.getKey();
+
+                        final Firebase writeComment = new Firebase(DB_VENDOR_URL);
+
+                        final Query writeVendorComment = writeComment.orderByChild("Information/Name")
+                                .equalTo(args.getString(ARGUMENT_TITLE));
+
+                        Date mDate = new Date();
+                        Integer month = mDate.getMonth() + 1;
+                        String monthth = month.toString();
+                        Integer year = mDate.getYear() + 1900;
+                        String yearar = year.toString();
+                        Integer hours = mDate.getHours();
+                        String hourur;
+                        if(hours < 12){
+                            hours = hours + 12;
+                            hourur = hours.toString();
+                        }else{
+                            hours = hours - 12;
+                            hourur = hours.toString();
+                        }
+                        final String date = yearar + "/" + monthth + "/" + mDate.getDate() + " "  + hourur + ":" + mDate.getMinutes();
+
+
+                        writeVendorComment.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                String key2 = dataSnapshot.getKey();
+                                if (dataSnapshot.child("Comments").exists()) {
+                                    Map<String, String> addComment = new HashMap<String, String>();
+                                    addComment.put("Member_ID", key);
+                                    addComment.put("Content", note);
+                                    addComment.put("Date", date);
+                                    final Firebase confuse = new Firebase(DB_VENDOR_URL + key2);
+                                    confuse.child("Comments").push().setValue(addComment);
+                                } else {
+                                    final Firebase confuse = new Firebase(DB_VENDOR_URL + key2);
+                                    Map<String, String> addComment = new HashMap<String, String>();
+                                    addComment.put("Member_ID", key);
+                                    addComment.put("Content", note);
+                                    addComment.put("Date", date);
+                                    Map<String, String> addComment2 = new HashMap<String, String>();
+                                        /*
+                                        addComment2.put("Member_ID", "");
+                                        addComment2.put("Content", "");
+                                        addComment2.put("Date", "");
+                                        */
+                                    Map<String, Object> finalComment = new HashMap<String, Object>();
+                                    finalComment.put("Comments", "");
+                                    confuse.updateChildren(finalComment);
+                                    confuse.child("Comments").push().setValue(addComment);
+
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+                editText.setText("");
+            }
+        });
 
         final CustomAdapter adapter = new CustomAdapter(this.getActivity(), memberPicList, memberNameList
                 , memberCommentList, memberDateList);
@@ -313,6 +440,10 @@ public class CommentFragment extends Fragment {
         specificVendor.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                memberNameList.clear();
+                memberDateList.clear();
+                memberCommentList.clear();
+                memberPicList.clear();
                 if(dataSnapshot.child("Comments").exists()) {
                     for (DataSnapshot exDataSnapshot : dataSnapshot.child("Comments").getChildren()) {
 
@@ -368,10 +499,13 @@ public class CommentFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+
                 memberNameList.clear();
                 memberDateList.clear();
                 memberCommentList.clear();
                 memberPicList.clear();
+
 
                 if(dataSnapshot.child("Comments").exists()) {
                     for (DataSnapshot exDataSnapshot : dataSnapshot.child("Comments").getChildren()) {
@@ -429,6 +563,7 @@ public class CommentFragment extends Fragment {
 
 
 
+
             }
 
             @Override
@@ -445,18 +580,13 @@ public class CommentFragment extends Fragment {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
+
+
         });
-
-
-        memberNameList.clear();
-        memberDateList.clear();
-        memberCommentList.clear();
-        memberPicList.clear();
 
 
         return view;
     }
-
 
 
 

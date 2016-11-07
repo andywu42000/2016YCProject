@@ -25,20 +25,14 @@
         android:layout_below="@+id/textView28"
         android:layout_centerHorizontal="true"/>
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:id="@+id/areaView2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="搜尋"
         android:id="@+id/search"
-        android:layout_above="@+id/areaView2"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/spinner3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,5 +55,33 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:textSize="30dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/tx1">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/face"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/tx1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/spinner3"
+            android:layout_alignStart="@+id/spinner3"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="7dp"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

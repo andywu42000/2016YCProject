@@ -109,8 +109,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         Bundle bundle = getArguments();
         number = bundle.getString("number");
 
-           get_location = bundle.getString("address");
-           // test = bundle.getString("123");
+        get_location = bundle.getString("address");
+        // test = bundle.getString("123");
 
 
 
@@ -142,38 +142,41 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
         txv = (TextView) view.findViewById(R.id.txv);
 
+/**  開啟ＧＰＳ
+ open = (Button) view.findViewById(R.id.open);
+ open.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+//get_now();
+// Log.d("test01", "test01" + check_where);
 
-        open = (Button) view.findViewById(R.id.open);
-        open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    //get_now();
-               // Log.d("test01", "test01" + check_where);
+Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+startActivity(it);
 
-                Intent it = new Intent((Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                startActivity(it);
+}
+});
 
-            }
-        });
-
+ **/
         get = (Button) view.findViewById(R.id.get);
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               distance= getDistanceMeter(Latitude, Longitude, myla, mylo);
+                distance= getDistanceMeter(Latitude, Longitude, myla, mylo);
                 idis=Math.floor(distance);
                 if ( idis<=10000){
                     find_number(number);
-                   // mListener.Start_game(number);
+                    // mListener.Start_game(number);
 
 
-                    getActivity().finish();
+                   // getActivity().finish();
+                    mListener.Start_game("hi");
+
 
 
 
                 }else {
-                   Toast.makeText(getActivity(),"必須距離50公尺才算到達喔！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"必須距離50公尺才算到達喔！", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -183,20 +186,20 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
 /**
 
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+ view.setOnKeyListener(new View.OnKeyListener() {
+@Override
+public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                    if(keyCode == KeyEvent.KEYCODE_BACK){
-                        return true;
-                    }
-                    return false;
-                }
+if(keyCode == KeyEvent.KEYCODE_BACK){
+return true;
+}
+return false;
+}
 
-        });
+});
 
 
-   **/
+ **/
 
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -204,7 +207,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
             List<Address> addressLocation= geocoder.getFromLocationName(get_location,1);
             Latitude= addressLocation.get(0).getLatitude();
             Longitude=addressLocation.get(0).getLongitude();
-             nccu = new LatLng(Latitude, Longitude);
+            nccu = new LatLng(Latitude, Longitude);
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(nccu));
             mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
@@ -220,7 +223,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.child("Location/Address").getValue().toString().equals(get_location)) {
-                   shop= (String) dataSnapshot.child("Information/Name").getValue();
+                    shop= (String) dataSnapshot.child("Information/Name").getValue();
                     mMap.addMarker(new MarkerOptions().position(nccu).title(shop));
                     /**  int store_number;
                      store_number=((String) dataSnapshot.child("Information/Name").getValue()).length();
@@ -263,26 +266,26 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case LOCATION_REQUEST_CODE: {
-                     // If request is cancelled, the result arrays are empty.
-                                 if (grantResults.length > 0
-                                   && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                                   && (ActivityCompat.checkSelfPermission(getActivity(),
-                                         android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                                        || ActivityCompat.checkSelfPermission(getActivity(),
-                                         android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                             mgr.requestLocationUpdates(mgr.GPS_PROVIDER
-                      ,1000*60,2, (LocationListener) this);    android.location.Location location = mgr.getLastKnownLocation(mgr.GPS_PROVIDER);
-                           }
-                           }
-                       }
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && (ActivityCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    mgr.requestLocationUpdates(mgr.GPS_PROVIDER
+                            ,1000*60,2, (LocationListener) this);    android.location.Location location = mgr.getLastKnownLocation(mgr.GPS_PROVIDER);
+                }
+            }
+        }
     }
 
 
 
     private   void  firebase(final String location,final String num){
         final Firebase myFirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
-       // Map<String, Object> used_shop= new HashMap<String, Object>();
-       // used_shop.put("used",location);
+        // Map<String, Object> used_shop= new HashMap<String, Object>();
+        // used_shop.put("used",location);
         Query memberQuery = myFirebaseRef.orderByChild("Facebook_ID").equalTo(userLongId);
         memberQuery.addChildEventListener(new ChildEventListener() {
 
@@ -331,7 +334,7 @@ public class Start_GameFragment extends Fragment implements LocationListener {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-              check_where=(String)dataSnapshot.child("now").getValue();
+                check_where=(String)dataSnapshot.child("now").getValue();
                 Log.d("test", "test" + check_where);
 
 
@@ -451,23 +454,23 @@ public class Start_GameFragment extends Fragment implements LocationListener {
     }
 
 
-/**
+    /**
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener. Start_game();
+     // TODO: Rename method, update argument and hook method into UI event
+     public void onButtonPressed(Uri uri) {
+     if (mListener != null) {
+     mListener. Start_game();
+     }
+     }
+     **/
+    public static boolean onKeyDown(int keyCode, KeyEvent event){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            return true;
         }
+        return true;
+
     }
-**/
-  public static boolean onKeyDown(int keyCode, KeyEvent event){
-      if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-          return true;
-      }
-      return true;
-
-  }
 
 
 
@@ -496,8 +499,8 @@ public class Start_GameFragment extends Fragment implements LocationListener {
         str+= String.format("\n緯度:%.5f\n經度:%.5f",
                 location.getLatitude(),
                 location.getLongitude());
-       // myla=location.getLatitude();
-      //  mylo=location.getLongitude();
+        // myla=location.getLatitude();
+        //  mylo=location.getLongitude();
 
         txv.setText(str);
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
