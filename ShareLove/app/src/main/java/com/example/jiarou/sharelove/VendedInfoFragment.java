@@ -230,7 +230,6 @@ public class VendedInfoFragment extends Fragment {
                     String mark = (String)exDataSnaoshot.child("Vendor_ID").getValue();
                     if(key[0].equals(mark)){
                         globalVariable.setWow(1);
-                        Toast.makeText(getContext(), mark, Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -260,17 +259,14 @@ public class VendedInfoFragment extends Fragment {
         fbShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final MemberDB memberDB = new MemberDB(getActivity(), getContext());
+                memberDB.getMemberLottoInfo();
+
                 shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
                     @Override
                     public void onSuccess(Sharer.Result result) {
 
-                        /*
-                        !!!在這裡做分享完成後想要做的動作，幫助樂透運行
-                         */
-
-
-                        //8/27變動部分
-                        MemberDB memberDB = new MemberDB(getActivity(), getContext());
                         memberDB.getLottoNum();
 
 
