@@ -147,6 +147,10 @@ public class IndexActivity extends AppCompatActivity implements OnMapReadyCallba
                 intent.setClass(this, User_Activity.class);
                 startActivityForResult(intent, 2);
                 break;
+            case R.id.logout:
+                intent.setClass(this, Login.class);
+                startActivityForResult(intent, 2);
+
             default:
                 break;
         }

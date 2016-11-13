@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 
-public class CouponMainActivity extends AppCompatActivity implements CouponTypesFragment.OnCouponSelected {
+public class CouponMainActivity extends AppCompatActivity implements CouponTypesFragment.OnCouponSelected,CouponTypeFragment2.OnCouponSelected,CouponTypeFragment3.OnCouponSelected {
 
 
     String price;
@@ -41,5 +41,5 @@ public class CouponMainActivity extends AppCompatActivity implements CouponTypes
 
 
 
-    }
+}
 

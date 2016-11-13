@@ -230,7 +230,6 @@ public class VendedInfoFragment extends Fragment {
                     String mark = (String)exDataSnaoshot.child("Vendor_ID").getValue();
                     if(key[0].equals(mark)){
                         globalVariable.setWow(1);
-                        Toast.makeText(getContext(), mark, Toast.LENGTH_LONG).show();
                     }
 
                 }

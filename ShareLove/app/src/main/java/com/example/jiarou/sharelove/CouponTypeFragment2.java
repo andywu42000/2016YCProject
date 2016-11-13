@@ -25,12 +25,10 @@ import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-
 /**
- * Created by chiayi on 16/7/27.
+ * Created by chiayi on 16/11/13.
  */
-public class CouponTypesFragment extends Fragment{
-
+public class CouponTypeFragment2 extends Fragment {
 
     TextView member_owned_points;
     Button coupon_type1;
@@ -64,7 +62,7 @@ public class CouponTypesFragment extends Fragment{
     }
 
 
-    public CouponTypesFragment(){
+    public CouponTypeFragment2(){
 
     }
 
@@ -86,7 +84,7 @@ public class CouponTypesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        connectToCouponFirebase("平價");
+        connectToCouponFirebase("中等");
         connectToMemberFirebase();
 
         //將畫面設為coupon_types_fragment.xml
@@ -133,20 +131,7 @@ public class CouponTypesFragment extends Fragment{
     }
 
 
-//    //Change Pages Button
-//    private View.OnClickListener ChangePage = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            if (v.getId()== R.id.coupon_type1){
-//                connectToCouponFirebase("平價");
-//            }
-//            else if (v.getId()== R.id.coupon_type2){
-//                connectToCouponFirebase("中等");
-//            }else {
-//                connectToCouponFirebase("豪華");
-//            }
-//        }
-//    };
+
 
 
     //Change Pages Button
@@ -154,8 +139,6 @@ public class CouponTypesFragment extends Fragment{
         @Override
         public void onClick(View v) {
             if (v.getId()== R.id.coupon_type1){
-
-
                 Fragment fragment = new CouponTypesFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -166,8 +149,6 @@ public class CouponTypesFragment extends Fragment{
 
             }
             else if (v.getId()== R.id.coupon_type2){
-
-
                 Fragment fragment = new CouponTypeFragment2();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -175,9 +156,8 @@ public class CouponTypesFragment extends Fragment{
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
+
             }else {
-
-
                 Fragment fragment = new CouponTypeFragment3();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -185,13 +165,14 @@ public class CouponTypesFragment extends Fragment{
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
+
             }
 
-
-            Fragment fragment1 = new CouponTypesFragment();
+            Fragment fragment2 = new CouponTypeFragment2();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.detach(fragment1);
+            fragmentTransaction.detach(fragment2);
+
 
         }
     };
@@ -391,10 +372,8 @@ public class CouponTypesFragment extends Fragment{
     }
 
 
-
-
-
-
-
 }
+
+
+
 

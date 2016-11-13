@@ -92,7 +92,8 @@ public class Game_areaFragment extends Fragment {
     String get_location;
     Button start;
     Long userLongId;
-
+    String one,two,three,four;
+    String check_key;
 
 
 
@@ -158,7 +159,7 @@ public class Game_areaFragment extends Fragment {
 
 
 
-        not_repeat();
+
 
         list = (ListView) view.findViewById(R.id.check);
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked,address001);
@@ -167,7 +168,9 @@ public class Game_areaFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 get_location = (String) list.getItemAtPosition(position);
+                get_area();
                 put_now_location(get_location);
 
 
@@ -188,7 +191,10 @@ public class Game_areaFragment extends Fragment {
                 if(get_location==null) {
                     Toast.makeText(getActivity(), "尚未選取地址", Toast.LENGTH_LONG).show();
 
-                }else {
+                }else if(check_key=="1"){
+                    Toast.makeText(getActivity(), "此攤販已挑戰過囉！請換攤販吧！", Toast.LENGTH_LONG).show();
+                }
+                else {
 
                     AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
                     bdr.setMessage("確認後就無法返回重新選擇囉！");
@@ -633,6 +639,8 @@ city01.add(get_area);
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String memberKey = dataSnapshot.getKey();
 
+
+
                 myFirebaseRef.child(memberKey).child("now").setValue(location);
 
 
@@ -665,36 +673,45 @@ city01.add(get_area);
 
     //測試不重複
 
-    private  void  not_repeat(){
 
 
-        final Firebase vendor = new Firebase(DB_URL);
-        Query gameQuery = vendor.orderByChild("Game").equalTo(true);
-        gameQuery.addChildEventListener(new ChildEventListener() {
+    private  void get_area(){
 
+        final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        Query memberQuery = FirebaseRef.orderByChild("Facebook_ID").equalTo( userLongId);
+        ChildEventListener childEventListener = memberQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                String title = (String) dataSnapshot.child("Location/Address").getValue();
-                String city = title.substring(0, 3);
+                one = (String) dataSnapshot.child("one").getValue();
+                two = (String) dataSnapshot.child("two").getValue();
+                three = (String) dataSnapshot.child("three").getValue();
+                four = (String) dataSnapshot.child("four").getValue();
 
-                test_adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, android.R.id.text1);
-                test_adapter.add(city);
-
-
-                Log.d("test10", "test10" + city);
-
-
+              if(get_location==one){
+                 // Toast.makeText(getActivity(), "已選取過囉！", Toast.LENGTH_LONG).show();
+                  check_key="1";
 
 
+              }else if(get_location==two){
+                 // Toast.makeText(getActivity(), "已選取過囉！", Toast.LENGTH_LONG).show();
+                  check_key="1";
 
-                //Toast.makeText(getActivity(),num , Toast.LENGTH_LONG).show();
 
+              }else if(get_location==three){
+                //  Toast.makeText(getActivity(), "已選取過囉！", Toast.LENGTH_LONG).show();
 
+                  check_key="1";
 
+              }else if(get_location==four){
+                 // Toast.makeText(getActivity(), "已選取過囉！", Toast.LENGTH_LONG).show();
+                  check_key="1";
+
+              }else {
+                  check_key="0";
+              }
 
             }
-
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -715,7 +732,6 @@ city01.add(get_area);
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-
         });
     }
 

@@ -123,7 +123,8 @@
                         android:text="點數:"
                         android:id="@+id/textView24"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:textSize="16dp" />
 
                     <TextView
                         android:layout_width="116dp"
@@ -131,7 +132,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:id="@+id/owned_point"
                         android:layout_marginLeft="13dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:textSize="16dp" />
 
                 </LinearLayout>
 
@@ -141,7 +143,7 @@
                     android:text="店家收藏"
                     android:id="@+id/collect_store_btn"
                     android:stateListAnimator="@null"
-                    android:background="#B3E5FC"
+                    android:background="@drawable/button_rectangle_shape"
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"

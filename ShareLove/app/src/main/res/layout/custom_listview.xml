@@ -11,7 +11,7 @@
         android:textSize="18dp"
         android:textColor="#212121"
         android:layout_toRightOf="@+id/listImageView"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="15dp" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:layout_width="200dp"
@@ -23,17 +23,18 @@
         app:riv_tile_mode="repeat" />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/imageView14"
         android:layout_below="@+id/listTextView"
         android:layout_toEndOf="@+id/listImageView"
         android:layout_margin="5dp"
-        android:src="@mipmap/phone"/>
+        android:src="@mipmap/phone"
+        android:layout_marginTop="20dp" />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/imageView15"
         android:layout_below="@+id/imageView14"
         android:layout_toEndOf="@+id/listImageView"
@@ -47,7 +48,7 @@
         android:id="@+id/focusPhoneTextView"
         android:layout_toRightOf="@+id/imageView14"
         android:layout_alignTop="@+id/imageView14"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:textSize="15dp" />
 
     <TextView
@@ -56,7 +57,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/focusAddressTextView"
         android:layout_alignTop="@+id/imageView15"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:layout_toRightOf="@+id/imageView15"
         android:textSize="15dp" />
 
