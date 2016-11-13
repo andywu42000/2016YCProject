@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,7 @@ public class LotteryDisplayFragment extends Fragment {
         winning_num = (TextView) view.findViewById(R.id.winning_num);
         latest_period = (TextView) view.findViewById(R.id.win_period);
         collect_period = (TextView) view.findViewById(R.id.collect_period);
+
 
 
         //取得目前蒐集的樂透號碼
@@ -227,9 +229,9 @@ public class LotteryDisplayFragment extends Fragment {
                         past_lotto_num.add(String.valueOf(plotto_num3));
                         past_lotto_num.add(String.valueOf(plotto_num4));
                         past_lotto_num.add(String.valueOf(plotto_num5));
-                        past_period.setText("\n"+plotto_period);
-                        past_period2.setText("\n"+plotto_period);
-                        check_y_n.setText(String.valueOf(plotto_result));
+                        //past_period.setText("\n"+plotto_period);
+                        //past_period2.setText("\n"+plotto_period);
+                        //check_y_n.setText(String.valueOf(plotto_result));
 
 
                     }
@@ -446,6 +448,7 @@ public class LotteryDisplayFragment extends Fragment {
 
 
 
+
                             } else {
 
 
@@ -636,6 +639,11 @@ public class LotteryDisplayFragment extends Fragment {
                                     Toast.makeText(getContext(), "您已兌過，請繼續蒐集樂透獎號", Toast.LENGTH_LONG).show();
 
                                 }
+
+
+
+
+
                             }
 
                             @Override
@@ -666,6 +674,13 @@ public class LotteryDisplayFragment extends Fragment {
 
                     }
                 }
+
+                Fragment fragment = new LotteryDisplayFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -695,6 +710,11 @@ public class LotteryDisplayFragment extends Fragment {
         lottoRuleFragment.show(getFragmentManager(), "Lotto_Rule_dialog");
 
     }
+
+
+
+
+
 
 
 }

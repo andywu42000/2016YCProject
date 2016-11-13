@@ -17,6 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/textView25"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="6dp" />
+        android:layout_margin="6dp"
+        android:textSize="18dp" />
 
 </LinearLayout>

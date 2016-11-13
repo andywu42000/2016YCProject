@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
     String key; //Coupon_ID
     String info; //使用者購買的優惠券的info 用來更新資料庫的
     String member_key;
+
 
 
 
@@ -91,6 +93,7 @@ public class CouponDetailsFragment extends Fragment implements BuyItDialogFragme
         final TextView infoTextView = (TextView) view.findViewById(R.id.textView12);
         final ImageView couponImage = (ImageView) view.findViewById(R.id.imageView);
         final Button buy_btn= (Button) view.findViewById(R.id.buy_btn);
+        final LinearLayout linear_text = (LinearLayout) view.findViewById(R.id.linear_text);
 
         final Bundle args = getArguments();
         nameTextView.setText(args.getString(ARGUMENT_NAME));

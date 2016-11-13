@@ -113,7 +113,7 @@
                     android:layout_marginTop="5dp"
                     android:textSize="18dp"
                     android:textColor="#212121"
-                    android:layout_below="@+id/imageView11"
+                    android:layout_below="@+id/remarkTextView"
                     android:layout_alignLeft="@+id/remarkTextView" />
 
                 <TextView
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/monTextView"
                     android:layout_toRightOf="@+id/textView2"
-                    android:layout_below="@+id/imageView11"
+                    android:layout_below="@+id/remarkTextView"
                     android:layout_marginTop="7dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="18dp"
