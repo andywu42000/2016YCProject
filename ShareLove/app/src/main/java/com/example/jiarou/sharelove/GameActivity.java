@@ -310,6 +310,7 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
             case R.id.nav_game:
                 intent.setClass(this, GameActivity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.nav_focus:
                 intent.setClass(this, MainActivity.class);

@@ -20,5 +20,9 @@ public class GlobalVariable extends Application {
     public void setWow(Integer wow){this.wow = wow;}
     public Integer getWow(){return wow;}
 
+    public Integer wow2 = 0;
+    public void setWow2(Integer wow2){this.wow2 = wow2;}
+    public Integer getWow2(){return wow2;}
+
 
 }

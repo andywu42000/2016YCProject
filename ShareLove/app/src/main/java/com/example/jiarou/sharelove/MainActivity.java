@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
             case R.id.nav_focus:
                 intent.setClass(this, MainActivity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.nav_lovecode:
                 intent.setClass(this, LoveCodeMainActivity.class);

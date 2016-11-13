@@ -187,6 +187,7 @@ public class LoveCodeMainActivity extends AppCompatActivity implements Navigatio
             case R.id.nav_lovecode:
                 intent.setClass(this, LoveCodeMainActivity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.nav_user:
                 intent.setClass(this, User_Activity.class);

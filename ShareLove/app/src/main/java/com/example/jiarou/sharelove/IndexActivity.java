@@ -130,6 +130,7 @@ public class IndexActivity extends AppCompatActivity implements OnMapReadyCallba
 
                 intent.setClass(this, IndexActivity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.nav_game:
                 intent.setClass(this, GameActivity.class);
