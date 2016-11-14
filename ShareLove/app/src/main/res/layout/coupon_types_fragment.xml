@@ -46,7 +46,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:text="100"
         android:layout_toRightOf="@+id/textView"
         android:layout_marginTop="90dp" />
 

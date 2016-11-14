@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
             case R.id.nav_focus:
                 intent.setClass(this, MainActivity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.nav_lovecode:
                 intent.setClass(this, LoveCodeMainActivity.class);
@@ -128,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements FocusFragment.OnF
                 intent.setClass(this, User_Activity.class);
                 startActivityForResult(intent, 2);
                 break;
+            case R.id.logout:
+                intent.setClass(this, Login.class);
+                startActivityForResult(intent, 2);
+
             default:
                 break;
         }

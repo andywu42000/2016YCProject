@@ -179,13 +179,13 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
         final android.support.v4.app.FragmentManager fragmentManager =
                 getSupportFragmentManager();
+
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.findFragmentByTag("changenge");
         getSupportFragmentManager().popBackStack();
         fragmentTransaction.detach(fragment);
         //fragmentTransaction.hide(fragment);
         fragmentTransaction.commit();
-
 
         final Start_GameFragment start_gameFragment =
                 Start_GameFragment.newInstance();
@@ -310,6 +310,7 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
             case R.id.nav_game:
                 intent.setClass(this, GameActivity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.nav_focus:
                 intent.setClass(this, MainActivity.class);
@@ -323,6 +324,10 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
                 intent.setClass(this, User_Activity.class);
                 startActivityForResult(intent, 2);
                 break;
+            case R.id.logout:
+                intent.setClass(this, Login.class);
+                startActivityForResult(intent, 2);
+
             default:
                 break;
         }

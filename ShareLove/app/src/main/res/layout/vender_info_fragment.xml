@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
 
-    android:background="#FFFFFF">
+    android:background="#f9f5da">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EBEBFF"
+            android:background="#f9f5da"
             android:padding="10dp">
 
             <TextView
@@ -113,7 +113,7 @@
                     android:layout_marginTop="5dp"
                     android:textSize="18dp"
                     android:textColor="#212121"
-                    android:layout_below="@+id/imageView11"
+                    android:layout_below="@+id/remarkTextView"
                     android:layout_alignLeft="@+id/remarkTextView" />
 
                 <TextView
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/monTextView"
                     android:layout_toRightOf="@+id/textView2"
-                    android:layout_below="@+id/imageView11"
+                    android:layout_below="@+id/remarkTextView"
                     android:layout_marginTop="7dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="18dp"
@@ -287,7 +287,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/vendor_info_background"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:clickable="true"
+                >
 
                 <ImageView
                     android:layout_width="40dp"

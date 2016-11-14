@@ -128,6 +128,7 @@ public class VendedInfoFragment extends Fragment {
 
         final GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
         globalVariable.setWow(0);
+        globalVariable.setWow2(0);
         final String[] key2 = {""};
         final String userId =globalVariable.getUserId();
         //Toast.makeText(getContext(), userId, Toast.LENGTH_LONG).show();
@@ -323,17 +324,24 @@ public class VendedInfoFragment extends Fragment {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 key2[0] = dataSnapshot.getKey();
-                                //Toast.makeText(getContext(), key2[0], Toast.LENGTH_LONG).show();
-                                final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
+                                for(DataSnapshot exDataSnaoshot: dataSnapshot.child("Favorite_Vendors").getChildren()){
+                                    String mark = (String)exDataSnaoshot.child("Vendor_ID").getValue();
+                                    if(key[0].equals(mark)){
+                                        globalVariable.setWow2(1);
+                                    }
 
-                                //member3.child("Favorite_Vendors/Vendor_ID").push().setValue(key[0]);
+                                }
 
-                                //GlobalVariable globalVariable2 = (GlobalVariable)getActivity().getApplicationContext();
-                                //globalVariable2.setCollectedVendor(key[0]);
+                                Integer wow2 = globalVariable.getWow2();
+                                switch (wow2){
+                                    case 0:
+                                        final Firebase member3 = new Firebase(DB_MEMBER_URL + key2[0]);
 
-                                Map<String, Object> favVendor = new HashMap<String, Object>();
-                                favVendor.put("Vendor_ID", key[0]);
-                                member3.child("Favorite_Vendors").push().setValue(favVendor);
+                                        Map<String, Object> favVendor = new HashMap<String, Object>();
+                                        favVendor.put("Vendor_ID", key[0]);
+                                        member3.child("Favorite_Vendors").push().setValue(favVendor);
+                                }
+
 
                             }
 
@@ -363,6 +371,8 @@ public class VendedInfoFragment extends Fragment {
                         collection.child("Popularity").setValue(mathth);
                         String mathS = mathth.toString();
                         count.setText(mathS);
+
+                        globalVariable.setWow(1);
 
                         Toast.makeText(getContext(), "已成功收藏", Toast.LENGTH_LONG).show();
 

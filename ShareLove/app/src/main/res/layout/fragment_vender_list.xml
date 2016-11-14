@@ -2,6 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="#e5f7f4"
              tools:context="com.example.jiarou.sharelove.VenderListFragment"
     >
 
@@ -36,7 +37,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:background="@drawable/round01"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:backgroundTint="#f9f5da">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -59,18 +61,26 @@
                     android:textSize="30dp"/>
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="133dp"
+                android:layout_height="100dp"
+                android:id="@+id/noshop01"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:background="@drawable/excavator"/>
+
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="110dp"
                 android:id="@+id/venderlist_view"
                 android:layout_marginBottom="0dp"
-                android:textSize="30px"
-
+                android:textSize="30sp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.19"
                 style="@style/AlertDialog.AppCompat"
-                android:textFilterEnabled="false"/>
+                android:textFilterEnabled="false"
+                android:dividerHeight="5dp"/>
 
         </LinearLayout>
 
