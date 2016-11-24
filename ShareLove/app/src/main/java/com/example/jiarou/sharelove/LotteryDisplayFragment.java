@@ -500,8 +500,8 @@ public class LotteryDisplayFragment extends Fragment {
                                         case 5:
 
                                             message = "全中";
-                                            Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 1000 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
-                                            total_points = owned_points + 1000;
+                                            Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 30 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
+                                            total_points = owned_points + 30;
                                             member_db.child(memberID).child("Owned_Points").setValue(total_points);
                                             member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Checked").setValue(true);
                                             member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Result").setValue(message);
@@ -613,8 +613,8 @@ public class LotteryDisplayFragment extends Fragment {
                                                 case 5:
 
                                                     message = "全中";
-                                                    Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 1000 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
-                                                    total_points = owned_points + 1000;
+                                                    Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 30 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
+                                                    total_points = owned_points + 30;
                                                     member_db.child(memberID).child("Owned_Points").setValue(total_points);
                                                     member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Checked").setValue(true);
                                                     member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Result").setValue(message);
@@ -679,7 +679,7 @@ public class LotteryDisplayFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

@@ -19,7 +19,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -61,7 +60,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     Long userLongId;
     String a;
     int count_shop;
-    ImageView shop_icon;
+    ImageView shop_icon,noshop01;
 
     String user_zip002;
     private GoogleMap mMap;
@@ -118,10 +117,18 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
         toolbar.setContentInsetsAbsolute(0,0);
          **/
 
-        GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
-        globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
-        String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
-        userLongId = Long.parseLong(userId, 10);
+        if(AccessToken.getCurrentAccessToken() == null){
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), Login.class);
+            startActivity(intent);
+        }else{
+            GlobalVariable globalVariable = (GlobalVariable) getActivity().getApplicationContext();
+            globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+            String userId =  globalVariable.setUserId(AccessToken.getCurrentAccessToken().getUserId());
+            userLongId = Long.parseLong(userId, 10);
+        }
+
+
 
 
 
@@ -154,7 +161,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
         noshop = (TextView) view.findViewById(R.id.noshop);
+
         shop_icon =(ImageView) view.findViewById(R.id.shpo_icon);
+        noshop01 =(ImageView) view.findViewById(R.id.noshop01);
+        noshop01.setVisibility(View.VISIBLE);
+       noshop01.setBackgroundResource(R.drawable.excavator);
         shop_icon.setBackgroundResource(R.drawable.exclamation);
 
 
@@ -312,9 +323,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
     public void connectToFirebase() {
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(),R.layout.list01, vendorTitleList);
 
-        final CustomAdapter zipadapter = new CustomAdapter(this.getActivity(),  zipeList);
+        final CustomAdapter zipadapter = new CustomAdapter(this.getActivity(), R.layout.list01, zipeList);
 
 
 
@@ -323,8 +334,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
         if (zip_areas == null) {
 
-            noshop.setText("尚無店家");
+            noshop.setText("開發中...");
+            noshop01.setVisibility(View.VISIBLE);
             shop_icon.setBackgroundResource(R.drawable.exclamation);
+            noshop01.setBackgroundResource(R.drawable.excavator);
 
             list.setVisibility(View.INVISIBLE);
 
@@ -399,6 +412,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                                             noshop.setText("店家名稱");
                                             list.setVisibility(View.VISIBLE);
                                             shop_icon.setBackgroundResource(R.drawable.sun_umbrella);
+                                            noshop01.setVisibility(View.GONE);
 
                                             Log.d("使用者區", shop_list);
                                             list.setAdapter(adapter);
@@ -480,8 +494,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-            noshop.setText("尚無店家");
+            noshop.setText("開發中...");
+            noshop01.setVisibility(View.VISIBLE);
             shop_icon.setBackgroundResource(R.drawable.exclamation);
+            noshop01.setBackgroundResource(R.drawable.excavator);
 
             list.setVisibility(View.INVISIBLE);
 
@@ -509,6 +525,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
                                 noshop.setText("店家名稱");
                                 list.setVisibility(View.VISIBLE);
                                 shop_icon.setBackgroundResource(R.drawable.sun_umbrella);
+                                noshop01.setVisibility(View.GONE);
 
                                 list.setAdapter(adapter);
 
@@ -569,7 +586,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        public CustomAdapter(Context context, ArrayList<String> vendorTitle){
+        public CustomAdapter(Context context, int list01, ArrayList<String> vendorTitle){
             c = context;
             this.vendorTitle = vendorTitle;
 

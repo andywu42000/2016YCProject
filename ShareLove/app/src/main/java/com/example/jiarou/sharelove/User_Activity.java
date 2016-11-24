@@ -84,6 +84,7 @@ public class User_Activity extends AppCompatActivity  implements UserFragment.On
             case R.id.nav_user:
                 intent.setClass(this, User_Activity.class);
                 startActivityForResult(intent, 2);
+                finish();
                 break;
             case R.id.logout:
                 intent.setClass(this, Login.class);

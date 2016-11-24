@@ -84,7 +84,7 @@ public class FocusFragment extends Fragment {
         final View view = inflater.inflate(R.layout.focus_fragment, container, false);
 
         focusListView = (ListView)view.findViewById(R.id.focusListView);
-        Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
+        //Toolbar my_toolbar= (Toolbar)view.findViewById(R.id.my_toolbar);
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(my_toolbar);
     //    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("焦點");
 

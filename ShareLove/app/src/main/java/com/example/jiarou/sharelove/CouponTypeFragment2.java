@@ -153,7 +153,7 @@ public class CouponTypeFragment2 extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.root_layout, fragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
 
