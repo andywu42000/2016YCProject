@@ -134,7 +134,7 @@
                     android:layout_alignEnd="@+id/textView8"
                     android:background="@drawable/button_rectangle_shape"
                     android:textSize="20dp"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="#FFFF"
                     android:layout_gravity="center"
                     android:layout_marginRight="12dp" />
 
@@ -150,9 +150,10 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:background="#f1f7fd"
-                android:id="@+id/linear_text">
+                android:layout_height="500dp"
+                android:background="#f9f5da"
+                android:id="@+id/linear_text"
+                android:layout_weight="5.60">
 
                 <TextView
                     android:layout_width="wrap_content"

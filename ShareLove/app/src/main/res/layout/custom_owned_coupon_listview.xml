@@ -44,7 +44,7 @@
         android:text="使用"
         android:id="@+id/use_btn"
         android:background="@drawable/button_rectangle_shape"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="#FFFF"
         android:textSize="15dp"
         android:layout_above="@+id/due_date"
         android:layout_toEndOf="@+id/due_date" />

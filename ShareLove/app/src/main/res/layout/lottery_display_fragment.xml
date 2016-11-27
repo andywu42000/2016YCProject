@@ -23,7 +23,7 @@
                     android:text="\n目前搜集\n\n"
                     android:id="@+id/textView29"
                     android:textAlignment="center"
-                    android:background="#B3E5FC"
+                    android:background="#d1fdd76b"
                     android:autoText="false"
                     android:textColor="#212121"
                     android:layout_alignParentTop="true"
@@ -169,7 +169,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="蒐集獎號"
                     android:textAlignment="center"
-                    android:background="#B3E5FC"
+                    android:background="#d1fdd76b"
                     android:id="@+id/textView36"
                     android:textColor="#212121"
                     android:textSize="14dp"
@@ -183,7 +183,6 @@
                     android:id="@+id/past_owned_number"
                     android:textAlignment="center"
                     android:textSize="20dp"
-                    android:textColor="#fdc72b"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/textView36" />
 
@@ -192,7 +191,7 @@
                     android:layout_height="100dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/past_period"
-                    android:background="#B3E5FC"
+                    android:background="#d1fdd76b"
                     android:textSize="14dp"
                     android:textColor="#212121"
                     android:textAlignment="center"
@@ -218,8 +217,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ECF4FC">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="100dp"
@@ -227,7 +225,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="是否中獎"
                     android:textAlignment="center"
-                    android:background="#00B3EA"
+                    android:background="#fdc72b"
                     android:id="@+id/textView30"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
@@ -244,14 +242,14 @@
                     android:layout_centerVertical="true"
                     android:textSize="20dp"
                     android:layout_toEndOf="@+id/textView30"
-                    android:textColor="#0288DE" />
+                    android:textColor="#FFA730" />
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/past_period2"
-                    android:background="#00B3EA"
+                    android:background="#fdc72b"
                     android:textSize="14dp"
                     android:textColor="#FFFF"
                     android:textAlignment="center"
@@ -278,8 +276,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ECF4FC">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="100dp"
@@ -287,7 +284,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="開獎號碼"
                     android:textAlignment="center"
-                    android:background="#00B3EA"
+                    android:background="#fdc72b"
                     android:id="@+id/textView31"
                     android:layout_alignParentBottom="true"
                     android:textColor="#FFFF"
@@ -303,7 +300,7 @@
                     android:textSize="20dp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/textView31"
-                    android:textColor="#0288DE"
+                    android:textColor="#FFA730"
                     />
 
                 <TextView
@@ -311,7 +308,7 @@
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/win_period"
-                    android:background="#00B3EA"
+                    android:background="#fdc72b"
                     android:textSize="14dp"
                     android:layout_alignBottom="@+id/winning_num"
                     android:textColor="#FFFF"
@@ -341,7 +338,7 @@
                 android:text="兌    獎"
                 android:id="@+id/check_btn"
                 android:textSize="25dp"
-                android:background="#34b581"
+                android:background="#d1fdd76b"
                 android:textColor="#ffff"
                 android:layout_gravity="bottom" />
 

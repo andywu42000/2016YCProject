@@ -182,8 +182,8 @@
             android:id="@+id/add_submit"
             android:layout_weight="0.1"
             android:layout_gravity="center_horizontal|bottom"
-            android:background="#B3E5FC"
-            android:textColor="#0288D1"
+            android:background="#FFCB87"
+            android:textColor="#FFFF"
             android:textSize="20dp" />
 
     </LinearLayout>

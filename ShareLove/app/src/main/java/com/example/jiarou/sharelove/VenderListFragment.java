@@ -15,11 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -61,7 +61,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
     Long userLongId;
     String a;
     int count_shop;
-    ImageView shop_icon;
+    ImageView shop_icon,noshop01;
 
     String user_zip002;
     private GoogleMap mMap;
@@ -154,7 +154,11 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
         noshop = (TextView) view.findViewById(R.id.noshop);
+
         shop_icon =(ImageView) view.findViewById(R.id.shpo_icon);
+        noshop01 =(ImageView) view.findViewById(R.id.noshop01);
+        noshop01.setVisibility(View.VISIBLE);
+       noshop01.setBackgroundResource(R.drawable.excavator);
         shop_icon.setBackgroundResource(R.drawable.exclamation);
 
 
@@ -312,9 +316,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
     public void connectToFirebase() {
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), vendorTitleList);
+        final ArrayAdapter<String> adapter = new  ArrayAdapter<String>(this.getActivity(),R.layout.list01, vendorTitleList);
 
-        final CustomAdapter zipadapter = new CustomAdapter(this.getActivity(),  zipeList);
+
 
 
 
@@ -324,7 +328,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
         if (zip_areas == null) {
 
             noshop.setText("尚無店家");
+            noshop01.setVisibility(View.VISIBLE);
             shop_icon.setBackgroundResource(R.drawable.exclamation);
+            noshop01.setBackgroundResource(R.drawable.excavator);
 
             list.setVisibility(View.INVISIBLE);
 
@@ -396,9 +402,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
                                             vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
-                                            noshop.setText("店家名稱");
+                                            noshop.setText("店家");
                                             list.setVisibility(View.VISIBLE);
                                             shop_icon.setBackgroundResource(R.drawable.sun_umbrella);
+                                            noshop01.setVisibility(View.GONE);
 
                                             Log.d("使用者區", shop_list);
                                             list.setAdapter(adapter);
@@ -481,7 +488,9 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
             noshop.setText("尚無店家");
+            noshop01.setVisibility(View.VISIBLE);
             shop_icon.setBackgroundResource(R.drawable.exclamation);
+            noshop01.setBackgroundResource(R.drawable.excavator);
 
             list.setVisibility(View.INVISIBLE);
 
@@ -506,9 +515,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
                                 vendorTitleList.add((String) dataSnapshot.child("Information/Name").getValue());
-                                noshop.setText("店家名稱");
+                                noshop.setText("店家");
                                 list.setVisibility(View.VISIBLE);
                                 shop_icon.setBackgroundResource(R.drawable.sun_umbrella);
+                                noshop01.setVisibility(View.GONE);
 
                                 list.setAdapter(adapter);
 
@@ -561,7 +571,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-    public class CustomAdapter extends BaseAdapter{
+    public class ArrayAdapter<String> extends BaseAdapter{
 
         Context c;
 
@@ -569,7 +579,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        public CustomAdapter(Context context, ArrayList<String> vendorTitle){
+        public ArrayAdapter(Context context, int list01, ArrayList<String> vendorTitle){
             c = context;
             this.vendorTitle = vendorTitle;
 
@@ -601,7 +611,10 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
 
             final String title = vendorTitle.get(position);
-            listTextView.setText(title);
+            listTextView.setText((java.lang.String) title);
+            listTextView.setTextSize(25);
+
+
 
 
 
@@ -609,7 +622,7 @@ public class VenderListFragment extends Fragment implements OnMapReadyCallback {
 
                 @Override
                 public void onClick(View v) {
-                    mListener.onFocusSelected(title);
+                    mListener.onFocusSelected((java.lang.String) title);
                 }
             });
 

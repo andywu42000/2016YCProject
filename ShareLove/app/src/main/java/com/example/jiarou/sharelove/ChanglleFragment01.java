@@ -3,8 +3,6 @@ package com.example.jiarou.sharelove;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,8 +19,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.github.ikidou.fragmentBackHandler.BackHandlerHelper;
-import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
 
 import java.util.Objects;
 
@@ -30,12 +26,12 @@ import java.util.Objects;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChanglleFragment.OnFragmentInteractionListener} interface
+ * {@link ChanglleFragment01.ch01} interface
  * to handle interaction events.
- * Use the {@link ChanglleFragment#newInstance} factory method to
+ * Use the {@link ChanglleFragment01#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChanglleFragment extends Fragment implements FragmentBackHandler {
+public class ChanglleFragment01 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,13 +47,14 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
     Long points;
     String memberKey;
     Long  userLongId;
+    String check;
 
 
-    private OnFragmentInteractionListener mListener;
+    private ch01 mListener;
     private delete mListener01;
 
 
-    public ChanglleFragment() {
+    public ChanglleFragment01() {
         // Required empty public constructor
     }
 
@@ -69,11 +66,11 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
      * @return A new instance of fragment ChanglleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChanglleFragment newInstance() {
+    public static ChanglleFragment01 newInstance() {
 
         Bundle args = new Bundle();
 
-        final  ChanglleFragment fragment = new ChanglleFragment();
+        final ChanglleFragment01 fragment = new ChanglleFragment01();
 
         fragment.setArguments(args);
         return fragment;
@@ -131,7 +128,8 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
                     c2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mListener.onFragmentInteraction("2");
+                            mListener.ch01("2");
+                            check="three";
 
 
                         }
@@ -163,7 +161,7 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
 
                         }
                     });
-                }else if(Objects.equals(get_number, "three")) {
+                }else if(Objects.equals(check, "three")) {
                     Log.d("d", "d" + "12");
                     c1.setBackgroundResource(R.drawable.certificate);
                     c1.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +188,7 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
                         @Override
                         public void onClick(View v) {
                             // Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                            mListener.onFragmentInteraction("3");
+                            mListener.ch01("3");
 
                         }
                     });
@@ -244,7 +242,7 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
                         @Override
                         public void onClick(View v) {
                             //Toast.makeText(getActivity(), "請先完成第一關喔！", Toast.LENGTH_LONG).show();
-                            mListener.onFragmentInteraction("4");
+                            mListener.ch01("4");
 
                         }
                     });
@@ -377,7 +375,7 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
                         @Override
                         public void onClick(View v) {
 
-                            mListener.onFragmentInteraction("1");
+                            mListener.ch01("1");
 /***
  final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
  Map mParent = new HashMap();
@@ -489,8 +487,8 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof ch01) {
+            mListener = (ch01) context;
         }else  if(context instanceof  delete){
             mListener01=(delete) context;
         }
@@ -521,41 +519,14 @@ public class ChanglleFragment extends Fragment implements FragmentBackHandler {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface ch01 {
         // TODO: Update argument type and name
-        void onFragmentInteraction(String number);
+        void ch01(String number);
     }
 
     public interface delete {
         // TODO: Update argument type and name
         void delete();
-    }
-
-
-    @Override
-    public boolean onBackPressed() {
-        if (!BackHandlerHelper.handleBackPress(this)) {
-            AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
-            bdr.setMessage("確定離開遊戲嘛？");
-            bdr.setTitle("提醒");
-            bdr.setPositiveButton("確認", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    getActivity().finish();
-                    final Intent intent = new Intent();
-                    intent.setClass(getActivity(), GameActivity.class);
-
-                    startActivity(intent);
-                }
-            });
-
-            bdr.setNegativeButton("繼續", null);
-            bdr.show();
-
-        }
-        return true;
-
-
     }
 
 

@@ -25,7 +25,7 @@
         android:layout_height="280dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="#966cd3ff"
+        android:background="#FFCB87"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
