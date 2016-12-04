@@ -44,5 +44,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="5dp"
-        android:textColor="#757575"/>
+        android:textColor="#757575"
+        android:textSize="15dp" />
 </RelativeLayout>

@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical" android:layout_width="match_parent"
@@ -54,9 +55,9 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="12dp"
-                    android:textColor="#272727" />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="9dp"
+                    android:textColor="#626072" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -73,7 +74,7 @@
                         android:layout_toStartOf="@+id/textView6"
                         android:layout_weight="0"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="130dp"
+                        android:layout_marginLeft="136dp"
                         android:layout_marginTop="5dp"
                         android:textSize="16dp" />
 
@@ -106,8 +107,7 @@
                         android:layout_toStartOf="@+id/textView6"
                         android:layout_marginTop="5dp"
                         android:layout_weight="0"
-                        android:layout_marginLeft="130dp"
-                        android:layout_marginRight="12dp"
+                        android:layout_marginLeft="136dp"
                         android:textSize="16dp" />
 
                     <TextView
@@ -120,7 +120,8 @@
                         android:layout_alignEnd="@+id/textView6"
                         android:layout_weight="0"
                         android:layout_marginTop="5dp"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:layout_marginLeft="12dp" />
                 </LinearLayout>
 
                 <Button
@@ -145,15 +146,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:layout_marginTop="10dp"
-                android:background="#F0F0F0"></LinearLayout>
+                android:background="#F9F9F9"></LinearLayout>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="wrap_content"
                 android:background="#f9f5da"
                 android:id="@+id/linear_text"
-                android:layout_weight="5.60">
+                android:orientation="vertical"
+                android:minHeight="200dp"
+                android:measureWithLargestChild="false">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,7 +168,7 @@
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:textSize="20dp"
-                    android:textColor="#272727" />
+                    android:textColor="#d48402" />
 
                 <View
                     android:layout_width="match_parent"
@@ -176,19 +178,18 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/textView12"
                     android:layout_alignLeft="@+id/focusPhoneTextView"
                     android:layout_alignStart="@+id/focusPhoneTextView"
                     android:layout_alignParentBottom="true"
-                    android:minWidth="300dp"
                     android:layout_below="@+id/focusPhoneTextView"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="12dp"
                     android:text="123"
                     android:textSize="14dp"
                     android:layout_marginRight="10dp"
-                    android:textColor="#000000"
+                    android:textColor="#4f4e61"
                     android:lineSpacingExtra="5dp"
                     android:inputType="textMultiLine" />
             </LinearLayout>

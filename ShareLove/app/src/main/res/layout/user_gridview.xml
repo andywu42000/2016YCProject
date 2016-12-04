@@ -18,6 +18,6 @@
         android:id="@+id/textView25"
         android:layout_gravity="center_horizontal"
         android:layout_margin="6dp"
-        android:textSize="18dp" />
+        android:textSize="16dp" />
 
 </LinearLayout>

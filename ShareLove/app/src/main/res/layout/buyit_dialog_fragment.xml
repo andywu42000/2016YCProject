@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="是否確定購買此優惠券？"
+        android:text="確定購買此優惠券？"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold" />
 
