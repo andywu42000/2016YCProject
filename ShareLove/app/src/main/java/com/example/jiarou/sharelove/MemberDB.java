@@ -194,10 +194,12 @@ public class MemberDB {
 
                                         if (win_period_array.get(i).compareTo(lotto_period_array.get(0))>0){
                                             check_num = check_num + 1;
+                                            break;
 
                                         }else{
 
                                             check_num = check_num + 0;
+                                            break;
 
                                         }
 

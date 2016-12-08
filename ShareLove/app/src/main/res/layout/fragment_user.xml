@@ -73,7 +73,7 @@
                                 android:layout_height="35dp"
                                 android:id="@+id/change_name_btn"
                                 android:stateListAnimator="@null"
-                                android:background="@mipmap/light_blue_edit"
+                                android:background="@mipmap/ic_light_blue_edit"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentEnd="true" />
 
