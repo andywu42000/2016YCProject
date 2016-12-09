@@ -149,6 +149,8 @@ public class IndexActivity extends AppCompatActivity implements OnMapReadyCallba
                 startActivityForResult(intent, 2);
                 break;
             case R.id.logout:
+                GlobalVariable globalVariable = (GlobalVariable)getApplicationContext();
+                globalVariable.setDenroo(1);
                 intent.setClass(this, Login.class);
                 startActivityForResult(intent, 2);
 

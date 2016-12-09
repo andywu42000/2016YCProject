@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="是否確定使用此優惠券？"
+        android:text="確定使用此優惠券？"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold" />
 
@@ -32,8 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="請由商家店員按下「使用」。按下按鍵後，優惠券將刪除。"
+        android:text="請由商家店員按下「使用」按鍵\n\n使用後，優惠券將被刪除"
         android:id="@+id/textView9"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textAlignment="center" />
 
 </LinearLayout>

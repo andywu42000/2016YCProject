@@ -24,7 +24,7 @@
         android:layout_marginTop="30dp"
         android:verticalSpacing="2dp"
         android:horizontalSpacing="2dp"
-        android:background="@drawable/blue_gradient_grid_couponfrag"
+        android:background="#F9F9F9"
         android:layout_below="@+id/textView3" />
 
     <TextView
@@ -36,9 +36,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="89dp"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="90dp" />
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="110dp"
+        android:textColor="#626072" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,7 +47,9 @@
         android:id="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_toRightOf="@+id/textView"
-        android:layout_marginTop="90dp" />
+        android:layout_marginTop="90dp"
+        android:textColor="#626072"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,6 +60,7 @@
         android:layout_toRightOf="@+id/textView2"
         android:layout_marginTop="90dp"
         android:text="點"
+        android:textColor="#626072"
         android:layout_marginLeft="5dp" />
 
     <TableLayout

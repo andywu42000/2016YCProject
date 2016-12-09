@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#f9f5da">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="評論"
         android:id="@+id/textView13"
-        android:textSize="36dp"
-        android:textColor="#212121"/>
+        android:textSize="30dp"
+        android:textColor="#d48402"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -25,7 +28,8 @@
             android:inputType="textMultiLine"
             android:hint="請輸入評論..."
             android:textColorHint="#757575"
-            android:layout_weight="4" />
+            android:layout_weight="4"
+            android:layout_marginLeft="10dp" />
 
         <Button
             android:layout_width="0dp"
@@ -33,18 +37,23 @@
             android:text="留言"
             android:id="@+id/commentButton"
             android:layout_weight="1"
-            android:onClick="onButtonClick" />
+            android:onClick="onButtonClick"
+            android:background="@drawable/button_rectangle_shape"
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:textColor="#FFFF" />
     </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/commentListView"
-        android:listSelector="#B3E5FC"
-        android:divider="#B3E5FC"
-        android:dividerHeight="3dp"
+        android:dividerHeight="5dp"
         android:headerDividersEnabled="true"
         android:radius = "15dp"
         android:fadingEdge="vertical"
-        android:fadingEdgeLength="20dp"/>
+        android:fadingEdgeLength="20dp"
+        android:background="#ffff"
+        android:layout_marginTop="15dp"
+        android:divider="#f9f9f9" />
 </LinearLayout>

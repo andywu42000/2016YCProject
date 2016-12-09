@@ -431,6 +431,9 @@ public class LotteryDisplayFragment extends Fragment {
 
                     Toast.makeText(getContext(), "請先分享文章，蒐集樂透", Toast.LENGTH_LONG).show();
 
+
+
+
                 } else {
 
 
@@ -528,8 +531,15 @@ public class LotteryDisplayFragment extends Fragment {
                         }
 
 
-                    } else if (win_period_array.get(0).compareTo(lotto_period_array.get(0)) > 0) {
+                        Fragment fragment = new LotteryDisplayFragment();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
+                        fragmentTransaction.commit();
 
+
+
+                    } else if (win_period_array.get(0).compareTo(lotto_period_array.get(0)) > 0) {
 
                         final Firebase lotto_db = new Firebase(LOTTO_DB_URL);
                         Query query3 = lotto_db.orderByChild("Period").equalTo(lotto_period_array.get(0));
@@ -551,15 +561,15 @@ public class LotteryDisplayFragment extends Fragment {
                                 lottoPastWinNum.add(w1);
 
 
-                                if (checked_array.get(0)==false){
+                                if (checked_array.get(0) == false) {
 
                                     if (lottoNum.get(3) == null || lottoNum.get(2) == null) {
 
                                         message = "樂透蒐集不足";
-                                        Toast.makeText(getContext(), "抱歉! 您收集的樂透數不足三個，故無法兌獎。請繼續參與下週的樂透活動。", Toast.LENGTH_LONG).show();
+                                        check_y_n.setText(message);
+                                        Toast.makeText(getApplicationContext(), "抱歉! 您收集的樂透數不足三個，故無法兌獎。請繼續參與下週的樂透活動。", Toast.LENGTH_LONG).show();
                                         member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Checked").setValue(true);
                                         member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Result").setValue(message);
-                                        check_y_n.setText(message);
 
 
                                     } else {
@@ -588,20 +598,19 @@ public class LotteryDisplayFragment extends Fragment {
                                                 case 3:
 
                                                     message = "中三碼";
-                                                    Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 5 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "恭喜中獎，將贈予您愛心點數 5 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
                                                     total_points = owned_points + 5;
                                                     member_db.child(memberID).child("Owned_Points").setValue(total_points);
                                                     member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Checked").setValue(true);
                                                     member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Result").setValue(message);
                                                     check_y_n.setText(message);
-
                                                     break;
 
 
                                                 case 4:
 
                                                     message = "中四碼";
-                                                    Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 10 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "恭喜中獎，將贈予您愛心點數 10 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
                                                     total_points = owned_points + 10;
                                                     member_db.child(memberID).child("Owned_Points").setValue(total_points);
                                                     member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Checked").setValue(true);
@@ -613,7 +622,7 @@ public class LotteryDisplayFragment extends Fragment {
                                                 case 5:
 
                                                     message = "全中";
-                                                    Toast.makeText(getContext(), "恭喜中獎，將贈予您愛心點數 30 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "恭喜中獎，將贈予您愛心點數 30 點，請至個人頁面查看", Toast.LENGTH_LONG).show();
                                                     total_points = owned_points + 30;
                                                     member_db.child(memberID).child("Owned_Points").setValue(total_points);
                                                     member_db.child(memberID).child("Lottery_Numbers").child(member_lottoID_array.get(0)).child("Checked").setValue(true);
@@ -634,14 +643,18 @@ public class LotteryDisplayFragment extends Fragment {
                                     }
 
 
-                                }else{
+                                } else {
 
-                                    Toast.makeText(getContext(), "您已兌過，請繼續蒐集樂透獎號", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "您已兌過，請繼續蒐集樂透獎號", Toast.LENGTH_LONG).show();
 
                                 }
 
 
-
+                                Fragment fragment = new LotteryDisplayFragment();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
+                                fragmentTransaction.commit();
 
 
                             }
@@ -668,19 +681,33 @@ public class LotteryDisplayFragment extends Fragment {
                         });
 
 
+//                        Fragment fragment = new LotteryDisplayFragment();
+//                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
+//                        fragmentTransaction.commit();
+
+
+
+
                     } else if (win_period_array.get(0).compareTo(lotto_period_array.get(0)) < 0) {
 
                         Toast.makeText(getContext(), "本期尚未開獎", Toast.LENGTH_LONG).show();
+                        Fragment fragment = new LotteryDisplayFragment();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
+                        fragmentTransaction.commit();
 
                     }
                 }
+//
+//                Fragment fragment = new LotteryDisplayFragment();
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
+//                fragmentTransaction.commit();
 
-                Fragment fragment = new LotteryDisplayFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.LotteryDisplay_layout, fragment);
-                //fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
         });
 

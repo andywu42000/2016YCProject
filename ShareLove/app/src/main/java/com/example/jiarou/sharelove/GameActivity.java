@@ -20,14 +20,17 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.github.ikidou.fragmentBackHandler.BackHandlerHelper;
+import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
 
 import java.util.Objects;
 
-public class GameActivity extends AppCompatActivity  implements GameFragment.OpenGame,ChanglleFragment.OnFragmentInteractionListener,Game_areaFragment.Choose_area,Start_GameFragment.Start_game,LocationListener,ChanglleFragment.delete,NavigationView.OnNavigationItemSelectedListener{
+public class GameActivity extends AppCompatActivity  implements GameFragment.OpenGame,ChanglleFragment.OnFragmentInteractionListener,Game_areaFragment.Choose_area,Start_GameFragment.Start_game,LocationListener,ChanglleFragment.delete,NavigationView.OnNavigationItemSelectedListener,ChanglleFragment01.ch01,Success.success{
     String get_number;
     String get_check;
     String condition;
     String Address;
+    int pass;
     private  Fragment fg;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -82,6 +85,11 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     @Override
     public void OpenGame() {
 
+
+
+
+
+
         final ChanglleFragment changlleFragment =
                 ChanglleFragment.newInstance();
 
@@ -104,7 +112,10 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     @Override
     public void onFragmentInteraction(String number) {
 
-                get_number = number;
+
+
+
+        get_number = number;
 
         final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
         Query memberQuery = FirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
@@ -167,6 +178,68 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     }
 
+    @Override
+    public void ch01(String number) {
+
+
+
+
+        get_number = number;
+
+        final Firebase FirebaseRef = new Firebase("https://member-activity.firebaseio.com/Activity");
+        Query memberQuery = FirebaseRef.orderByChild("Facebook_ID").equalTo(111111111111111l);
+        memberQuery.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                final String memberKey01 = dataSnapshot.getKey();
+                condition = (String) dataSnapshot.child("condition").getValue();
+                Address = (String) dataSnapshot.child("now").getValue();
+                Log.d("d", "hhhh" + Address);
+                if (Objects.equals(condition, "false")) {
+                    final Game_areaFragment game_areaFragment =
+                            Game_areaFragment.newInstance();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.game_root, game_areaFragment, "game_areaFragment")
+                            .addToBackStack(null)
+                            .commit();
+                } else if (Objects.equals(condition, "true")) {
+
+                    final Game_areaFragment game_areaFragment =
+                            Game_areaFragment.newInstance();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.game_root, game_areaFragment, "game_areaFragment")
+                            .addToBackStack(null)
+                            .commit();
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+
 
 
 
@@ -174,18 +247,28 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     @Override
     public void Choose_area(String data) {
 
-
-
-
+/**
         final android.support.v4.app.FragmentManager fragmentManager =
                 getSupportFragmentManager();
-
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.findFragmentByTag("changenge");
         getSupportFragmentManager().popBackStack();
-        fragmentTransaction.detach(fragment);
-        //fragmentTransaction.hide(fragment);
+
+        fragmentTransaction.remove(fragment);
+
+
         fragmentTransaction.commit();
+**/
+
+        if(pass==1) {
+
+
+        }else {
+            pass =1;
+
+        }
+
+
 
         final Start_GameFragment start_gameFragment =
                 Start_GameFragment.newInstance();
@@ -195,11 +278,15 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
         bundle.putString("123", Address);
         start_gameFragment.setArguments(bundle);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.game_root, start_gameFragment, " start_gameFragment")
                 .addToBackStack(null)
                 .commit();
+
+
+
 
 
 
@@ -214,22 +301,15 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     @Override
     public void Start_game(String number) {
-
-
-
-
-        final ChanglleFragment changlleFragment =
-                ChanglleFragment.newInstance();
+        final Success success =
+              Success.newInstance();
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.game_root, changlleFragment, "changenge")
+
+                .replace(R.id.game_root, success, "success")
                 .addToBackStack(null)
-                .commit();
-
-
-
-
+        .commit();
 
 
 
@@ -243,7 +323,7 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
        final GameFragment  gameFragment =GameFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.game_root, GameFragment.newInstance(), "game")
+                .replace(R.id.game_root, gameFragment, "game")
                 .addToBackStack(null)
                 .commit();
 
@@ -273,6 +353,17 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            super.onBackPressed();
+        }
+    }
+
+
+
+    /**
     @Override
     public  boolean onKeyDown(int keyCode, KeyEvent event){
         Log.d("test","event");
@@ -295,6 +386,8 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
                  }
                  return super.onKeyDown(keyCode, event);
              }
+
+     **/
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -335,4 +428,17 @@ public class GameActivity extends AppCompatActivity  implements GameFragment.Ope
     }
 
 
+    @Override
+    public void success() {
+        final ChanglleFragment changlleFragment =
+                ChanglleFragment.newInstance();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.game_root, changlleFragment, "changenge")
+                .addToBackStack(null)
+                .commit();
+
+
+    }
 }

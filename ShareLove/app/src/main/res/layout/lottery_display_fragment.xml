@@ -23,9 +23,9 @@
                     android:text="\n目前搜集\n\n"
                     android:id="@+id/textView29"
                     android:textAlignment="center"
-                    android:background="#B3E5FC"
+                    android:background="#d1fdd76b"
                     android:autoText="false"
-                    android:textColor="#212121"
+                    android:textColor="#424055"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true" />
 
@@ -135,7 +135,7 @@
                     android:id="@+id/collect_period"
                     android:layout_alignBottom="@+id/textView29"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#757575"
+                    android:textColor="#424055"
                     android:layout_marginBottom="20dp"
                     android:background="#FFFF"
                     android:textStyle="bold" />
@@ -147,7 +147,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="#F0F0F0"
+            android:background="#F9F9F9"
             android:id="@+id/view2"
             android:layout_below="@+id/textView29"
             android:layout_alignParentStart="true" />
@@ -169,9 +169,9 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="蒐集獎號"
                     android:textAlignment="center"
-                    android:background="#B3E5FC"
+                    android:background="#f9f5da"
                     android:id="@+id/textView36"
-                    android:textColor="#212121"
+                    android:textColor="#d48402"
                     android:textSize="14dp"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/past_owned_number" />
@@ -182,19 +182,20 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/past_owned_number"
                     android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:textColor="#fdc72b"
+                    android:textSize="18dp"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/textView36" />
+                    android:layout_toEndOf="@+id/textView36"
+                    android:textColor="#d48402"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/past_period"
-                    android:background="#B3E5FC"
+                    android:background="#f9f5da"
                     android:textSize="14dp"
-                    android:textColor="#212121"
+                    android:textColor="#d48402"
                     android:textAlignment="center"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="false"
@@ -205,7 +206,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="#F0F0F0"
+            android:background="#F9F9F9"
             android:id="@+id/view5"
             android:layout_below="@+id/textView29"
             android:layout_alignParentStart="true" />
@@ -218,8 +219,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ECF4FC">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="100dp"
@@ -227,11 +227,11 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="是否中獎"
                     android:textAlignment="center"
-                    android:background="#00B3EA"
+                    android:background="#F0F0F0"
                     android:id="@+id/textView30"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
-                    android:textColor="#FFFF"
+                    android:textColor="#928fa8"
                     android:textSize="14dp"
                     android:layout_below="@+id/check_y_n" />
 
@@ -242,18 +242,18 @@
                     android:id="@+id/check_y_n"
                     android:textAlignment="center"
                     android:layout_centerVertical="true"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:layout_toEndOf="@+id/textView30"
-                    android:textColor="#0288DE" />
+                    android:textColor="#928fa8" />
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/past_period2"
-                    android:background="#00B3EA"
+                    android:background="#F0F0F0"
                     android:textSize="14dp"
-                    android:textColor="#FFFF"
+                    android:textColor="#928fa8"
                     android:textAlignment="center"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
@@ -265,7 +265,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="#F0F0F0"
+            android:background="#F9F9F9"
             android:id="@+id/view3"
             android:layout_below="@+id/textView29"
             android:layout_alignParentStart="true" />
@@ -278,8 +278,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ECF4FC">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="100dp"
@@ -287,10 +286,10 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="開獎號碼"
                     android:textAlignment="center"
-                    android:background="#00B3EA"
+                    android:background="#F0F0F0"
                     android:id="@+id/textView31"
                     android:layout_alignParentBottom="true"
-                    android:textColor="#FFFF"
+                    android:textColor="#928fa8"
                     android:layout_below="@+id/winning_num"
                     android:textSize="14dp" />
 
@@ -300,28 +299,28 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/winning_num"
                     android:textAlignment="center"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/textView31"
-                    android:textColor="#0288DE"
-                    />
+                    android:textColor="#928fa8"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/win_period"
-                    android:background="#00B3EA"
+                    android:background="#F0F0F0"
                     android:textSize="14dp"
                     android:layout_alignBottom="@+id/winning_num"
-                    android:textColor="#FFFF"
+                    android:textColor="#928fa8"
                     android:textAlignment="center" />
             </RelativeLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="#F0F0F0"
+            android:background="#F9F9F9"
             android:id="@+id/view4"
             android:layout_below="@+id/textView29"
             android:layout_alignParentStart="true" />
@@ -341,7 +340,7 @@
                 android:text="兌    獎"
                 android:id="@+id/check_btn"
                 android:textSize="25dp"
-                android:background="#34b581"
+                android:background="#fbbe3f"
                 android:textColor="#ffff"
                 android:layout_gravity="bottom" />
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -62,6 +63,18 @@ public class Login extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        GlobalVariable globalVariable8 = (GlobalVariable)getApplicationContext();
+
+        if(AccessToken.getCurrentAccessToken() != null && globalVariable8.getDenroo() == 0){
+            Intent intent;
+            intent = new Intent();
+            intent.setClass(Login.this, IndexActivity.class);
+
+            startActivity(intent);
+        }else{
+            globalVariable8.setDenroo(0);
+        }
 
 
 

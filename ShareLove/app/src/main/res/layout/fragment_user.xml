@@ -65,14 +65,15 @@
                                 android:layout_marginLeft="13dp"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentStart="true"
-                                android:layout_toStartOf="@+id/change_name_btn" />
+                                android:layout_toStartOf="@+id/change_name_btn"
+                                android:textColor="#626072" />
 
                             <Button
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:id="@+id/change_name_btn"
                                 android:stateListAnimator="@null"
-                                android:background="@mipmap/light_blue_edit"
+                                android:background="@mipmap/ic_light_blue_edit"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentEnd="true" />
 
@@ -110,11 +111,12 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:id="@+id/imageView6"
                         android:background="@mipmap/love"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="6dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -124,7 +126,8 @@
                         android:id="@+id/textView24"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textColor="#8884a1" />
 
                     <TextView
                         android:layout_width="116dp"
@@ -133,12 +136,13 @@
                         android:id="@+id/owned_point"
                         android:layout_marginLeft="13dp"
                         android:layout_marginTop="5dp"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textColor="#8884a1" />
 
                 </LinearLayout>
 
                 <Button
-                    android:layout_width="184dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:text="店家收藏"
                     android:id="@+id/collect_store_btn"
@@ -147,7 +151,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:textColor="#212121"
+                    android:textColor="#d48402"
                     android:textSize="15dp" />
 
             </LinearLayout>
@@ -157,18 +161,23 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:background="#F0F0F0"
-            android:layout_weight="0.11"></LinearLayout>
+            android:layout_height="31dp"
+            android:background="#f9f9f9"></LinearLayout>
 
         <GridView
             android:layout_width="wrap_content"
-            android:layout_height="326.5dp"
+            android:layout_height="fill_parent"
             android:id="@+id/gridView2"
-            android:background="#ECF4FC"
+            android:background="#f9f9f9"
             android:horizontalSpacing="2dp"
             android:verticalSpacing="2dp"
             android:listSelector="@drawable/grid_view_item_selector_xml"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:background="#f9f9f9" />
 
     </LinearLayout>
 

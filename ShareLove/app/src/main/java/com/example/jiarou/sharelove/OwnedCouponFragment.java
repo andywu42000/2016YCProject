@@ -139,7 +139,7 @@ public class OwnedCouponFragment extends Fragment implements UseCouponDialogFrag
                 HashMap<String, Map<String, String>> id = (HashMap<String, Map<String, String>>) dataSnapshot.child("Owned_Coupons").getValue();
 
 
-                    if(id==null){
+                if(id==null || id.equals("")){
 
 
 

@@ -3,6 +3,7 @@ package com.example.jiarou.sharelove;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.github.ikidou.fragmentBackHandler.BackHandlerHelper;
+import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
 
 import java.util.Objects;
 
@@ -32,7 +35,7 @@ import java.util.Objects;
  * Use the {@link ChanglleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChanglleFragment extends Fragment {
+public class ChanglleFragment extends Fragment implements FragmentBackHandler {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,12 +111,13 @@ public class ChanglleFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final  String memberKey01 = dataSnapshot.getKey();
                 get_number = (String)dataSnapshot.child("times").getValue();
-                Log.d("d", "d" + get_number);
+
 
 
 
                 if(Objects.equals(get_number, "two")) {
 
+                    Log.d("d", "d" + "test");
                     c1.setBackgroundResource(R.drawable.certificate);
                     c1.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -160,6 +164,7 @@ public class ChanglleFragment extends Fragment {
                         }
                     });
                 }else if(Objects.equals(get_number, "three")) {
+                    Log.d("d", "d" + "12");
                     c1.setBackgroundResource(R.drawable.certificate);
                     c1.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -524,6 +529,33 @@ public class ChanglleFragment extends Fragment {
     public interface delete {
         // TODO: Update argument type and name
         void delete();
+    }
+
+
+    @Override
+    public boolean onBackPressed() {
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            AlertDialog.Builder bdr = new AlertDialog.Builder(getActivity());
+            bdr.setMessage("確定離開遊戲嘛？");
+            bdr.setTitle("提醒");
+            bdr.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getActivity().finish();
+                    final Intent intent = new Intent();
+                    intent.setClass(getActivity(), GameActivity.class);
+
+                    startActivity(intent);
+                }
+            });
+
+            bdr.setNegativeButton("繼續", null);
+            bdr.show();
+
+        }
+        return true;
+
+
     }
 
 

@@ -4,7 +4,6 @@ package com.example.jiarou.sharelove;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.firebase.client.ChildEventListener;
@@ -126,6 +126,8 @@ public class VendedInfoFragment extends Fragment {
         final Bundle args = getArguments();
         titleTextView.setText(args.getString(ARGUMENT_TITLE));
 
+        final DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
+
         final GlobalVariable globalVariable = (GlobalVariable)getActivity().getApplicationContext();
         globalVariable.setWow(0);
         globalVariable.setWow2(0);
@@ -151,7 +153,7 @@ public class VendedInfoFragment extends Fragment {
 
                 String picId = (String) dataSnapshot.child("Photos").child("Photo_ID").getValue();
                 String pic = imgurURL + picId + ".jpg";
-                DownloadImageTask downloadImage = new DownloadImageTask(vendorImageView);
+
                 downloadImage.execute(pic);
 
                 forShareUse = pic;
@@ -287,16 +289,21 @@ public class VendedInfoFragment extends Fragment {
                 if (ShareDialog.canShow(SharePhotoContent.class)) {
                     //Bitmap image = getBitmap(forShareUse);
 
+                    /*
                     ShareLinkContent content = new ShareLinkContent.Builder()
                             .setContentTitle(args.getString(ARGUMENT_TITLE))
                             .setImageUrl(Uri.parse(forShareUse))
                             .build();
-
-                    /*
-                    SharePhoto photo = new SharePhoto.Builder().setImageUrl(Uri.parse(forShareUse)).build();
-                    SharePhotoContent content = new SharePhotoContent
-                            .Builder().addPhoto(photo).build();
                             */
+
+
+
+                    SharePhoto photo = new SharePhoto.Builder().setBitmap(downloadImage.bitmap).build();
+                    SharePhotoContent content = new SharePhotoContent
+                            .Builder().addPhoto(photo)
+                            .setShareHashtag(new ShareHashtag.Builder().setHashtag("#SharingLove").build())
+                            .build();
+
 
                     shareDialog.show(content);
 
