@@ -610,12 +610,12 @@ public class CommentFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return memberComment.size();
+            return memberPic.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return memberComment.get(position);
+            return memberPic.get(position);
         }
 
         @Override
