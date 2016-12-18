@@ -309,11 +309,14 @@ public class CommentFragment extends Fragment {
             }
         });
 */
+        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), memberPicList, memberNameList
+                , memberCommentList, memberDateList);
 
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String note = editText.getText().toString();
+
 
                 final Firebase findMemberId = new Firebase(DB_MEMBER_URL);
 
@@ -329,6 +332,11 @@ public class CommentFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         final String key = dataSnapshot.getKey();
 
+                        final String name = (String) dataSnapshot.child("Nickname").getValue();
+
+                        String picId = (String) dataSnapshot.child("Photos/Photo_ID").getValue();
+                        final String pic = "https://graph.facebook.com/" + picId + "/picture?type=normal";
+
                         final Firebase writeComment = new Firebase(DB_VENDOR_URL);
 
                         final Query writeVendorComment = writeComment.orderByChild("Information/Name")
@@ -341,14 +349,14 @@ public class CommentFragment extends Fragment {
                         String yearar = year.toString();
                         Integer hours = mDate.getHours();
                         String hourur;
-                        if(hours < 12){
+                        if (hours < 12) {
                             hours = hours + 12;
                             hourur = hours.toString();
-                        }else{
+                        } else {
                             hours = hours - 12;
                             hourur = hours.toString();
                         }
-                        final String date = yearar + "/" + monthth + "/" + mDate.getDate() + " "  + hourur + ":" + mDate.getMinutes();
+                        final String date = yearar + "/" + monthth + "/" + mDate.getDate() + " " + hourur + ":" + mDate.getMinutes();
 
 
                         writeVendorComment.addChildEventListener(new ChildEventListener() {
@@ -380,6 +388,14 @@ public class CommentFragment extends Fragment {
                                     confuse.child("Comments").push().setValue(addComment);
 
                                 }
+                                memberCommentList.add(note);
+                                memberDateList.add(date);
+                                memberPicList.add(pic);
+                                memberNameList.add(name);
+
+                                adapter.notifyDataSetChanged();
+
+                                commentListView.setAdapter(adapter);
                             }
 
                             @Override
@@ -430,8 +446,7 @@ public class CommentFragment extends Fragment {
             }
         });
 
-        final CustomAdapter adapter = new CustomAdapter(this.getActivity(), memberPicList, memberNameList
-                , memberCommentList, memberDateList);
+
 
         final Firebase commentFirebase = new Firebase(DB_VENDOR_URL);
 
@@ -439,12 +454,13 @@ public class CommentFragment extends Fragment {
 
         specificVendor.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
+
                 memberNameList.clear();
                 memberDateList.clear();
                 memberCommentList.clear();
                 memberPicList.clear();
-                if(dataSnapshot.child("Comments").exists()) {
+                if (dataSnapshot.child("Comments").exists()) {
                     for (DataSnapshot exDataSnapshot : dataSnapshot.child("Comments").getChildren()) {
 
                         String comment = (String) exDataSnapshot.child("Content").getValue();
@@ -460,12 +476,12 @@ public class CommentFragment extends Fragment {
                         findMember.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                String name = (String) dataSnapshot.child("Nickname").getValue();
+                                final String name = (String) dataSnapshot.child("Nickname").getValue();
 
-                                String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
-                                String pic = "https://graph.facebook.com/" + picId + "/picture?type=normal";
+                                String picId = (String) dataSnapshot.child("Photos/Photo_ID").getValue();
+                                final String pic = "https://graph.facebook.com/" + picId + "/picture?type=normal";
+
                                 memberPicList.add(pic);
-
                                 memberNameList.add(name);
 
                                 commentListView.setAdapter(adapter);
@@ -498,72 +514,82 @@ public class CommentFragment extends Fragment {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onChildChanged(final DataSnapshot dataSnapshot, String s) {
+                /*
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        memberNameList.clear();
+                        memberDateList.clear();
+                        memberCommentList.clear();
+                        memberPicList.clear();
 
 
-                memberNameList.clear();
-                memberDateList.clear();
-                memberCommentList.clear();
-                memberPicList.clear();
+                        if (dataSnapshot.child("Comments").exists()) {
+                            for (DataSnapshot exDataSnapshot : dataSnapshot.child("Comments").getChildren()) {
+
+                                String comment = (String) exDataSnapshot.child("Content").getValue();
+                                String date = (String) exDataSnapshot.child("Date").getValue();
+                                String memberId = (String) exDataSnapshot.child("Member_ID").getValue();
+
+                                memberCommentList.add(comment);
+                                memberDateList.add(date);
+
+                                final Firebase member = new Firebase(DB_MEMBER_URL);
+
+                                Query findMember = member.orderByKey().equalTo(memberId);
+                                findMember.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                                        final String name = (String) dataSnapshot.child("Nickname").getValue();
 
 
-                if(dataSnapshot.child("Comments").exists()) {
-                    for (DataSnapshot exDataSnapshot : dataSnapshot.child("Comments").getChildren()) {
-
-                        String comment = (String) exDataSnapshot.child("Content").getValue();
-                        String date = (String) exDataSnapshot.child("Date").getValue();
-                        String memberId = (String) exDataSnapshot.child("Member_ID").getValue();
-
-                        memberCommentList.add(comment);
-                        memberDateList.add(date);
-
-                        final Firebase member = new Firebase(DB_MEMBER_URL);
-
-                        Query findMember = member.orderByKey().equalTo(memberId);
-                        findMember.addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                String name = (String) dataSnapshot.child("Nickname").getValue();
+                                        String picId = (String) dataSnapshot.child("Photos/Photo_ID").getValue();
+                                        final String pic = "https://graph.facebook.com/" + picId + "/picture?type=small";
 
 
-                                String picId = (String)dataSnapshot.child("Photos/Photo_ID").getValue();
-                                String pic = "https://graph.facebook.com/" + picId + "/picture?type=small";
-                                memberPicList.add(pic);
+                                        memberPicList.add(pic);
+                                        memberNameList.add(name);
 
+                                        //commentListView.setAdapter(adapter);
 
-                                memberNameList.add(name);
+                                    }
 
-                                commentListView.setAdapter(adapter);
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
                             }
-
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                            }
-
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                            }
-
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-
-                            }
-                        });
+                        }
                     }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
-
-
-
-
+                commentListView.setAdapter(adapter);
+                */
             }
 
             @Override
@@ -610,12 +636,13 @@ public class CommentFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return memberPic.size();
+                return memberPic.size();
         }
 
         @Override
         public Object getItem(int position) {
             return memberPic.get(position);
+
         }
 
         @Override
